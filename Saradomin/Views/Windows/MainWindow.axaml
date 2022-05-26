@@ -1,0 +1,129 @@
+<glitonea:WindowEx xmlns="https://github.com/avaloniaui"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:glitonea="clr-namespace:Glitonea;assembly=Glitonea"
+                   xmlns:mvvm="clr-namespace:Glitonea.Mvvm;assembly=Glitonea"
+                   xmlns:vm="clr-namespace:Saradomin.ViewModel.Windows"
+                   xmlns:controls="clr-namespace:Saradomin.Views.Controls"
+                   Width="800"
+                   Height="500"
+                   SystemDecorations="None"
+                   x:Class="Saradomin.Views.Windows.MainWindow"
+                   Title="{Binding Title}"
+                   DataContext="{mvvm:DataContextSource vm:MainWindowViewModel}"
+                   WindowStartupLocation="CenterScreen"
+                   Icon="{DynamicResource MainApplicationIcon}"
+                   Name="MainWindow">
+    <Border BorderThickness="2"
+            BorderBrush="#3E3529">
+        <Grid RowDefinitions="24,*,32">
+            <Grid Grid.Row="0"
+                  Background="#3E3529"
+                  PointerPressed="TitleBar_MouseDown"
+                  ColumnDefinitions="Auto,*,Auto">
+
+                <TextBlock Grid.Column="1"
+                           Grid.ColumnSpan="3"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Text="{Binding #MainWindow.Title}"
+                           FontSize="14"
+                           Foreground="#F2C954"
+                           FontFamily="Open Sans"
+                           FontWeight="Light" />
+
+                <Button Grid.Column="2"
+                        Classes="CloseButton"
+                        Command="{Binding ExitApplication}" />
+            </Grid>
+
+            <Grid Grid.Row="1"
+                  Grid.ZIndex="1"
+                  Margin="0,2,4,0"
+                  VerticalAlignment="Top"
+                  HorizontalAlignment="Right"
+                  ColumnDefinitions="Auto,Auto,Auto,Auto">
+                <Button Grid.Column="0"
+                        Classes="OutsideNavigator"
+                        Content="latest news"
+                        CornerRadius="8,0,0,8"
+                        Command="{Binding LaunchPage}"
+                        CommandParameter="news" />
+
+                <Button Grid.Column="1"
+                        Classes="OutsideNavigator"
+                        Content="found a bug?"
+                        Command="{Binding LaunchPage}"
+                        CommandParameter="issues" />
+
+                <Button Grid.Column="2"
+                        Classes="OutsideNavigator"
+                        Content="hi-scores"
+                        Command="{Binding LaunchPage}"
+                        CommandParameter="hiscores" />
+
+                <Button Grid.Column="3"
+                        Classes="OutsideNavigator"
+                        Content="discord"
+                        CornerRadius="0,8,8,0"
+                        Command="{Binding LaunchPage}"
+                        CommandParameter="discord" />
+            </Grid>
+
+            <TabControl Grid.Row="1"
+                        Grid.RowSpan="1"
+                        Classes="PageSelector"
+                        Background="#A1855C"
+                        BorderBrush="#312D25">
+                <TabItem Header="what's new"
+                         CornerRadius="0,0,0,8"
+                         HorizontalContentAlignment="Center"
+                         Width="95">
+                    <Border CornerRadius="6,6,0,0"
+                            Margin="4,0,4,0"
+                            BorderBrush="#7D694E"
+                            BorderThickness="1,1,1,0"
+                            Background="#998468"
+                            ClipToBounds="True">
+                        <ScrollViewer HorizontalAlignment="Stretch"
+                                      VerticalScrollBarVisibility="Visible"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      ClipToBounds="True">
+                            <HtmlLabel Name="HtmlView"
+                                       AutoSize="False"
+                                       AutoSizeHeightOnly="True"
+                                       Margin="4,0,4,4"
+                                       Width="750"
+                                       VerticalAlignment="Stretch" />
+                        </ScrollViewer>
+                    </Border>
+                </TabItem>
+
+                <TabItem Header="settings"
+                         CornerRadius="0,0,8,0"
+                         HorizontalContentAlignment="Center"
+                         Width="95">
+                    <Border CornerRadius="6,6,0,0"
+                            Margin="4,0,4,0"
+                            BorderBrush="#7D694E"
+                            BorderThickness="1,1,1,0"
+                            Background="#998468">
+                        <ScrollViewer VerticalScrollBarVisibility="Visible"
+                                      HorizontalScrollBarVisibility="Hidden">
+                            <controls:SettingsView VerticalAlignment="Stretch" />
+                        </ScrollViewer>
+                    </Border>
+                </TabItem>
+            </TabControl>
+
+            <Border Grid.Row="2"
+                  Background="#A1855C"
+                  BorderBrush="#7D694E"
+                  BorderThickness="0,1,0,0">
+                <TextBlock Text="And here I would place a progress bar integrated with a button. IF I HAD ONE."
+                           Foreground="#3E3529"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center" />
+            </Border>
+        </Grid>
+    </Border>
+</glitonea:WindowEx>

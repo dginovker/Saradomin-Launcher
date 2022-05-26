@@ -1,0 +1,34 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style Selector="HeaderedContentControl.GroupBox">
+        <Setter Property="Margin" Value="2,2,0,0" />
+        <Setter Property="BorderBrush" Value="#7D694E" />
+
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Grid.Row="1"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        BorderThickness="1">
+                    <Grid RowDefinitions="Auto,*">
+                        <Border BorderBrush="#7D694E"
+                                BorderThickness="0,0,0,1"
+                                Padding="0,0,0,2"
+                                Margin="4">
+                            <TextBlock FontWeight="500"
+                                       FontSize="13"
+                                       Foreground="#3E3529"
+                                       UseLayoutRounding="False"
+                                       Margin="2,0,0,0"
+                                       Text="{TemplateBinding Header}" />
+                        </Border>
+                        
+                        <ContentPresenter Grid.Row="1"
+                                          Margin="4,0"
+                                          Content="{TemplateBinding Content}" />
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

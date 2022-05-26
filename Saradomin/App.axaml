@@ -1,0 +1,70 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Saradomin.Views.Controls"
+             x:Class="Saradomin.App">
+    <Application.Styles>
+        <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseDark.xaml" />
+        <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml" />
+        
+        <StyleInclude Source="avares://Saradomin/Resources/Styles/TopBarNavigation.axaml" />
+        <StyleInclude Source="avares://Saradomin/Resources/Styles/CloseButton.axaml" />
+        <StyleInclude Source="avares://Saradomin/Resources/Styles/OutsideNavigatorButton.axaml" />
+        <StyleInclude Source="avares://Saradomin/Resources/Styles/GroupBox.axaml" />
+        <StyleInclude Source="avares://Saradomin/Resources/Styles/CheckBox.axaml" />
+        <StyleInclude Source="avares://Saradomin/Resources/Styles/TextBox.axaml" />
+        
+        <Style Selector="TextBlock.MenuPreviewEntry">
+            <Setter Property="Height" Value="18" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontFamily" Value="avares://Saradomin/Resources/Fonts/runescape_uf.ttf#RuneScape UF" />
+        </Style>
+        
+        <Style Selector="ScrollBar:vertical">
+            <Setter Property="Width" Value="10" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="#998468"
+                            ClipToBounds="True"
+                            CornerRadius="0,6,0,0">
+                        <Grid RowDefinitions="Auto,*,Auto"
+                              Background="#4B4535">
+                            <Track Grid.Row="1"
+                                   Grid.Column="1"
+                                   Minimum="{TemplateBinding Minimum}"
+                                   Maximum="{TemplateBinding Maximum}"
+                                   Value="{TemplateBinding Value, Mode=TwoWay}"
+                                   ViewportSize="{TemplateBinding ViewportSize}"
+                                   Orientation="{TemplateBinding Orientation}"
+                                   IsDirectionReversed="True">
+                                <Thumb Name="thumb" 
+                                       Width="4"
+                                       Margin="0,10,0,10" />
+                            </Track>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        
+        <Style Selector="Thumb#thumb">
+            <Setter Property="Background" Value="#6F5D45" />
+        </Style>
+        
+        <Style Selector="Thumb#thumb:pointerover">
+            <Setter Property="Background" Value="White" />
+        </Style>
+        
+        <Style Selector="Thumb#thumb:pressed">
+            <Setter Property="Background" Value="#F2C954" />
+        </Style>
+    </Application.Styles>
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <Image x:Key="MainApplicationIcon"
+                   Source="avares://Saradomin/Resources/Icons/09logo.png" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

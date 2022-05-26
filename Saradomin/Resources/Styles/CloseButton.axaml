@@ -1,0 +1,29 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style Selector="Button.CloseButton">
+        <Setter Property="Foreground" Value="#6F5D45" />
+        <Setter Property="Background" Value="#3E3529" />
+
+        <Setter Property="Template">
+            <ControlTemplate TargetType="Button">
+                <Border CornerRadius="5"
+                        Background="{TemplateBinding Background}">
+                    <Path Name="PART_CloseVisual"
+                          Width="24"
+                          Height="24"
+                          Fill="{TemplateBinding Foreground}"
+                          Data="M19,3H16.3H7.7H5A2,2 0 0,0 3,5V7.7V16.4V19A2,2 0 0,0 5,21H7.7H16.4H19A2,2 0 0,0 21,19V16.3V7.7V5A2,2 0 0,0 19,3M15.6,17L12,13.4L8.4,17L7,15.6L10.6,12L7,8.4L8.4,7L12,10.6L15.6,7L17,8.4L13.4,12L17,15.6L15.6,17Z" />
+
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button.CloseButton:pointerover">
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+
+    <Style Selector="Button.CloseButton:pressed">
+        <Setter Property="Foreground" Value="#F2C954" />
+    </Style>
+</Styles>

@@ -1,0 +1,39 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">   
+    <Style Selector="TabControl.PageSelector">
+        <Setter Property="Background" Value="#F0F0F0"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+    </Style>
+    <Style Selector="TabControl.PageSelector WrapPanel">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Margin" Value="4,0,0,0" />
+    </Style>
+
+    <Style Selector="TabControl.PageSelector > TabItem">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Background" Value="#7D694E"/>
+        <Setter Property="Foreground" Value="#F0F0F0"/>
+        <Setter Property="Margin" Value="0 0 0 0"/>
+        <Setter Property="Padding" Value="6 0"/>
+    </Style>
+    
+    <Style Selector="TabControl.PageSelector > TabItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="#6F5D45"/>
+    </Style>
+    <Style Selector="TabControl.PageSelector > TabItem:focus /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="#3E3529"/>
+    </Style>
+
+    <Style Selector="TabControl.PageSelector > TabItem:selected">
+        <Setter Property="Foreground" Value="#F2C954"/>
+    </Style>
+    
+    <Style Selector="TabControl.PageSelector > TabItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="#3E3529"/>
+    </Style>
+</Styles>

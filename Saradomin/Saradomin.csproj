@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <None Remove=".gitignore" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="0.10.14" />
+        <PackageReference Include="Avalonia.Desktop" Version="0.10.14" />
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.14" />
+        <PackageReference Include="Avalonia.HtmlRenderer" Version="0.10.0" />
+        <PackageReference Include="AvaloniaColorPicker" Version="1.3.2" />
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.42" />
+        <PackageReference Include="PropertyChanged.Fody" Version="4.0.0" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\Glitonea\Glitonea.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <None Remove="Resources\Icons\09logo.png" />
+      <AvaloniaResource Include="Resources\Icons\09logo.png" />
+      <None Remove="Resources\Icons\settings.png" />
+      <AvaloniaResource Include="Resources\Icons\settings.png" />
+      <None Remove="Resources\Fonts\runescape_uf.ttf" />
+      <AvaloniaResource Include="Resources\Fonts\runescape_uf.ttf" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Compile Update="Views\Windows\MainWindow.axaml.cs">
+        <DependentUpon>MainWindow.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Controls\SettingsView.axaml.cs">
+        <DependentUpon>MainWindow.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Controls\HeaderedTextBox.axaml.cs">
+        <DependentUpon>HeaderedTextBox.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Controls\MenuPreview.axaml.cs">
+        <DependentUpon>MenuPreview.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
+</Project>
