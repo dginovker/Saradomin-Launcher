@@ -1,0 +1,90 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Saradomin.View.Controls"
+             x:Class="Saradomin.View.Controls.ColorSpinner">
+    
+    <Grid ColumnDefinitions="Auto,Auto,Auto,Auto"
+          RowDefinitions="Auto,Auto,Auto">
+        <TextBlock Grid.Row="0"
+                   Grid.Column="0"
+                   HorizontalAlignment="Right"
+                   Margin="0,0,2,0"
+                   Text="A"
+                   Foreground="#3E3529" 
+                   IsVisible="{Binding $parent[controls:ColorSpinner].ShowAlphaSpinner}"/>
+        
+        <NumericUpDown Grid.Row="1"
+                       Grid.Column="0"
+                       Classes="NormalNumericUpDown"
+                       Margin="0,0,2,0"
+                       ParsingNumberStyle="Integer"
+                       AllowSpin="True"
+                       ShowButtonSpinner="True" 
+                       Minimum="0"
+                       Maximum="255"
+                       Value="{Binding $parent[controls:ColorSpinner].TargetColor.A, Mode=TwoWay}"
+                       IsVisible="{Binding $parent[controls:ColorSpinner].ShowAlphaSpinner}" />
+        
+        <TextBlock Grid.Row="0"
+                   Grid.Column="1"
+                   Margin="0,0,2,0"
+                   Text="R"
+                   HorizontalAlignment="Right"
+                   Foreground="#3E3529" />
+        
+        <NumericUpDown Grid.Row="1"
+                       Grid.Column="1"
+                       Classes="NormalNumericUpDown"
+                       Margin="0,0,2,0"
+                       ParsingNumberStyle="Integer"
+                       AllowSpin="True"
+                       ShowButtonSpinner="True" 
+                       Minimum="0"
+                       Maximum="255"
+                       Value="{Binding $parent[controls:ColorSpinner].TargetColor.R, Mode=TwoWay}" />
+        
+        <TextBlock Grid.Row="0"
+                   Grid.Column="2"
+                   Margin="0,0,2,0"
+                   Text="G"
+                   HorizontalAlignment="Right"
+                   Foreground="#3E3529" />
+        
+        <NumericUpDown Grid.Row="1"
+                       Grid.Column="2"
+                       Classes="NormalNumericUpDown"
+                       Margin="0,0,2,0"
+                       ParsingNumberStyle="Integer"
+                       AllowSpin="True"
+                       ShowButtonSpinner="True" 
+                       Minimum="0"
+                       Maximum="255"
+                       Value="{Binding $parent[controls:ColorSpinner].TargetColor.G, Mode=TwoWay}" />
+        
+        <TextBlock Grid.Row="0"
+                   Grid.Column="3"
+                   Margin="0,0,2,0"
+                   Text="B"
+                   HorizontalAlignment="Right"
+                   Foreground="#3E3529" />
+        
+        <NumericUpDown Grid.Row="1"
+                       Grid.Column="3"
+                       Classes="NormalNumericUpDown"
+                       Margin="0,0,2,0"
+                       ParsingNumberStyle="Integer"
+                       AllowSpin="True"
+                       ShowButtonSpinner="True" 
+                       Minimum="0"
+                       Maximum="255"
+                       Value="{Binding $parent[controls:ColorSpinner].TargetColor.B, Mode=TwoWay}" />
+        
+        <TextBlock Grid.Row="2"
+                   Grid.ColumnSpan="4"
+                   HorizontalAlignment="Right"
+                   Margin="0,-1,2,0"
+                   Text="{Binding $parent[controls:ColorSpinner].Header}" 
+                   Foreground="#3E3529" />
+
+    </Grid>
+</UserControl>

@@ -3,7 +3,7 @@
                    xmlns:glitonea="clr-namespace:Glitonea;assembly=Glitonea"
                    xmlns:mvvm="clr-namespace:Glitonea.Mvvm;assembly=Glitonea"
                    xmlns:vm="clr-namespace:Saradomin.ViewModel.Windows"
-                   xmlns:controls="clr-namespace:Saradomin.Views.Controls"
+                   xmlns:controls="clr-namespace:Saradomin.View.Controls"
                    Width="800"
                    Height="500"
                    SystemDecorations="None"
@@ -12,6 +12,7 @@
                    DataContext="{mvvm:DataContextSource vm:MainWindowViewModel}"
                    WindowStartupLocation="CenterScreen"
                    Icon="{DynamicResource MainApplicationIcon}"
+                   CanResize="False"
                    Name="MainWindow">
     <Border BorderThickness="2"
             BorderBrush="#3E3529">
@@ -93,7 +94,8 @@
                                        AutoSizeHeightOnly="True"
                                        Margin="4,0,4,4"
                                        Width="750"
-                                       VerticalAlignment="Stretch" />
+                                       VerticalAlignment="Stretch" 
+                                       IsSelectionEnabled="False" />
                         </ScrollViewer>
                     </Border>
                 </TabItem>
@@ -119,10 +121,15 @@
                   Background="#A1855C"
                   BorderBrush="#7D694E"
                   BorderThickness="0,1,0,0">
-                <TextBlock Text="And here I would place a progress bar integrated with a button. IF I HAD ONE."
-                           Foreground="#3E3529"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center" />
+                <Button Classes="OutsideNavigator"
+                        Width="NaN"
+                        Height="NaN"
+                        Margin="0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Command="{Binding ExecuteLaunchSequence}"
+                        Content="Play 2009scape!">
+                </Button>
             </Border>
         </Grid>
     </Border>

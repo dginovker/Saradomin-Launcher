@@ -2,7 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using PropertyChanged;
 
-namespace Saradomin.Views.Controls
+namespace Saradomin.View.Controls
 {
     [DoNotNotify]
     public class SettingsView : UserControl

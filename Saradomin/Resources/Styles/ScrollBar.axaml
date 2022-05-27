@@ -1,0 +1,41 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style Selector="ScrollBar:vertical">
+        <Setter Property="Width" Value="10" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="#998468"
+                        ClipToBounds="True"
+                        CornerRadius="0,6,0,0">
+                    <Grid RowDefinitions="Auto,*,Auto"
+                          Background="#4B4535">
+                        <Track Grid.Row="1"
+                               Grid.Column="1"
+                               Minimum="{TemplateBinding Minimum}"
+                               Maximum="{TemplateBinding Maximum}"
+                               Value="{TemplateBinding Value, Mode=TwoWay}"
+                               ViewportSize="{TemplateBinding ViewportSize}"
+                               Orientation="{TemplateBinding Orientation}"
+                               IsDirectionReversed="True">
+                            <Thumb Name="thumb"
+                                   Width="4"
+                                   Margin="0,10,0,10" />
+                        </Track>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="Thumb#thumb">
+        <Setter Property="Background" Value="#6F5D45" />
+    </Style>
+
+    <Style Selector="Thumb#thumb:pointerover">
+        <Setter Property="Background" Value="White" />
+    </Style>
+
+    <Style Selector="Thumb#thumb:pressed">
+        <Setter Property="Background" Value="#F2C954" />
+    </Style>
+</Styles>

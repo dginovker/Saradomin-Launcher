@@ -1,0 +1,88 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style Selector="NumericUpDown.NormalNumericUpDown">
+        <Setter Property="Width" Value="53" />
+        <Setter Property="BorderBrush" Value="#3E3529" />
+        <Setter Property="Background" Value="#6F5D45" />
+        <Setter Property="CornerRadius" Value="2" />
+        <Setter Property="Foreground" Value="#F2C954" />
+        <Setter Property="Padding" Value="1" />
+        <Setter Property="ClipValueToMinMax" Value="True" />
+    </Style>
+
+    <!-- https://github.com/AvaloniaUI/Avalonia/issues/2098
+         https://github.com/AvaloniaUI/Avalonia/issues/1635 -->
+    <Style Selector="NumericUpDown.NormalNumericUpDown:pointerover /template/ ButtonSpinner#PART_Spinner /template/ Border#border">
+        <Setter Property="BorderBrush" Value="#F2C954" />
+    </Style>
+    
+    <Style Selector="NumericUpDown.NormalNumericUpDown:focus-within /template/ ButtonSpinner#PART_Spinner /template/ Border#border">
+        <Setter Property="BorderBrush" Value="#F2C954" />
+    </Style>
+    
+    <Style Selector="NumericUpDown.NormalNumericUpDown /template/ ButtonSpinner#PART_Spinner /template/ RepeatButton">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="#6F5D45" />
+    </Style>
+    
+    <Style Selector="NumericUpDown.NormalNumericUpDown /template/ ButtonSpinner#PART_Spinner /template/ RepeatButton#PART_IncreaseButton:pointerover">
+        <Setter Property="Content">
+            <Template>
+                <Path Fill="#F2C954"
+                      Width="8"
+                      Height="4"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Data="M0,5 L4.5,.5 9,5 6,5 4.5,3.5 3,5 z"/>
+            </Template>
+        </Setter>
+    </Style>
+    
+    <Style Selector="NumericUpDown.NormalNumericUpDown /template/ ButtonSpinner#PART_Spinner /template/ RepeatButton#PART_DecreaseButton:pointerover">
+        <Setter Property="Content">
+            <Template>
+                <Path Fill="#F2C954"
+                      Width="8"
+                      Height="4"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Data="M0,0 L3,0 4.5,1.5 6,0 9,0 4.5,4.5 z"/>
+            </Template>
+        </Setter>
+    </Style>
+
+    <Style Selector="NumericUpDown.NormalNumericUpDown /template/ ButtonSpinner#PART_Spinner /template/ RepeatButton#PART_IncreaseButton:pressed">
+        <Setter Property="Content">
+            <Template>
+                <Path Fill="#B28914"
+                      Width="8"
+                      Height="4"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Data="M0,5 L4.5,.5 9,5 6,5 4.5,3.5 3,5 z"/>
+            </Template>
+        </Setter>
+    </Style>
+    
+    <Style Selector="NumericUpDown.NormalNumericUpDown /template/ ButtonSpinner#PART_Spinner /template/ RepeatButton#PART_DecreaseButton:pressed">
+        <Setter Property="Content">
+            <Template>
+                <Path Fill="#B28914"
+                      Width="8"
+                      Height="4"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Data="M0,0 L3,0 4.5,1.5 6,0 9,0 4.5,4.5 z"/>
+            </Template>
+        </Setter>
+    </Style>
+    
+    <Style Selector="NumericUpDown.NormalNumericUpDown /template/ TextBox#PART_TextBox">
+        <Setter Property="SelectionBrush" Value="#4F463A" />
+        <Setter Property="CaretBrush" Value="#F2C954" />
+    </Style>
+</Styles>

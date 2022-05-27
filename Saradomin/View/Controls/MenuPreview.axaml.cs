@@ -3,8 +3,9 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using PropertyChanged;
+using Saradomin.Messaging;
 
-namespace Saradomin.Views.Controls
+namespace Saradomin.View.Controls
 {
     [DoNotNotify]
     public class MenuPreview : UserControl
@@ -30,13 +31,13 @@ namespace Saradomin.Views.Controls
         );
 
         public static readonly StyledProperty<SolidColorBrush> BorderColorProperty = new(
-            nameof(TitleFontColor),
+            nameof(BorderColor),
             typeof(MenuPreview),
             new(SolidColorBrush.Parse("#FFFFFF"))
         );
 
-        public static readonly StyledProperty<bool> UseRuneScape3StyleBorderProperty = new(
-            nameof(UseRuneScape3StyleBorder),
+        public static readonly StyledProperty<bool> UseRs3BorderProperty = new(
+            nameof(UseRs3Border),
             typeof(MenuPreview),
             new(false)
         );
@@ -77,10 +78,10 @@ namespace Saradomin.Views.Controls
             set => SetValue(BorderColorProperty, value);
         }
 
-        public bool UseRuneScape3StyleBorder
+        public bool UseRs3Border
         {
-            get => GetValue(UseRuneScape3StyleBorderProperty);
-            set => SetValue(UseRuneScape3StyleBorderProperty, value);
+            get => GetValue(UseRs3BorderProperty);
+            set => SetValue(UseRs3BorderProperty, value);
         }
 
         private Thickness OldStyleBorderThickness
@@ -100,32 +101,28 @@ namespace Saradomin.Views.Controls
             InitializeComponent();
         }
 
+        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        {
+            base.OnPropertyChanged(change);
+            
+            if (change.Property == UseRs3BorderProperty)
+            {
+                if (UseRs3Border)
+                {
+                    OldStyleBorderThickness = new(0);
+                    RuneScape3StyleBorderThickness = new(1);
+                }
+                else
+                {
+                    OldStyleBorderThickness = new(1);
+                    RuneScape3StyleBorderThickness = new(0);
+                }
+            }
+        }
+
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
-            PropertyChanged += OnPropertyChanged;
-        }
-
-        private void OnPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
-        {
-            switch (e.Property.Name)
-            {
-                case nameof(UseRuneScape3StyleBorder):
-                {
-                    if (UseRuneScape3StyleBorder)
-                    {
-                        OldStyleBorderThickness = new(0);
-                        RuneScape3StyleBorderThickness = new(1);
-                    }
-                    else
-                    {
-                        OldStyleBorderThickness = new(1);
-                        RuneScape3StyleBorderThickness = new(0);
-                    }
-                    
-                    break;
-                }
-            }
         }
     }
 }

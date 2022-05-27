@@ -3,16 +3,21 @@ using System.Net.Http;
 using Glitonea.Mvvm;
 using HtmlAgilityPack;
 using Saradomin.Messaging;
+using Saradomin.Services;
 using Saradomin.Utilities;
 
 namespace Saradomin.ViewModel.Windows
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        private readonly IClientLaunchService _launchService;
+        
         public string Title { get; set; } = "2009scape launcher";
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(IClientLaunchService launchService)
         {
+            _launchService = launchService;
+            
             App.Messenger.Register<MainViewLoadedMessage>(this, MainViewLoaded);
         }
 
@@ -47,6 +52,11 @@ namespace Saradomin.ViewModel.Windows
             };
 
             CrossPlatform.LaunchURL(url);
+        }
+
+        public void ExecuteLaunchSequence()
+        {
+            _launchService.LaunchClient();
         }
     }
 }

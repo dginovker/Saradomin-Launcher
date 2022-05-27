@@ -1,0 +1,137 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:glitonea="clr-namespace:Glitonea;assembly=Glitonea"
+             xmlns:mvvm="clr-namespace:Glitonea.Mvvm;assembly=Glitonea"
+             xmlns:vm="clr-namespace:Saradomin.ViewModel.Controls"
+             xmlns:controls="clr-namespace:Saradomin.View.Controls"
+             x:Class="Saradomin.View.Controls.SettingsView"
+             DataContext="{mvvm:DataContextSource vm:SettingsViewModel}">
+    <Grid ColumnDefinitions="*,*"
+          RowDefinitions="Auto,Auto,Auto,Auto"
+          Margin="0,0,4,0">
+        <HeaderedContentControl Grid.Row="0"
+                                Grid.Column="0"
+                                Classes="GroupBox"
+                                CornerRadius="6,0,0,0"
+                                Header="debugging settings">
+            <StackPanel Orientation="Vertical">
+                <CheckBox Classes="SettingsCheckBox"
+                          Content="Show item IDs"
+                          IsChecked="{Binding Client.Debugging.ItemDebuggingEnabled, Mode=TwoWay}" />
+
+                <CheckBox Classes="SettingsCheckBox"
+                          Content="Show object IDs"
+                          IsChecked="{Binding Client.Debugging.ObjectDebuggingEnabled, Mode=TwoWay}" />
+
+                <CheckBox Classes="SettingsCheckBox"
+                          Content="Show NPC IDs"
+                          IsChecked="{Binding Client.Debugging.NpcDebuggingEnabled, Mode=TwoWay}" />
+            </StackPanel>
+        </HeaderedContentControl>
+
+        <HeaderedContentControl Grid.Row="1"
+                                Grid.Column="0"
+                                Classes="GroupBox"
+                                Header="right-click menu settings">
+            <Grid ColumnDefinitions="*,*"
+                  RowDefinitions="Auto,Auto,Auto,Auto"
+                  Margin="2,4,0,4">
+
+                <StackPanel Grid.Column="0"
+                            Orientation="Vertical"
+                            Margin="0,0,4,0">
+                    <CheckBox Classes="SettingsCheckBox"
+                              Content="Use RS3-style menu border"
+                              IsChecked="{Binding Client.Customization.RightClickMenu.Styles.UseRuneScape3Border,
+                                          Mode=TwoWay}" />
+
+                    <controls:ColorSpinner Header="Background color" 
+                                           HorizontalAlignment="Right"
+                                           Margin="0,0,0,2"
+                                           TargetColor="{Binding Client.Customization.RightClickMenu.Background.BackgroundColor,
+                                                         Mode=TwoWay}" />
+
+                    <controls:ColorSpinner Header="Title bar color" 
+                                           HorizontalAlignment="Right"
+                                           Margin="0,0,0,2"
+                                           TargetColor="{Binding Client.Customization.RightClickMenu.TitleBar.BackgroundColor,
+                                                         Mode=TwoWay}" />
+
+                    <controls:ColorSpinner Header="Title text color"
+                                           HorizontalAlignment="Right"
+                                           ShowAlphaSpinner="False"
+                                           Margin="0,0,0,2"
+                                           TargetColor="{Binding Client.Customization.RightClickMenu.TitleBar.ForegroundColor,
+                                                         Mode=TwoWay}" />
+
+                    <controls:ColorSpinner Header="Border color"
+                                           HorizontalAlignment="Right"
+                                           Margin="0,0,0,2"
+                                           TargetColor="{Binding Client.Customization.RightClickMenu.Border.BackgroundColor,
+                                                         Mode=TwoWay}" />
+                </StackPanel>
+
+                <Image Source="avares://Saradomin/Resources/Images/previewbg.png"
+                       Grid.Column="1"
+                       Grid.RowSpan="3"
+                       Stretch="Fill"
+                       VerticalAlignment="Center" 
+                       Width="150" 
+                       Height="160"/>
+                
+                <controls:MenuPreview Name="MenuPreview"
+                                      Grid.Column="1"
+                                      Grid.RowSpan="3"
+                                      VerticalAlignment="Center"
+                                      Width="130"
+                                      UseRs3Border="{Binding Client.Customization.RightClickMenu.Styles.UseRuneScape3Border}"
+                                      BackgroundColor="{Binding Client.Customization.RightClickMenu.Background.BackgroundColor.Brush}"
+                                      TitleBarColor="{Binding Client.Customization.RightClickMenu.TitleBar.BackgroundColor.Brush}"
+                                      TitleFontColor="{Binding Client.Customization.RightClickMenu.TitleBar.ForegroundColor.Brush}"
+                                      BorderColor="{Binding Client.Customization.RightClickMenu.Border.BackgroundColor.Brush}" />
+            </Grid>
+        </HeaderedContentControl>
+
+        <HeaderedContentControl Grid.Row="2"
+                                Grid.Column="0"
+                                Classes="GroupBox"
+                                Header="interface settings">
+            <StackPanel Orientation="Vertical">
+                <CheckBox Classes="SettingsCheckBox"
+                          Content="Enable Slayer progress tracking" />
+
+                <CheckBox Classes="SettingsCheckBox"
+                          Content="Enable left-click attack" />
+
+                <CheckBox Classes="SettingsCheckBox"
+                          Content="XP drops enabled" />
+            </StackPanel>
+        </HeaderedContentControl>
+
+        <HeaderedContentControl Grid.Row="0"
+                                Grid.Column="1"
+                                Classes="GroupBox"
+                                Header="launcher settings">
+            <StackPanel Orientation="Vertical">
+                <CheckBox Classes="SettingsCheckBox"
+                          Content="Close the launcher after client starts" />
+
+                <CheckBox Classes="SettingsCheckBox"
+                          Content="Let me know about launcher updates" />
+
+                <CheckBox Classes="SettingsCheckBox"
+                          Content="Place 'X' button on the left" />
+            </StackPanel>
+        </HeaderedContentControl>
+
+        <HeaderedContentControl Grid.Row="1"
+                                Grid.Column="1"
+                                Classes="GroupBox"
+                                Header="graphics settings">
+            <StackPanel Orientation="Vertical">
+                <CheckBox Classes="SettingsCheckBox"
+                          Content="Mini-map smoothing" />
+            </StackPanel>
+        </HeaderedContentControl>
+    </Grid>
+</UserControl>

@@ -1,6 +1,6 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Style Selector="TextBox.SettingsTextBox">
+    <Style Selector="TextBox.NormalTextBox">
         <Setter Property="BorderBrush" Value="#3E3529" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="2" />
@@ -11,19 +11,19 @@
         <Setter Property="Margin" Value="0,0,0,4" />
     </Style>
     
-    <Style Selector="TextBox.SettingsTextBox /template/ Border#watermark">
+    <Style Selector="TextBox.NormalTextBox /template/ Border#watermark">
         <Setter Property="Opacity" Value="0.3" />
     </Style>
     
-    <Style Selector="TextBox.SettingsTextBox:focus /template/ Border#border">
+    <Style Selector="TextBox.NormalTextBox:focus /template/ Border#border">
         <Setter Property="BorderBrush" Value="#4F463A" />
     </Style>
     
-    <Style Selector="TextBox.SettingsTextBox:pointerover /template/ Border#border">
+    <Style Selector="TextBox.NormalTextBox:pointerover /template/ Border#border">
         <Setter Property="BorderBrush" Value="#4F463A" />
     </Style>
 
-    <Style Selector="TextBox.SettingsTextBox:focus">
+    <Style Selector="TextBox.NormalTextBox:focus">
         <Setter Property="CaretBrush" Value="#F2C954" />
         <Setter Property="Foreground" Value="#F2C954" />
     </Style>
