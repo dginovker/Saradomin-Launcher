@@ -7,131 +7,184 @@
              x:Class="Saradomin.View.Controls.SettingsView"
              DataContext="{mvvm:DataContextSource vm:SettingsViewModel}">
     <Grid ColumnDefinitions="*,*"
-          RowDefinitions="Auto,Auto,Auto,Auto"
           Margin="0,0,4,0">
-        <HeaderedContentControl Grid.Row="0"
-                                Grid.Column="0"
-                                Classes="GroupBox"
-                                CornerRadius="6,0,0,0"
-                                Header="debugging settings">
-            <StackPanel Orientation="Vertical">
-                <CheckBox Classes="SettingsCheckBox"
-                          Content="Show item IDs"
-                          IsChecked="{Binding Client.Debugging.ItemDebuggingEnabled, Mode=TwoWay}" />
 
-                <CheckBox Classes="SettingsCheckBox"
-                          Content="Show object IDs"
-                          IsChecked="{Binding Client.Debugging.ObjectDebuggingEnabled, Mode=TwoWay}" />
-
-                <CheckBox Classes="SettingsCheckBox"
-                          Content="Show NPC IDs"
-                          IsChecked="{Binding Client.Debugging.NpcDebuggingEnabled, Mode=TwoWay}" />
-            </StackPanel>
-        </HeaderedContentControl>
-
-        <HeaderedContentControl Grid.Row="1"
-                                Grid.Column="0"
-                                Classes="GroupBox"
-                                Header="right-click menu settings">
-            <Grid ColumnDefinitions="*,*"
-                  RowDefinitions="Auto,Auto,Auto,Auto"
-                  Margin="2,4,0,4">
-
-                <StackPanel Grid.Column="0"
-                            Orientation="Vertical"
-                            Margin="0,0,4,0">
+        <StackPanel Grid.Column="0">
+            <HeaderedContentControl Classes="GroupBox"
+                                    CornerRadius="6,0,0,0"
+                                    Header="debugging settings">
+                <StackPanel Orientation="Vertical">
                     <CheckBox Classes="SettingsCheckBox"
-                              Content="Use RS3-style menu border"
-                              IsChecked="{Binding Client.Customization.RightClickMenu.Styles.UseRuneScape3Border,
+                              Content="Show item IDs"
+                              IsChecked="{Binding Client.Debugging.ItemDebuggingEnabled, Mode=TwoWay}" />
+
+                    <CheckBox Classes="SettingsCheckBox"
+                              Content="Show object IDs"
+                              IsChecked="{Binding Client.Debugging.ObjectDebuggingEnabled, Mode=TwoWay}" />
+
+                    <CheckBox Classes="SettingsCheckBox"
+                              Content="Show NPC IDs"
+                              IsChecked="{Binding Client.Debugging.NpcDebuggingEnabled, Mode=TwoWay}" />
+                </StackPanel>
+            </HeaderedContentControl>
+
+            <HeaderedContentControl Classes="GroupBox"
+                                    Header="right-click menu settings">
+                <Grid ColumnDefinitions="*,*"
+                      RowDefinitions="Auto,Auto,Auto,Auto"
+                      Margin="2,4,0,4">
+
+                    <StackPanel Grid.Column="0"
+                                Orientation="Vertical"
+                                Margin="0,0,4,0">
+                        <CheckBox Classes="SettingsCheckBox"
+                                  Content="Use RS3-style menu border"
+                                  IsChecked="{Binding Client.Customization.RightClickMenu.Styles.UseRuneScape3Border,
                                           Mode=TwoWay}" />
 
-                    <controls:ColorSpinner Header="Background color" 
-                                           HorizontalAlignment="Right"
-                                           Margin="0,0,0,2"
-                                           TargetColor="{Binding Client.Customization.RightClickMenu.Background.BackgroundColor,
+                        <controls:ColorSpinner Header="Background color"
+                                               HorizontalAlignment="Right"
+                                               Margin="0,0,0,2"
+                                               TargetColor="{Binding Client.Customization.RightClickMenu.Background.BackgroundColor,
                                                          Mode=TwoWay}" />
 
-                    <controls:ColorSpinner Header="Title bar color" 
-                                           HorizontalAlignment="Right"
-                                           Margin="0,0,0,2"
-                                           TargetColor="{Binding Client.Customization.RightClickMenu.TitleBar.BackgroundColor,
+                        <controls:ColorSpinner Header="Title bar color"
+                                               HorizontalAlignment="Right"
+                                               Margin="0,0,0,2"
+                                               TargetColor="{Binding Client.Customization.RightClickMenu.TitleBar.BackgroundColor,
                                                          Mode=TwoWay}" />
 
-                    <controls:ColorSpinner Header="Title text color"
-                                           HorizontalAlignment="Right"
-                                           ShowAlphaSpinner="False"
-                                           Margin="0,0,0,2"
-                                           TargetColor="{Binding Client.Customization.RightClickMenu.TitleBar.ForegroundColor,
+                        <controls:ColorSpinner Header="Title text color"
+                                               HorizontalAlignment="Right"
+                                               ShowAlphaSpinner="False"
+                                               Margin="0,0,0,2"
+                                               TargetColor="{Binding Client.Customization.RightClickMenu.TitleBar.ForegroundColor,
                                                          Mode=TwoWay}" />
 
-                    <controls:ColorSpinner Header="Border color"
-                                           HorizontalAlignment="Right"
-                                           Margin="0,0,0,2"
-                                           TargetColor="{Binding Client.Customization.RightClickMenu.Border.BackgroundColor,
+                        <controls:ColorSpinner Header="Border color"
+                                               HorizontalAlignment="Right"
+                                               Margin="0,0,0,2"
+                                               TargetColor="{Binding Client.Customization.RightClickMenu.Border.BackgroundColor,
                                                          Mode=TwoWay}" />
+                    </StackPanel>
+
+                    <Border Grid.Column="1"
+                            Grid.RowSpan="4"
+                            Margin="0,20,0,0"
+                            VerticalAlignment="Center"
+                            BorderThickness="1"
+                            BorderBrush="#3E3529">
+                        <Image Source="avares://Saradomin/Resources/Images/previewbg.png"
+                               Stretch="Fill"
+                               Width="150"
+                               Height="160"
+                               Margin="1" />
+                    </Border>
+
+
+                    <controls:MenuPreview Name="MenuPreview"
+                                          Grid.Column="1"
+                                          Grid.RowSpan="4"
+                                          Margin="0,20,0,0"
+                                          VerticalAlignment="Center"
+                                          Width="130"
+                                          UseRs3Border="{Binding Client.Customization.RightClickMenu.Styles.UseRuneScape3Border}"
+                                          BackgroundColor="{Binding Client.Customization.RightClickMenu.Background.BackgroundColor.Brush}"
+                                          TitleBarColor="{Binding Client.Customization.RightClickMenu.TitleBar.BackgroundColor.Brush}"
+                                          TitleFontColor="{Binding Client.Customization.RightClickMenu.TitleBar.ForegroundColor.Brush}"
+                                          BorderColor="{Binding Client.Customization.RightClickMenu.Border.BackgroundColor.Brush}" />
+                </Grid>
+            </HeaderedContentControl>
+        </StackPanel>
+
+
+        <StackPanel Grid.Column="1">
+            <HeaderedContentControl Classes="GroupBox"
+                                    Header="launcher settings">
+                <StackPanel Orientation="Vertical">
+                    <CheckBox Classes="SettingsCheckBox"
+                              Content="Close the launcher after client starts" />
+
+                    <CheckBox Classes="SettingsCheckBox"
+                              Content="Let me know about client updates" />
+
+                    <CheckBox Classes="SettingsCheckBox"
+                              Content="Place 'X' button on the left" />
                 </StackPanel>
+            </HeaderedContentControl>
 
-                <Image Source="avares://Saradomin/Resources/Images/previewbg.png"
-                       Grid.Column="1"
-                       Grid.RowSpan="3"
-                       Stretch="Fill"
-                       VerticalAlignment="Center" 
-                       Width="150" 
-                       Height="160"/>
-                
-                <controls:MenuPreview Name="MenuPreview"
-                                      Grid.Column="1"
-                                      Grid.RowSpan="3"
-                                      VerticalAlignment="Center"
-                                      Width="130"
-                                      UseRs3Border="{Binding Client.Customization.RightClickMenu.Styles.UseRuneScape3Border}"
-                                      BackgroundColor="{Binding Client.Customization.RightClickMenu.Background.BackgroundColor.Brush}"
-                                      TitleBarColor="{Binding Client.Customization.RightClickMenu.TitleBar.BackgroundColor.Brush}"
-                                      TitleFontColor="{Binding Client.Customization.RightClickMenu.TitleBar.ForegroundColor.Brush}"
-                                      BorderColor="{Binding Client.Customization.RightClickMenu.Border.BackgroundColor.Brush}" />
-            </Grid>
-        </HeaderedContentControl>
+            <HeaderedContentControl Classes="GroupBox"
+                                    Header="graphics settings">
+                <StackPanel Orientation="Vertical">
+                    <CheckBox Classes="SettingsCheckBox"
+                              Content="Mini-map smoothing" />
+                </StackPanel>
+            </HeaderedContentControl>
 
-        <HeaderedContentControl Grid.Row="2"
-                                Grid.Column="0"
-                                Classes="GroupBox"
-                                Header="interface settings">
-            <StackPanel Orientation="Vertical">
-                <CheckBox Classes="SettingsCheckBox"
-                          Content="Enable Slayer progress tracking" />
+            <HeaderedContentControl Classes="GroupBox"
+                                    Header="interface settings">
+                <StackPanel Orientation="Vertical">
+                    <Grid RowDefinitions="Auto,Auto"
+                          Margin="2,2,2,4">
+                        <TextBlock Grid.Row="0"
+                                   Foreground="#3E3529"
+                                   Text="Main menu song"
+                                   Margin="0,0,0,2" />
 
-                <CheckBox Classes="SettingsCheckBox"
-                          Content="Enable left-click attack" />
+                        <!-- Workaround applies here. Check SettingsViewModel for details. -->
+                        <ComboBox Grid.Row="1"
+                                  Items="{Binding MusicTitles}"
+                                  SelectedItem="{Binding LoginMusicTheme, Mode=TwoWay}"
+                                  VirtualizationMode="Simple" />
+                    </Grid>
 
-                <CheckBox Classes="SettingsCheckBox"
-                          Content="XP drops enabled" />
-            </StackPanel>
-        </HeaderedContentControl>
+                    <CheckBox Classes="SettingsCheckBox"
+                              Content="Left-click attack on entities above your combat level" />
 
-        <HeaderedContentControl Grid.Row="0"
-                                Grid.Column="1"
-                                Classes="GroupBox"
-                                Header="launcher settings">
-            <StackPanel Orientation="Vertical">
-                <CheckBox Classes="SettingsCheckBox"
-                          Content="Close the launcher after client starts" />
+                    <StackPanel>
+                        <CheckBox Classes="SettingsCheckBox"
+                                  Content="Enable Slayer tracker"
+                                  IsChecked="{Binding Client.Customization.SlayerTracker.IsEnabled}" />
 
-                <CheckBox Classes="SettingsCheckBox"
-                          Content="Let me know about launcher updates" />
+                        <Grid ColumnDefinitions="*,Auto"
+                              IsVisible="{Binding Client.Customization.SlayerTracker.IsEnabled}"
+                              Margin="0,0,2,0">
+                            <controls:ColorSpinner Grid.Column="0"
+                                                   Margin="2,0,0,0"
+                                                   Header="Background color"
+                                                   TargetColor="{Binding Client.Customization.SlayerTracker.BackgroundColor}" />
 
-                <CheckBox Classes="SettingsCheckBox"
-                          Content="Place 'X' button on the left" />
-            </StackPanel>
-        </HeaderedContentControl>
+                            <Border Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Right"
+                                    BorderThickness="1"
+                                    BorderBrush="#3E3529">
+                                <Grid>
+                                    <Image Source="avares://Saradomin/Resources/Images/previewbg.png"
+                                           Stretch="None"
+                                           Width="110"
+                                           Height="60"
+                                           Margin="1">
+                                        <Image.Clip>
+                                            <RectangleGeometry Rect="0,0,110,60" />
+                                        </Image.Clip>
+                                    </Image>
+                                    
+                                    <controls:SlayerPreview Height="40"
+                                                            Width="90"
+                                                            VerticalAlignment="Center"
+                                                            BackgroundColor="{Binding Client.Customization.SlayerTracker.BackgroundColor}" />
+                                </Grid>
+                            </Border>
 
-        <HeaderedContentControl Grid.Row="1"
-                                Grid.Column="1"
-                                Classes="GroupBox"
-                                Header="graphics settings">
-            <StackPanel Orientation="Vertical">
-                <CheckBox Classes="SettingsCheckBox"
-                          Content="Mini-map smoothing" />
-            </StackPanel>
-        </HeaderedContentControl>
+
+                        </Grid>
+                    </StackPanel>
+
+                    <CheckBox Classes="SettingsCheckBox"
+                              Content="Enable XP tracker" />
+                </StackPanel>
+            </HeaderedContentControl>
+        </StackPanel>
     </Grid>
 </UserControl>

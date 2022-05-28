@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Saradomin.View.Controls"
+             x:Class="Saradomin.View.Controls.SlayerPreview">
+    <Grid ColumnDefinitions="Auto,*"
+          Background="{Binding $parent[controls:SlayerPreview].BackgroundColor.Brush}">
+        <Image Grid.Column="0"
+               Source="avares://Saradomin/Resources/Images/club.png"
+               Width="28"
+               Height="26"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Center"
+               Margin="8" />
+        
+        <TextBlock Grid.Column="1"
+                   ZIndex="2"
+                   Margin="0,0,8,0"
+                   Text="52"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Right"
+                   Foreground="White"
+                   FontSize="16"
+                   FontFamily="avares://Saradomin/Resources/Fonts/runescape_plain.ttf#RuneScape Plain 12" />
+        
+        <TextBlock Grid.Column="1"
+                   ZIndex="1"
+                   Margin="1,1,8,0"
+                   Text="52"
+                   Foreground="Black"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Right"
+                   FontSize="16"
+                   FontFamily="avares://Saradomin/Resources/Fonts/runescape_plain.ttf#RuneScape Plain 12" />
+    </Grid>
+</UserControl>

@@ -9,7 +9,7 @@ namespace Saradomin.Model.Settings
         public byte AntiAliasingSampleCount { get; set; } = 0;
 
         [JsonPropertyName("login_theme")]
-        public string LoginMusicTheme { get; set; } = "scape main";
+        public string LoginMusicTheme { get; set; } = "Scape Main";
 
         [JsonPropertyName("december_snow")]
         public bool SnowSeasonFeaturesEnabled { get; set; } = true;

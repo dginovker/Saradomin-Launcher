@@ -34,6 +34,10 @@
       <None Remove="Resources\Images\checkerboard.png" />
       <None Remove="Resources\Images\previewbg.png" />
       <AvaloniaResource Include="Resources\Images\previewbg.png" />
+      <None Remove="Resources\Images\club.png" />
+      <AvaloniaResource Include="Resources\Images\club.png" />
+      <None Remove="Resources\Fonts\runescape_plain.ttf" />
+      <AvaloniaResource Include="Resources\Fonts\runescape_plain.ttf" />
     </ItemGroup>
     
     <ItemGroup>
@@ -49,5 +53,13 @@
         <DependentUpon>MenuPreview.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="View\Controls\SlayerPreview.axaml.cs">
+        <DependentUpon>SlayerPreview.axaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <None Remove="Resources\Lists\MusicTracks.json" />
+      <EmbeddedResource Include="Resources\Lists\MusicTracks.json" />
     </ItemGroup>
 </Project>

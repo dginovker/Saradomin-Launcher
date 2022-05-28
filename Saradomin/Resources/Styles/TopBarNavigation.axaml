@@ -11,7 +11,7 @@
     </Style>
 
     <Style Selector="TabControl.PageSelector > TabItem">
-        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontSize" Value="13"/>
         <Setter Property="FontWeight" Value="Light" />
         <Setter Property="Height" Value="20"/>
         <Setter Property="VerticalAlignment" Value="Top"/>

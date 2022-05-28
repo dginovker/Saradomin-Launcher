@@ -11,6 +11,7 @@
         <StyleInclude Source="avares://Saradomin/Resources/Styles/OutsideNavigatorButton.axaml" />
         <StyleInclude Source="avares://Saradomin/Resources/Styles/GroupBox.axaml" />
         <StyleInclude Source="avares://Saradomin/Resources/Styles/CheckBox.axaml" />
+        <StyleInclude Source="avares://Saradomin/Resources/Styles/ComboBox.axaml" />
         <StyleInclude Source="avares://Saradomin/Resources/Styles/TextBox.axaml" />
         <StyleInclude Source="avares://Saradomin/Resources/Styles/ScrollBar.axaml" />
         <StyleInclude Source="avares://Saradomin/Resources/Styles/MenuPreviewEntry.axaml" />

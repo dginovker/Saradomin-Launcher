@@ -85,7 +85,8 @@
                             BorderThickness="1,1,1,0"
                             Background="#998468"
                             ClipToBounds="True">
-                        <ScrollViewer HorizontalAlignment="Stretch"
+                        <ScrollViewer Classes="MainViewScrollViewer"
+                                      HorizontalAlignment="Stretch"
                                       VerticalScrollBarVisibility="Visible"
                                       HorizontalScrollBarVisibility="Hidden"
                                       ClipToBounds="True">
@@ -109,7 +110,8 @@
                             BorderBrush="#7D694E"
                             BorderThickness="1,1,1,0"
                             Background="#998468">
-                        <ScrollViewer VerticalScrollBarVisibility="Visible"
+                        <ScrollViewer Classes="MainViewScrollViewer"
+                                      VerticalScrollBarVisibility="Visible"
                                       HorizontalScrollBarVisibility="Hidden">
                             <controls:SettingsView VerticalAlignment="Stretch" />
                         </ScrollViewer>

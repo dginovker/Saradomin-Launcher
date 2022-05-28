@@ -6,5 +6,6 @@ namespace Saradomin.Model.Settings.Launcher
 
         public bool CloseButtonOnLeft { get; set; } = false;
         public bool CheckForClientUpdates { get; set; } = true;
+        public string UserFriendlySongName { get; set; } = "Scape Main";
     }
 }

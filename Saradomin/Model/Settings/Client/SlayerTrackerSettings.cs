@@ -1,10 +1,12 @@
+using System.ComponentModel;
 using System.Text.Json.Serialization;
-using Avalonia.Media;
 
 namespace Saradomin.Model.Settings
 {
     public class SlayerTrackerSettings : SettingsComponent
     {
+        private MenuColor _backgroundColor = null;
+        
         [JsonPropertyName("color")]
         public string ColorString { get; set; } = "#635A38";
 
@@ -15,15 +17,33 @@ namespace Saradomin.Model.Settings
         public bool IsEnabled { get; set; } = true;
 
         [JsonIgnore]
-        public SolidColorBrush ColorBrush
+        public MenuColor BackgroundColor
         {
-            get => SolidColorBrush.Parse(ColorString);
+            get
+            {
+                if (_backgroundColor == null)
+                {
+                    _backgroundColor = new MenuColor(ColorString);
+                    _backgroundColor.A = Opacity;
+
+                    _backgroundColor.PropertyChanged += RaiseBackgroundColorWrite;
+                }
+
+                return _backgroundColor;
+            }
+
             set
             {
-                var color = value.Color;
+                if (value == null)
+                    return;
 
-                ColorString = $"#{color.R:X2}{color.G:X2}{color.B:X2}";
-                Opacity = color.A;
+                if (_backgroundColor != null)
+                    _backgroundColor.PropertyChanged -= RaiseBackgroundColorWrite;
+
+                _backgroundColor = value;
+                _backgroundColor.PropertyChanged += RaiseBackgroundColorWrite;
+
+                UpdateBackgroundColorStrings(value);
             }
         }
 
@@ -31,7 +51,23 @@ namespace Saradomin.Model.Settings
         public byte Opacity
         {
             get => byte.Parse(OpacityString);
-            set => OpacityString = value.ToString();
+            set
+            {
+                OpacityString = value.ToString();
+                RaiseSettingsModified(this, new(nameof(Opacity)));
+            }
+        }
+
+        private void RaiseBackgroundColorWrite(object sender, PropertyChangedEventArgs e)
+        {
+            UpdateBackgroundColorStrings(BackgroundColor);
+            RaiseSettingsModified(this, new(nameof(BackgroundColor)));
+        }
+        
+        private void UpdateBackgroundColorStrings(MenuColor value)
+        {
+            ColorString = $"#{value.R:X2}{value.G:X2}{value.B:X2}";
+            Opacity = value.A;
         }
     }
 }
