@@ -18,15 +18,22 @@
             BorderBrush="#3E3529">
         <Grid RowDefinitions="24,*,32">
             <Grid Grid.Row="0"
+                  Margin="0,-1,0,0"
                   Background="#3E3529"
                   PointerPressed="TitleBar_MouseDown"
                   ColumnDefinitions="Auto,*,Auto">
 
+                <Button Grid.Column="0"
+                        Classes="CloseButton"
+                        Command="{Binding ExitApplication}" 
+                        IsVisible="{Binding Launcher.PlaceCloseButtonOnLeft}"/>
+                
                 <TextBlock Grid.Column="1"
-                           Grid.ColumnSpan="3"
-                           HorizontalAlignment="Center"
+                           Grid.ColumnSpan="4"
+                           HorizontalAlignment="Stretch"
                            VerticalAlignment="Center"
                            Text="{Binding #MainWindow.Title}"
+                           TextAlignment="Center"
                            FontSize="14"
                            Foreground="#F2C954"
                            FontFamily="Open Sans"
@@ -34,7 +41,8 @@
 
                 <Button Grid.Column="2"
                         Classes="CloseButton"
-                        Command="{Binding ExitApplication}" />
+                        Command="{Binding ExitApplication}"
+                        IsVisible="{Binding !Launcher.PlaceCloseButtonOnLeft}"/>
             </Grid>
 
             <Grid Grid.Row="1"
@@ -130,7 +138,7 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Command="{Binding ExecuteLaunchSequence}"
-                        Content="Play 2009scape!">
+                        Content="{Binding LaunchText}">
                 </Button>
             </Border>
         </Grid>

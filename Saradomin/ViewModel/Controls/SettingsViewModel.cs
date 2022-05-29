@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Text.Json;
+using Avalonia.Collections;
 using Glitonea.Extensions;
 using Glitonea.Mvvm;
 using Glitonea.Utilities;
@@ -53,6 +54,7 @@ namespace Saradomin.ViewModel.Controls
             _settingsService = settingsService;
             
             App.Messenger.Register<MainViewLoadedMessage>(this, OnMainViewLoaded);
+            
             InitializeMusicTitleRepository();
         }
 

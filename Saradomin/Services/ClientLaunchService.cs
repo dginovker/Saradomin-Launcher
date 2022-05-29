@@ -1,31 +1,47 @@
+using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 using Saradomin.Utilities;
 
 namespace Saradomin.Services
 {
     public class ClientLaunchService : IClientLaunchService
     {
+        private readonly ISettingsService _settingsService;
+        
         private string JavaExecutablePath { get; }
-        private string ScapeHome { get; }
 
-        public ClientLaunchService()
+        public ClientLaunchService(ISettingsService settingsService)
         {
+            _settingsService = settingsService;
+            
             JavaExecutablePath = CrossPlatform.LocateJavaExecutable();
-            ScapeHome = CrossPlatform.Locate2009scapeHome();
         }
         
-        public void LaunchClient()
+        public async Task LaunchClient()
         {
-            new Process
+            var proc = new Process
             {
                 StartInfo = new(JavaExecutablePath)
                 {
-                    Arguments = $"-jar {Path.Combine(ScapeHome)}/2009scape.jar", // todo implement profiles
-                    WorkingDirectory = ScapeHome,
+                    Arguments = $"-jar {CrossPlatform.Locate2009scapeExecutable()}", // todo implement profiles
+                    WorkingDirectory = CrossPlatform.Locate2009scapeHome(),
                     UseShellExecute = true
                 }
-            }.Start();
+            };
+            
+            proc.Start();
+
+            if (_settingsService.Launcher.ExitAfterLaunchingClient)
+            {
+                (Application.Current!.ApplicationLifetime as ClassicDesktopStyleApplicationLifetime)!.Shutdown();
+                return;
+            }
+
+            await proc.WaitForExitAsync();
         }
     }
 }

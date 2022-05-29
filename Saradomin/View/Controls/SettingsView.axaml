@@ -15,15 +15,36 @@
                                     CornerRadius="6,0,0,0"
                                     Header="graphics settings"
                                     DockPanel.Dock="Top">
-                <StackPanel Orientation="Vertical">
-                    <CheckBox Content="Mini-map smoothing" 
-                              IsChecked="{Binding Client.Customization.MiniMapSmoothingEnabled, Mode=TwoWay}"/>
-                    
-                    <CheckBox Content="Expanded render distance"
-                              IsChecked="{Binding Client.Customization.Rendering.Technical.IncreaseRenderDistance}" />
-                </StackPanel>
+                <Grid ColumnDefinitions="Auto,*">
+                    <StackPanel Grid.Column="0"
+                                Orientation="Vertical"
+                                VerticalAlignment="Center">
+                        <CheckBox Content="Mini-map smoothing"
+                                  IsChecked="{Binding Client.Customization.MiniMapSmoothingEnabled, Mode=TwoWay}" />
+
+                        <CheckBox Content="Expanded render distance"
+                                  IsChecked="{Binding Client.Customization.Rendering.Technical.IncreaseRenderDistance}" />
+                    </StackPanel>
+
+                    <Grid Grid.Column="1"
+                          Grid.ColumnSpan="2"
+                          RowDefinitions="Auto,Auto,Auto"
+                          VerticalAlignment="Center"
+                          HorizontalAlignment="Center">
+                        <TextBlock Grid.Row="0"
+                                   HorizontalAlignment="Center"
+                                   Foreground="#3E3529"
+                                   Text="Anti-aliasing quality" 
+                                   Margin="0,0,0,2"/>
+
+                        <controls:AntiAliasingSelector Grid.Row="1"
+                                                       HorizontalAlignment="Center" 
+                                                       Margin="0,0,0,4"
+                                                       AntiAliasingLevel="{Binding Client.Customization.AntiAliasingSampleCount, Mode=TwoWay}" />
+                    </Grid>
+                </Grid>
             </HeaderedContentControl>
-            
+
             <HeaderedContentControl Classes="GroupBox"
                                     Header="right-click menu settings"
                                     DockPanel.Dock="Top">
@@ -34,7 +55,8 @@
                     <StackPanel Grid.Column="0"
                                 Orientation="Vertical"
                                 Margin="0,0,4,0">
-                        <CheckBox Content="Use RS3-style menu border"
+                        <CheckBox Margin="-2,0,0,0"
+                                  Content="Use RS3-style menu border"
                                   IsChecked="{Binding Client.Customization.RightClickMenu.Styles.UseRuneScape3Border,
                                           Mode=TwoWay}" />
 
@@ -96,7 +118,7 @@
 
                 </Grid>
             </HeaderedContentControl>
-            
+
             <HeaderedContentControl Classes="GroupBox"
                                     Header="debugging settings"
                                     DockPanel.Dock="Left"
@@ -113,21 +135,21 @@
                         <CheckBox Content="Show NPC IDs"
                                   IsChecked="{Binding Client.Debugging.NpcDebuggingEnabled, Mode=TwoWay}" />
                     </StackPanel>
-                    
+
                     <StackPanel Grid.Column="1"
                                 Orientation="Vertical"
                                 Margin="8,0,0,0">
                         <CheckBox Content="Enable login screen debugging"
                                   IsChecked="{Binding Client.Debugging.HdLoginRegionDebuggingEnabled, Mode=TwoWay}" />
-                        
+
                         <CheckBox Content="Verbose?"
                                   Margin="18,0,0,0"
-                                  IsVisible="{Binding Client.Debugging.HdLoginRegionDebuggingEnabled, Mode=TwoWay}" 
-                                  IsChecked="{Binding Client.Debugging.HdLoginRegionVerboseDebuggingEnabled, Mode=TwoWay}"/>
+                                  IsVisible="{Binding Client.Debugging.HdLoginRegionDebuggingEnabled, Mode=TwoWay}"
+                                  IsChecked="{Binding Client.Debugging.HdLoginRegionVerboseDebuggingEnabled, Mode=TwoWay}" />
 
                         <CheckBox Content="Enable cache debugging"
-                                  IsChecked="{Binding Client.Debugging.CacheDebuggingEnabled, Mode=TwoWay}" 
-                                  ToolTip.Tip="May cause instability and crashes. Use at your own peril."/>
+                                  IsChecked="{Binding Client.Debugging.CacheDebuggingEnabled, Mode=TwoWay}"
+                                  ToolTip.Tip="May cause instability and crashes. Use at your own peril." />
 
                         <CheckBox Content="Enable world map debugging"
                                   IsChecked="{Binding Client.Debugging.WorldMapDebuggingEnabled, Mode=TwoWay}" />
@@ -223,7 +245,7 @@
                                                              Converter={StaticResource EnumDescriptionConverter},
                                                              Mode=TwoWay}" />
                         </Grid>
-                        
+
                         <Grid Grid.Column="1"
                               RowDefinitions="Auto, Auto">
                             <TextBlock Grid.Row="0"
@@ -234,22 +256,25 @@
                                       Items="{Binding TrackingModes}"
                                       SelectedItem="{Binding Client.Customization.XpTracker.TrackingMode, 
                                                              Converter={StaticResource EnumDescriptionConverter},
-                                                             Mode=TwoWay}"/>
+                                                             Mode=TwoWay}" />
                         </Grid>
                     </Grid>
                 </StackPanel>
             </HeaderedContentControl>
-            
+
             <HeaderedContentControl Classes="GroupBox"
                                     Header="launcher settings"
                                     DockPanel.Dock="Left"
                                     HorizontalAlignment="Stretch">
                 <StackPanel Orientation="Vertical">
-                    <CheckBox Content="Close the launcher after client starts" />
+                    <CheckBox Content="Place 'X' button on the left"
+                              IsChecked="{Binding Launcher.PlaceCloseButtonOnLeft, Mode=TwoWay}" />
+                    
+                    <CheckBox Content="Close the launcher after executing the client" 
+                              IsChecked="{Binding Launcher.ExitAfterLaunchingClient, Mode=TwoWay}"/>
 
-                    <CheckBox Content="Let me know about client updates" />
-
-                    <CheckBox Content="Place 'X' button on the left" />
+                    <CheckBox Content="Check for updates before launching the client"
+                              IsChecked="{Binding Launcher.CheckForClientUpdatesOnLaunch, Mode=TwoWay}"/>
                 </StackPanel>
             </HeaderedContentControl>
         </DockPanel>

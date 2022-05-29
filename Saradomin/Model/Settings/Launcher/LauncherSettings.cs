@@ -4,8 +4,10 @@ namespace Saradomin.Model.Settings.Launcher
     {
         public const string FileName = "saradomin_launcher.json";
 
-        public bool CloseButtonOnLeft { get; set; } = false;
-        public bool CheckForClientUpdates { get; set; } = true;
+        public bool PlaceCloseButtonOnLeft { get; set; } = false;
+        public bool ExitAfterLaunchingClient { get; set; } = false;
+        
+        public bool CheckForClientUpdatesOnLaunch { get; set; } = true;
         public string UserFriendlySongName { get; set; } = "Scape Main";
     }
 }

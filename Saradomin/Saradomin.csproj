@@ -56,6 +56,9 @@
       <Compile Update="View\Controls\SlayerPreview.axaml.cs">
         <DependentUpon>SlayerPreview.axaml</DependentUpon>
       </Compile>
+      <Compile Update="View\Controls\AntiAliasingSelector.axaml.cs">
+        <DependentUpon>AntiAliasingSelector.axaml</DependentUpon>
+      </Compile>
     </ItemGroup>
     
     <ItemGroup>

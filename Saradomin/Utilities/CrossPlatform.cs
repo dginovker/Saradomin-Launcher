@@ -91,5 +91,10 @@ namespace Saradomin.Utilities
                 return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             }
         }
+        
+        public static string Locate2009scapeExecutable()
+        {
+            return Path.Combine(Locate2009scapeHome(), "2009scape.jar");
+        }
     }
 }

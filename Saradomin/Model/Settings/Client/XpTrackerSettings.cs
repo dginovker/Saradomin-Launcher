@@ -7,10 +7,10 @@ namespace Saradomin.Model.Settings.Client
     {
         public enum DropModeSetting
         {
-            [Description("Separate skill XP;XP will increase as the icons rise to the top.")]
+            [Description("Animated;XP will increase as soon as the respective icons reach the XP tracker box.")]
             Incremental,
             
-            [Description("Combined skill XP;XP will increase instantly, regardless of the icons' position.")]
+            [Description("Immediate;XP text will increase instantly, as you get it.")]
             Instant
         }
 
