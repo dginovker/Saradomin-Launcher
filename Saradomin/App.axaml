@@ -19,6 +19,7 @@
         <StyleInclude Source="avares://Saradomin/Resources/Styles/Hyperlink.axaml" />
         <StyleInclude Source="avares://Saradomin/Resources/Styles/ToolTip.axaml" />
         <StyleInclude Source="avares://Saradomin/Resources/Styles/AntiAliasingRadioButton.axaml" />
+        <StyleInclude Source="avares://Saradomin/Resources/Styles/RadioButton.axaml" />
 
         <StyleInclude Source="avares://Glitonea/Glitonea.axaml" />
     </Application.Styles>

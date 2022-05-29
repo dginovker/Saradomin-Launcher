@@ -7,11 +7,14 @@ namespace Saradomin.Model.Settings.Client
     {
         public const string FileName = "config.json";
 
+        public const string LiveServerAddress = "play.2009scape.org";
+        public const string TestServerAddress = "test.2009scape.org";
+
         [JsonPropertyName("ip_management")]
-        public string IpManagement { get; set; } = "play.2009scape.org";
+        public string IpManagement { get; set; } = LiveServerAddress;
 
         [JsonPropertyName("ip_address")]
-        public string ServerAddress { get; set; } = "play.2009scape.org";
+        public string ServerAddress { get; set; } = LiveServerAddress;
         
         [JsonPropertyName("world")]
         public ushort World { get; set; } = 1;

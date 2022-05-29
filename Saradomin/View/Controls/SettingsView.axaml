@@ -34,11 +34,11 @@
                         <TextBlock Grid.Row="0"
                                    HorizontalAlignment="Center"
                                    Foreground="#3E3529"
-                                   Text="Anti-aliasing quality" 
-                                   Margin="0,0,0,2"/>
+                                   Text="Anti-aliasing quality"
+                                   Margin="0,0,0,2" />
 
                         <controls:AntiAliasingSelector Grid.Row="1"
-                                                       HorizontalAlignment="Center" 
+                                                       HorizontalAlignment="Center"
                                                        Margin="0,0,0,4"
                                                        AntiAliasingLevel="{Binding Client.Customization.AntiAliasingSampleCount, Mode=TwoWay}" />
                     </Grid>
@@ -264,17 +264,120 @@
 
             <HeaderedContentControl Classes="GroupBox"
                                     Header="launcher settings"
-                                    DockPanel.Dock="Left"
-                                    HorizontalAlignment="Stretch">
+                                    DockPanel.Dock="Top">
                 <StackPanel Orientation="Vertical">
                     <CheckBox Content="Place 'X' button on the left"
                               IsChecked="{Binding Launcher.PlaceCloseButtonOnLeft, Mode=TwoWay}" />
-                    
-                    <CheckBox Content="Close the launcher after executing the client" 
-                              IsChecked="{Binding Launcher.ExitAfterLaunchingClient, Mode=TwoWay}"/>
 
-                    <CheckBox Content="Check for updates before launching the client"
-                              IsChecked="{Binding Launcher.CheckForClientUpdatesOnLaunch, Mode=TwoWay}"/>
+                    <CheckBox Content="Close the launcher after executing the client"
+                              IsChecked="{Binding Launcher.ExitAfterLaunchingClient, Mode=TwoWay}" />
+
+                    <CheckBox Margin="0,0,0,4"
+                              Content="Check for updates before launching the client"
+                              IsChecked="{Binding Launcher.CheckForClientUpdatesOnLaunch, Mode=TwoWay}" />
+                </StackPanel>
+            </HeaderedContentControl>
+
+            <HeaderedContentControl Classes="GroupBox"
+                                    Header="connection settings"
+                                    DockPanel.Dock="Left"
+                                    HorizontalAlignment="Stretch">
+                <StackPanel Orientation="Vertical">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto">
+                        <TextBlock Grid.Row="0"
+                                   Margin="2,0,0,2"
+                                   Text="Server profile"
+                                   Foreground="#3E3529" />
+
+                        <Grid Grid.Row="1"
+                              ColumnDefinitions="*,*,*">
+                            <RadioButton Grid.Column="0"
+                                         Classes="NormalRadioButton"
+                                         Content="Live"
+                                         Command="{Binding UpdateServerProfile}"
+                                         CommandParameter="live"
+                                         IsChecked="{Binding IsLiveServerSelected}" />
+
+                            <RadioButton Grid.Column="1"
+                                         Classes="NormalRadioButton"
+                                         Content="Testing"
+                                         Command="{Binding UpdateServerProfile}"
+                                         CommandParameter="testing"
+                                         IsChecked="{Binding IsTestingServerSelected}" />
+
+                            <RadioButton Grid.Column="2"
+                                         Name="CustomServerProfileRadioButton"
+                                         Classes="NormalRadioButton"
+                                         Content="User-defined" />
+                        </Grid>
+
+                        <TextBox Grid.Row="2"
+                                 Margin="0,2,0,0"
+                                 Classes="NormalTextBox"
+                                 HorizontalAlignment="Stretch"
+                                 Text="{Binding ServerAddress, Mode=TwoWay}"
+                                 Watermark="Enter a server address..."
+                                 IsFocused="{Binding IsServerAddressBeingEdited, Mode=OneWayToSource}"
+                                 IsEnabled="{Binding #CustomServerProfileRadioButton.IsChecked}"
+                                 IsReadOnly="{Binding !#CustomServerProfileRadioButton.IsChecked}" />
+
+                        <Grid Grid.Row="3"
+                              Grid.ColumnDefinitions="*,*,*"
+                              Grid.RowDefinitions="Auto,Auto,Auto"
+                              Margin="0,4,0,0">
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="0"
+                                       Margin="2,0,0,2"
+                                       Text="Base port"
+                                       Foreground="#3E3529" />
+                            
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="1"
+                                       Margin="2,0,0,2"
+                                       Text="World list port"
+                                       Foreground="#3E3529" />
+                            
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="2"
+                                       Margin="2,0,0,2"
+                                       Text="Cache server port"
+                                       Foreground="#3E3529" />
+                            
+                            <NumericUpDown Grid.Row="1"
+                                           Grid.Column="0"
+                                           Classes="NormalNumericUpDown"
+                                           Margin="0,0,4,0"
+                                           Width="NaN"
+                                           Value="{Binding Client.GameServerPort}"
+                                           Minimum="0"
+                                           Maximum="65535" />
+                            
+                            <NumericUpDown Grid.Row="1"
+                                           Grid.Column="1"
+                                           Margin="0,0,4,0"
+                                           Width="NaN"
+                                           Classes="NormalNumericUpDown"
+                                           Value="{Binding Client.WorldListServerPort}"
+                                           Minimum="0"
+                                           Maximum="65535" />
+                            
+                            <NumericUpDown Grid.Row="1"
+                                           Grid.Column="2"
+                                           Width="NaN"
+                                           Classes="NormalNumericUpDown"
+                                           Value="{Binding Client.CacheServerPort}"
+                                           Minimum="0"
+                                           Maximum="65535" />
+                            
+                            <Button Grid.Row="2"
+                                    Grid.ColumnSpan="3"
+                                    Classes="Hyperlink"
+                                    Margin="0,4,0,0"
+                                    Content="reset"
+                                    HorizontalAlignment="Right"
+                                    Command="{Binding ResetServerConfiguration}" />
+                        </Grid>
+                    </Grid>
                 </StackPanel>
             </HeaderedContentControl>
         </DockPanel>

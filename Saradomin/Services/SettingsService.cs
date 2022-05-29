@@ -32,6 +32,9 @@ namespace Saradomin.Services
 
         private void TryReadConfigurationData()
         {
+            if (!Directory.Exists(CrossPlatform.Locate2009scapeHome()))
+                Directory.CreateDirectory(CrossPlatform.Locate2009scapeHome());
+            
             if (File.Exists(LauncherSettingsPath))
             {
                 using (var stream = File.OpenRead(LauncherSettingsPath))

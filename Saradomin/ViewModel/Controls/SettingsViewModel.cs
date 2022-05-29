@@ -1,12 +1,10 @@
-using System.Collections.Generic;
+using System;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Text.Json;
-using Avalonia.Collections;
 using Glitonea.Extensions;
 using Glitonea.Mvvm;
 using Glitonea.Utilities;
-using JetBrains.Annotations;
 using Saradomin.Messaging;
 using Saradomin.Model.Settings.Client;
 using Saradomin.Model.Settings.Launcher;
@@ -34,6 +32,23 @@ namespace Saradomin.ViewModel.Controls
                 OnPropertyChanged(nameof(LoginMusicTheme));
             }
         }
+
+        public string ServerAddress
+        {
+            get => Client.ServerAddress;
+            set
+            {
+                Client.ServerAddress = value;
+                Client.IpManagement = value;
+
+                OnPropertyChanged(nameof(ServerAddress));
+            }
+        }
+
+        public bool IsServerAddressBeingEdited { get; set; }
+
+        public bool IsLiveServerSelected => !IsServerAddressBeingEdited && ServerAddress == ClientSettings.LiveServerAddress;
+        public bool IsTestingServerSelected => !IsServerAddressBeingEdited && ServerAddress == ClientSettings.TestServerAddress;
         
         public ObservableCollection<string> MusicTitles { get; private set; }
         
@@ -85,6 +100,25 @@ namespace Saradomin.ViewModel.Controls
         private void ResetRightClickMenu()
         {
             Client.Customization.RightClickMenu.SetDefaults();
+        }
+
+        private void ResetServerConfiguration()
+        {
+            Client.GameServerPort = 43594;
+            Client.CacheServerPort = 43595;
+            Client.WorldListServerPort = 5555;
+            
+            ServerAddress = ClientSettings.LiveServerAddress;
+        }
+
+        private void UpdateServerProfile(string param)
+        {
+            ServerAddress = param switch
+            {
+                "live" => ClientSettings.LiveServerAddress,
+                "testing" => ClientSettings.TestServerAddress,
+                _ => throw new NotSupportedException($"{param} is not a supported parameter.")
+            };
         }
     }
 }

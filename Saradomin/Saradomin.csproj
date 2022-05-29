@@ -4,9 +4,13 @@
         <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
     
-    <ItemGroup>
-        <None Remove=".gitignore" />
-    </ItemGroup>
+    <PropertyGroup>
+        <TargetPlatform>x64</TargetPlatform>
+        <PublishSingleFile>true</PublishSingleFile>
+        <PublishTrimmed>true</PublishTrimmed>
+        <PublishReadyToRun>true</PublishReadyToRun>
+        <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    </PropertyGroup>
     
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="0.10.14" />

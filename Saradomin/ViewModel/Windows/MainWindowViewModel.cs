@@ -48,7 +48,8 @@ namespace Saradomin.ViewModel.Windows
 
             using (var httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync("https://2009scape.org/services/m=news/archives/latest.html");
+                var response =
+                    await httpClient.GetAsync("https://2009scape.org/services/m=news/archives/latest.html");
                 var doc = new HtmlDocument();
                 doc.Load(await response.Content.ReadAsStreamAsync());
                 var node = doc.DocumentNode.SelectSingleNode("//div[@class='msgcontents']");
@@ -88,7 +89,6 @@ namespace Saradomin.ViewModel.Windows
                 CanLaunch = true;
                 LaunchText = $"Failed to update 2009scape: {e.Message}";
                 return;
-                // todo messagebox
             }
 
             LaunchText = "Play! (already running)";
@@ -140,7 +140,7 @@ namespace Saradomin.ViewModel.Windows
 
                     if (!File.Exists(clientPath))
                     {
-                        LaunchText = "Cannot launch. Missing client file.";
+                        LaunchText = "Cannot launch. Missing client executable. Click me again to re-try.";
                         throw;
                     }
                 }
@@ -149,7 +149,7 @@ namespace Saradomin.ViewModel.Windows
 
         private void OnClientDownloadProgressUpdated(object sender, float e)
         {
-            LaunchText = $"Updating... (Downloading client: {e * 100}%)";
+            LaunchText = $"Updating... (Downloading client: {e * 100:F2}%)";
         }
     }
 }
