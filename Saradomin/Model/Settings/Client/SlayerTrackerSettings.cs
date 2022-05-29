@@ -41,6 +41,8 @@ namespace Saradomin.Model.Settings
                     _backgroundColor.PropertyChanged -= RaiseBackgroundColorWrite;
 
                 _backgroundColor = value;
+                Opacity = _backgroundColor.A;
+                
                 _backgroundColor.PropertyChanged += RaiseBackgroundColorWrite;
 
                 UpdateBackgroundColorStrings(value);
@@ -56,6 +58,11 @@ namespace Saradomin.Model.Settings
                 OpacityString = value.ToString();
                 RaiseSettingsModified(this, new(nameof(Opacity)));
             }
+        }
+
+        public void SetDefaults()
+        {
+            BackgroundColor = new("#635A38", 180);
         }
 
         private void RaiseBackgroundColorWrite(object sender, PropertyChangedEventArgs e)

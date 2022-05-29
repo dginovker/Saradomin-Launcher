@@ -18,7 +18,7 @@ namespace Saradomin.Model.Settings
         }
         
         [JsonPropertyName("left_click_attack")]
-        public bool AttackWithLeftClick { get; set; } = false;
+        public bool AttackStrongerEntitiesWithLeftClick { get; set; } = false;
         
         [JsonPropertyName("border")]
         public ColorSettings Border { get; set; } = new("#FFFFFF");
@@ -31,5 +31,12 @@ namespace Saradomin.Model.Settings
 
         [JsonPropertyName("styles")]
         public StylesSettings Styles { get; set; } = new();
+
+        public void SetDefaults()
+        {
+            Border = new("#FFFFFF");
+            Background = new("#5D5447");
+            TitleBar = new("#000000", "#FFFFFF", 255);
+        }
     }
 }

@@ -5,7 +5,7 @@
                    xmlns:vm="clr-namespace:Saradomin.ViewModel.Windows"
                    xmlns:controls="clr-namespace:Saradomin.View.Controls"
                    Width="800"
-                   Height="500"
+                   Height="550"
                    SystemDecorations="None"
                    x:Class="Saradomin.Views.Windows.MainWindow"
                    Title="{Binding Title}"

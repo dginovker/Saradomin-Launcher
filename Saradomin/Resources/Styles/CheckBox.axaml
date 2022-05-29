@@ -1,6 +1,6 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Style Selector="CheckBox.SettingsCheckBox">
+    <Style Selector="CheckBox">
         <Setter Property="Foreground" Value="#3E3529" />
         <Setter Property="Background" Value="#998468" />
 
@@ -28,11 +28,11 @@
         </Setter>
     </Style>
     
-    <Style Selector="CheckBox.SettingsCheckBox:pointerover">
+    <Style Selector="CheckBox:pointerover">
         <Setter Property="Foreground" Value="White" />
     </Style>
     
-    <Style Selector="CheckBox.SettingsCheckBox:checked">
+    <Style Selector="CheckBox:checked">
         <Setter Property="Template">
             <ControlTemplate TargetType="CheckBox">
                 <Grid ColumnDefinitions="Auto,*">
@@ -57,7 +57,7 @@
         </Setter>
     </Style>
     
-    <Style Selector="CheckBox.SettingsCheckBox:pressed">
+    <Style Selector="CheckBox:pressed">
         <Setter Property="Foreground" Value="#F2C954" />
     </Style>
 </Styles>

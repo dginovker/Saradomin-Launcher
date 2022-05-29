@@ -31,10 +31,10 @@ namespace Saradomin.Model
             PropertyChanged += OnPropertyChanged;
         }
 
-        public MenuColor(string hexColor)
+        public MenuColor(string hexColor, byte opacity = 255)
             : this()
         {
-            Brush = SolidColorBrush.Parse(hexColor);
+            Brush = SolidColorBrush.Parse($"#{opacity:X2}{hexColor.TrimStart('#')}");
         }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)

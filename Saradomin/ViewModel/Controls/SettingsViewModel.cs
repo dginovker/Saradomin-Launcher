@@ -1,7 +1,11 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Text.Json;
+using Glitonea.Extensions;
 using Glitonea.Mvvm;
+using Glitonea.Utilities;
+using JetBrains.Annotations;
 using Saradomin.Messaging;
 using Saradomin.Model.Settings.Client;
 using Saradomin.Model.Settings.Launcher;
@@ -31,6 +35,18 @@ namespace Saradomin.ViewModel.Controls
         }
         
         public ObservableCollection<string> MusicTitles { get; private set; }
+        
+        public ObservableCollection<EnumDescription> DropModes { get; private set; } = new()
+        {
+            XpTrackerSettings.DropModeSetting.Instant.ToDescription(),
+            XpTrackerSettings.DropModeSetting.Incremental.ToDescription(),
+        };
+
+        public ObservableCollection<EnumDescription> TrackingModes { get; private set; } = new()
+        {
+            XpTrackerSettings.TrackingModeSetting.TotalXP.ToDescription(),
+            XpTrackerSettings.TrackingModeSetting.RecentSkill.ToDescription(),
+        };
 
         public SettingsViewModel(ISettingsService settingsService)
         {
@@ -57,6 +73,16 @@ namespace Saradomin.ViewModel.Controls
         private void OnSettingsModified(SettingsModifiedMessage _)
         {
             _settingsService.SaveAll();
+        }
+
+        private void ResetSlayerTracker()
+        {
+            Client.Customization.SlayerTracker.SetDefaults();
+        }
+
+        private void ResetRightClickMenu()
+        {
+            Client.Customization.RightClickMenu.SetDefaults();
         }
     }
 }

@@ -45,6 +45,8 @@
     
     <Style Selector="ComboBoxItem">
         <Setter Property="Background" Value="#6F5D45" />
+        
+        <Setter Property="ToolTip.Tip" Value="{Binding Hint}" />
     </Style>
     
     <Style Selector="ComboBoxItem:pointerover /template/ ContentPresenter">
