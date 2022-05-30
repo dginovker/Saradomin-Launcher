@@ -3,6 +3,7 @@ using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using Avalonia.Metadata;
 using Glitonea.Mvvm;
 using HtmlAgilityPack;
@@ -24,6 +25,8 @@ namespace Saradomin.ViewModel.Windows
         public bool CanLaunch { get; private set; } = true;
         public string LaunchText { get; private set; } = "Play!";
 
+        public StackPanel ContentContainer { get; private set; }
+
         public MainWindowViewModel(IClientLaunchService launchService,
             IClientUpdateService updateService,
             ISettingsService settingsService)
@@ -33,8 +36,15 @@ namespace Saradomin.ViewModel.Windows
             _updateService.DownloadProgressChanged += OnClientDownloadProgressUpdated;
 
             Launcher = settingsService.Launcher;
+            
+            ContentContainer = new StackPanel
+            {
+                Margin = new(4)
+            };
 
             App.Messenger.Register<MainViewLoadedMessage>(this, MainViewLoaded);
+            
+
         }
 
         public void ExitApplication()
@@ -44,16 +54,16 @@ namespace Saradomin.ViewModel.Windows
 
         public async void MainViewLoaded(MainViewLoadedMessage msg)
         {
-            msg.HtmlView.BaseStylesheet = "* { font-size: 18px; }";
-
             using (var httpClient = new HttpClient())
             {
-                var response =
-                    await httpClient.GetAsync("https://2009scape.org/services/m=news/archives/latest.html");
+                var response = await httpClient.GetAsync("https://2009scape.org/services/m=news/archives/latest.html");
                 var doc = new HtmlDocument();
                 doc.Load(await response.Content.ReadAsStreamAsync());
                 var node = doc.DocumentNode.SelectSingleNode("//div[@class='msgcontents']");
-                msg.HtmlView.Text = node.InnerHtml;
+
+                ContentContainer.MaxWidth = 760;
+                var renderer = new HtmlRenderer(ContentContainer, node);
+                renderer.RenderToContainer();
             }
         }
 

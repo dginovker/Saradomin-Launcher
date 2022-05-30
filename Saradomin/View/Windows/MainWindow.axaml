@@ -97,15 +97,8 @@
                                       HorizontalAlignment="Stretch"
                                       VerticalScrollBarVisibility="Visible"
                                       HorizontalScrollBarVisibility="Hidden"
-                                      ClipToBounds="True">
-                            <HtmlLabel Name="HtmlView"
-                                       AutoSize="False"
-                                       AutoSizeHeightOnly="True"
-                                       Margin="4,0,4,4"
-                                       Width="750"
-                                       VerticalAlignment="Stretch" 
-                                       IsSelectionEnabled="False" />
-                        </ScrollViewer>
+                                      ClipToBounds="True"
+                                      Content="{Binding ContentContainer}" />
                     </Border>
                 </TabItem>
 
