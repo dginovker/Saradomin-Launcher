@@ -16,10 +16,11 @@
         <Setter Property="Height" Value="20"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Background" Value="#7D694E"/>
         <Setter Property="Foreground" Value="#F0F0F0"/>
-        <Setter Property="Margin" Value="0 0 0 0"/>
-        <Setter Property="Padding" Value="6 0"/>
+        <Setter Property="Margin" Value="0,0,0,0"/>
+        <Setter Property="Padding" Value="6,0,6,1"/>
     </Style>
     
     <Style Selector="TabControl.PageSelector > TabItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">

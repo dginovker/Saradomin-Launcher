@@ -1,6 +1,5 @@
-using System;
+using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -12,30 +11,28 @@ namespace Saradomin.Services
     {
         private readonly ISettingsService _settingsService;
         private readonly IClientUpdateService _clientUpdateService;
-        
-        private string JavaExecutablePath { get; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public ClientLaunchService(ISettingsService settingsService,
-                                   IClientUpdateService clientUpdateService)
+            IClientUpdateService clientUpdateService)
         {
             _settingsService = settingsService;
             _clientUpdateService = clientUpdateService;
-            
-            JavaExecutablePath = CrossPlatform.LocateJavaExecutable();
         }
-        
+
         public async Task LaunchClient()
         {
             var proc = new Process
             {
-                StartInfo = new(JavaExecutablePath)
+                StartInfo = new(_settingsService.Launcher.JavaExecutableLocation)
                 {
                     Arguments = $"-jar {_clientUpdateService.PreferredTargetFilePath}",
                     WorkingDirectory = CrossPlatform.Locate2009scapeHome(),
                     UseShellExecute = true
                 }
             };
-            
+
             proc.Start();
 
             if (_settingsService.Launcher.ExitAfterLaunchingClient)

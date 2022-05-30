@@ -14,7 +14,7 @@ namespace Saradomin.Model.Settings
 
         protected void RaiseSettingsModified(object sender, PropertyChangedEventArgs e)
         {
-            App.Messenger.Send(new SettingsModifiedMessage());
+            App.Messenger.Send(new SettingsModifiedMessage(e.PropertyName));
         }
     }
 }

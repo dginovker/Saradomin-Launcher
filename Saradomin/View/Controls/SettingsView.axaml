@@ -9,7 +9,6 @@
              DataContext="{mvvm:DataContextSource vm:SettingsViewModel}">
     <Grid ColumnDefinitions="*,*"
           Margin="0,0,2,2">
-
         <DockPanel Grid.Column="0"
                    IsEnabled="{Binding CanCustomize}">
             <HeaderedContentControl Classes="GroupBox"
@@ -176,7 +175,7 @@
         </Border>
 
         <DockPanel Grid.Column="1">
-                        <HeaderedContentControl Classes="GroupBox"
+            <HeaderedContentControl Classes="GroupBox"
                                     Header="launcher settings"
                                     DockPanel.Dock="Top">
                 <StackPanel Orientation="Vertical">
@@ -188,6 +187,33 @@
 
                     <CheckBox Content="Check for updates before launching the client"
                               IsChecked="{Binding Launcher.CheckForClientUpdatesOnLaunch, Mode=TwoWay}" />
+
+                    <Grid RowDefinitions="Auto,Auto"
+                          ColumnDefinitions="*,Auto"
+                          Margin="0,2,0,4">
+                        <TextBlock Grid.Row="0"
+                                   Grid.ColumnSpan="2"
+                                   Margin="3,0,0,2"
+                                   Text="Java executable location"
+                                   Foreground="#3E3529" />
+
+                        <TextBox Grid.Row="1"
+                                 Grid.Column="0"
+                                 Classes="NormalTextBox"
+                                 Text="{Binding Launcher.JavaExecutableLocation, Mode=TwoWay}"
+                                 Margin="2,0,0,0"
+                                 Watermark="Enter a path to java or java.exe..." />
+
+                        <Button Grid.Row="1"
+                                Grid.Column="1"
+                                Width="22"
+                                Height="24"
+                                Classes="OutsideNavigator"
+                                Content="..."
+                                Margin="2,0,0,0"
+                                Command="{Binding BrowseForJavaExecutable}"
+                                ToolTip.Tip="Browse..." />
+                    </Grid>
 
                     <Grid RowDefinitions="Auto, Auto"
                           Margin="0,0,0,4">
@@ -228,7 +254,7 @@
                     </Grid>
                 </StackPanel>
             </HeaderedContentControl>
-            
+
             <Grid DockPanel.Dock="Top">
                 <Border Margin="2,2,0,0"
                         HorizontalAlignment="Stretch"
@@ -238,11 +264,11 @@
                         IsVisible="{Binding !CanCustomize, Mode=TwoWay}">
                     <TextBlock Text="Disabled: Experimental client chosen"
                                HorizontalAlignment="Center"
-                               VerticalAlignment="Center" 
+                               VerticalAlignment="Center"
                                FontFamily="avares://Saradomin/Resources/Fonts/runescape_uf.ttf#RuneScape UF"
                                FontSize="16" />
                 </Border>
-                
+
                 <HeaderedContentControl Classes="GroupBox"
                                         Header="interface settings"
                                         DockPanel.Dock="Top"
@@ -378,8 +404,8 @@
                     <Button Classes="Hyperlink"
                             HorizontalAlignment="Center"
                             Command="{Binding LaunchProjectWebsite}"
-                            Content="visit project website" 
-                            Margin="0,0,0,4"/>
+                            Content="visit project website"
+                            Margin="0,0,0,4" />
                 </StackPanel>
             </HeaderedContentControl>
         </DockPanel>

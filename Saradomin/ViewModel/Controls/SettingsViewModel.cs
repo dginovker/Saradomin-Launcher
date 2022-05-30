@@ -1,6 +1,12 @@
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text.Json;
+using System.Threading.Tasks;
+using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Metadata;
 using Glitonea.Extensions;
 using Glitonea.Mvvm;
@@ -21,7 +27,7 @@ namespace Saradomin.ViewModel.Controls
         public ClientSettings Client => _settingsService.Client;
 
         public bool CanCustomize => Launcher.ClientProfile == LauncherSettings.ClientReleaseProfile.Legacy;
-        
+
         public string VersionString
         {
             get
@@ -53,13 +59,13 @@ namespace Saradomin.ViewModel.Controls
                 {
                     case ClientSettings.LiveServerAddress:
                         return ClientSettings.ServerProfile.Live;
-                    
+
                     case ClientSettings.TestServerAddress:
                         return ClientSettings.ServerProfile.Testing;
-                    
+
                     case ClientSettings.LocalServerAddress:
                         return ClientSettings.ServerProfile.Local;
-                    
+
                     default:
                         return ClientSettings.ServerProfile.Unsupported;
                 }
@@ -114,7 +120,7 @@ namespace Saradomin.ViewModel.Controls
         {
             CrossPlatform.LaunchURL("https://2009scape.org");
         }
-        
+
         private void LaunchProjectWebsite()
         {
             CrossPlatform.LaunchURL("https://gitlab.com/vddcore/saradomin");
@@ -149,6 +155,53 @@ namespace Saradomin.ViewModel.Controls
         private void ResetRightClickMenu()
         {
             Client.Customization.RightClickMenu.SetDefaults();
+        }
+
+        private async Task BrowseForJavaExecutable()
+        {
+            List<FileDialogFilter> filters;
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                filters = new()
+                {
+                    new FileDialogFilter
+                    {
+                        Name = "java",
+                        Extensions = new() { "exe" }
+                    }
+                };
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                filters = new()
+                {
+                    new FileDialogFilter
+                    {
+                        Name = "java",
+                        Extensions = new() { "*" }
+                    }
+                };
+            }
+            else
+            {
+                throw new NotSupportedException("Your platform is not supported.");
+            }
+
+            var ofd = new OpenFileDialog
+            {
+                Title = "Browse for Java...",
+                Filters = filters,
+                AllowMultiple = false,
+                Directory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
+            };
+
+            var paths = await ofd.ShowAsync(Application.Current.GetMainWindow());
+
+            if (paths != null && paths.Length > 0)
+            {
+                Launcher.JavaExecutableLocation = paths[0];
+            }
         }
     }
 }

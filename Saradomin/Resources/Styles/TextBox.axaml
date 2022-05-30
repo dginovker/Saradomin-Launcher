@@ -16,11 +16,11 @@
     </Style>
     
     <Style Selector="TextBox.NormalTextBox:focus /template/ Border#border">
-        <Setter Property="BorderBrush" Value="#4F463A" />
+        <Setter Property="BorderBrush" Value="#F2C954" />
     </Style>
     
     <Style Selector="TextBox.NormalTextBox:pointerover /template/ Border#border">
-        <Setter Property="BorderBrush" Value="#4F463A" />
+        <Setter Property="BorderBrush" Value="#F2C954" />
     </Style>
 
     <Style Selector="TextBox.NormalTextBox:focus">

@@ -13,7 +13,8 @@ namespace Saradomin.Utilities
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                Process.Start(url);
+                url = url.Replace("&", "^&");
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
@@ -23,6 +24,41 @@ namespace Saradomin.Utilities
             {
                 Process.Start("open", url);
             }
+        }
+
+        public static bool IsJavaExecutableValid(string location)
+        {
+            try
+            {
+                if (!File.Exists(location))
+                    return false;
+
+                using (var fileStream = File.OpenRead(location))
+                {
+                    var bytes = new byte[4];
+                    fileStream.Read(bytes, 0, 4);
+
+                    if (bytes[0] == 0x7F
+                        && bytes[1] == 0x45
+                        && bytes[2] == 0x4C
+                        && bytes[3] == 0x46)
+                    {
+                        return RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+                    }
+
+                    if (bytes[0] == 'M'
+                        && bytes[1] == 'Z')
+                    {
+                        return RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+                    }
+                }
+            }
+            catch
+            {
+                // Ignore
+            }
+            
+            return false;
         }
 
         public static string LocateJavaExecutable()
@@ -36,10 +72,20 @@ namespace Saradomin.Utilities
                 
                 using (var rk = Registry.LocalMachine.OpenSubKey("SOFTWARE\\JavaSoft\\Java Runtime Environment\\"))
                 {
-                    var currentVersion = rk.GetValue("CurrentVersion").ToString();
+                    if (rk == null)
+                        return null;
+
+                    var currentVersion = rk.GetValue("CurrentVersion")?.ToString();
+
+                    if (currentVersion == null)
+                        return null;
+                    
                     using (var key = rk.OpenSubKey(currentVersion))
                     {
-                        envPath = key.GetValue("JavaHome").ToString();
+                        if (key == null)
+                            return null;
+                        
+                        envPath = key.GetValue("JavaHome")?.ToString();
                     }
                 }
 
@@ -68,7 +114,7 @@ namespace Saradomin.Utilities
                 if (!string.IsNullOrEmpty(data))
                     return UnixPath.GetCompleteRealPath(data.Trim());
 
-                throw new DirectoryNotFoundException("Failed to find Java. Make sure it's installed!");
+                throw new FileNotFoundException("Failed to find Java. Make sure it's installed!");
             }
             else
             {

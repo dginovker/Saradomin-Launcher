@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -19,6 +20,9 @@ namespace Saradomin.ViewModel.Windows
         private readonly IClientLaunchService _launchService;
         private readonly IClientUpdateService _updateService;
 
+        private bool JavaExecutableValid
+            => CrossPlatform.IsJavaExecutableValid(Launcher.JavaExecutableLocation);
+
         public string Title { get; set; } = "2009scape launcher";
         public LauncherSettings Launcher { get; private set; }
 
@@ -36,15 +40,19 @@ namespace Saradomin.ViewModel.Windows
             _updateService.DownloadProgressChanged += OnClientDownloadProgressUpdated;
 
             Launcher = settingsService.Launcher;
-            
+
             ContentContainer = new StackPanel
             {
                 Margin = new(4)
             };
 
             App.Messenger.Register<MainViewLoadedMessage>(this, MainViewLoaded);
-            
+            App.Messenger.Register<SettingsModifiedMessage>(this, SettingsModified);
 
+            if (!JavaExecutableValid)
+            {
+                Launcher.JavaExecutableLocation = CrossPlatform.LocateJavaExecutable();
+            }
         }
 
         public void ExitApplication()
@@ -52,7 +60,7 @@ namespace Saradomin.ViewModel.Windows
             Environment.Exit(0);
         }
 
-        public async void MainViewLoaded(MainViewLoadedMessage msg)
+        public async void MainViewLoaded(MainViewLoadedMessage _)
         {
             using (var httpClient = new HttpClient())
             {
@@ -64,6 +72,23 @@ namespace Saradomin.ViewModel.Windows
                 ContentContainer.MaxWidth = 760;
                 var renderer = new HtmlRenderer(ContentContainer, node);
                 renderer.RenderToContainer();
+            }
+        }
+
+        public void SettingsModified(SettingsModifiedMessage msg)
+        {
+            if (msg.SettingName == nameof(LauncherSettings.JavaExecutableLocation))
+            {
+                if (!JavaExecutableValid)
+                {
+                    CanLaunch = false;
+                    LaunchText = "Unable to locate Java. Find Java executable using Settings page.";
+                }
+                else
+                {
+                    CanLaunch = true;
+                    LaunchText = "Play!";
+                }
             }
         }
 
@@ -142,7 +167,7 @@ namespace Saradomin.ViewModel.Windows
                 {
                     return;
                 }
-                
+
                 LaunchText = $"Updating... (Downloading client: 0%)";
                 Directory.CreateDirectory(CrossPlatform.Locate2009scapeHome());
 
