@@ -10,6 +10,7 @@
         <PublishTrimmed>true</PublishTrimmed>
         <PublishReadyToRun>true</PublishReadyToRun>
         <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+        <NoWarn>IL2026;CS0067</NoWarn>
     </PropertyGroup>
     
     <ItemGroup>

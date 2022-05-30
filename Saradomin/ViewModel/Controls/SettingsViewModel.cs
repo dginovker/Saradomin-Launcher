@@ -28,30 +28,44 @@ namespace Saradomin.ViewModel.Controls
                 // songs with apostrophes in names from the cache.
                 Client.Customization.LoginMusicTheme = value.Replace("'", "");
                 Launcher.UserFriendlySongName = value;
-                
+
                 OnPropertyChanged(nameof(LoginMusicTheme));
             }
         }
 
-        public string ServerAddress
+        public ClientSettings.ServerProfile ServerProfile
         {
-            get => Client.ServerAddress;
+            get
+            {
+                switch (Client.GameServerAddress)
+                {
+                    case ClientSettings.LiveServerAddress:
+                        return ClientSettings.ServerProfile.Live;
+                    
+                    case ClientSettings.TestServerAddress:
+                        return ClientSettings.ServerProfile.Testing;
+                    
+                    case ClientSettings.LocalServerAddress:
+                        return ClientSettings.ServerProfile.Local;
+                    
+                    default:
+                        Client.ManagementServerAddress = ClientSettings.ServerProfile.Live.ToDescription().Hint;
+                        Client.GameServerAddress = ClientSettings.ServerProfile.Live.ToDescription().Hint;
+                        return ClientSettings.ServerProfile.Live;
+                }
+            }
+
             set
             {
-                Client.ServerAddress = value;
-                Client.IpManagement = value;
+                Client.ManagementServerAddress = value.ToDescription().Hint;
+                Client.GameServerAddress = value.ToDescription().Hint;
 
-                OnPropertyChanged(nameof(ServerAddress));
+                OnPropertyChanged(nameof(ServerProfile));
             }
         }
 
-        public bool IsServerAddressBeingEdited { get; set; }
-
-        public bool IsLiveServerSelected => !IsServerAddressBeingEdited && ServerAddress == ClientSettings.LiveServerAddress;
-        public bool IsTestingServerSelected => !IsServerAddressBeingEdited && ServerAddress == ClientSettings.TestServerAddress;
-        
         public ObservableCollection<string> MusicTitles { get; private set; }
-        
+
         public ObservableCollection<EnumDescription> DropModes { get; private set; } = new()
         {
             XpTrackerSettings.DropModeSetting.Instant.ToDescription(),
@@ -64,12 +78,19 @@ namespace Saradomin.ViewModel.Controls
             XpTrackerSettings.TrackingModeSetting.RecentSkill.ToDescription(),
         };
 
+        public ObservableCollection<EnumDescription> ServerProfiles { get; private set; } = new()
+        {
+            ClientSettings.ServerProfile.Live.ToDescription(),
+            ClientSettings.ServerProfile.Testing.ToDescription(),
+            ClientSettings.ServerProfile.Local.ToDescription()
+        };
+
         public SettingsViewModel(ISettingsService settingsService)
         {
             _settingsService = settingsService;
-            
+
             App.Messenger.Register<MainViewLoadedMessage>(this, OnMainViewLoaded);
-            
+
             InitializeMusicTitleRepository();
         }
 
@@ -78,7 +99,7 @@ namespace Saradomin.ViewModel.Controls
             using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(
                 "Saradomin.Resources.Lists.MusicTracks.json"
             );
-            
+
             MusicTitles = JsonSerializer.Deserialize<ObservableCollection<string>>(stream!);
         }
 
@@ -100,25 +121,6 @@ namespace Saradomin.ViewModel.Controls
         private void ResetRightClickMenu()
         {
             Client.Customization.RightClickMenu.SetDefaults();
-        }
-
-        private void ResetServerConfiguration()
-        {
-            Client.GameServerPort = 43594;
-            Client.CacheServerPort = 43595;
-            Client.WorldListServerPort = 5555;
-            
-            ServerAddress = ClientSettings.LiveServerAddress;
-        }
-
-        private void UpdateServerProfile(string param)
-        {
-            ServerAddress = param switch
-            {
-                "live" => ClientSettings.LiveServerAddress,
-                "testing" => ClientSettings.TestServerAddress,
-                _ => throw new NotSupportedException($"{param} is not a supported parameter.")
-            };
         }
     }
 }

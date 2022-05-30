@@ -50,10 +50,14 @@
     </Style>
     
     <Style Selector="ComboBoxItem:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="#7F6D55" />
+        <Setter Property="Background" Value="#8F7D65" />
     </Style>
     
     <Style Selector="ComboBoxItem:selected /template/ ContentPresenter">
+        <Setter Property="Background" Value="#7F6D55" />
+    </Style>
+    
+    <Style Selector="ComboBoxItem:selected:pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="#8F7D65" />
     </Style>
 </Styles>

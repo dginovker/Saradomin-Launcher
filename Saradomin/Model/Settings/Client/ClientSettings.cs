@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Text.Json.Serialization;
 
 namespace Saradomin.Model.Settings.Client
@@ -9,12 +10,25 @@ namespace Saradomin.Model.Settings.Client
 
         public const string LiveServerAddress = "play.2009scape.org";
         public const string TestServerAddress = "test.2009scape.org";
+        public const string LocalServerAddress = "localhost";
+
+        public enum ServerProfile
+        {
+            [Description("Stable server;play.2009scape.org")]
+            Live,
+            
+            [Description("Testing server;test.2009scape.org")]
+            Testing,
+            
+            [Description("Local server;localhost")]
+            Local
+        }
 
         [JsonPropertyName("ip_management")]
-        public string IpManagement { get; set; } = LiveServerAddress;
+        public string ManagementServerAddress { get; set; } = LiveServerAddress;
 
         [JsonPropertyName("ip_address")]
-        public string ServerAddress { get; set; } = LiveServerAddress;
+        public string GameServerAddress { get; set; } = LiveServerAddress;
         
         [JsonPropertyName("world")]
         public ushort World { get; set; } = 1;
