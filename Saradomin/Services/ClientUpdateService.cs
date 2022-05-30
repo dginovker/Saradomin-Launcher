@@ -5,24 +5,55 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Saradomin.Model.Settings.Launcher;
 using Saradomin.Utilities;
 
 namespace Saradomin.Services
 {
     public class ClientUpdateService : IClientUpdateService
     {
-        private const string RemoteClientHashURL = "https://cdn.2009scape.org/2009scape.md5sum";
-        private const string RemoteClientExecutableURL = "https://cdn.2009scape.org/2009scape.jar";
+        private const string LegacyRemoteClientHashURL = "https://cdn.2009scape.org/2009scape.md5sum";
+        private const string LegacyRemoteClientExecutableURL = "https://cdn.2009scape.org/2009scape.jar";
+        
+        private const string ExperimentalRemoteClientExecutableURL = "https://github.com/Pazaz/RT4-Client/releases/download/1.0.0/rt4-client-1.0.0.jar";
 
+        private readonly ISettingsService _settingsService;
+        
         private float CurrentDownloadProgress { get; set; }
+
+        public string PreferredDownloadURL
+        {
+            get
+            {
+                return _settingsService.Launcher.ClientProfile switch
+                {
+                    LauncherSettings.ClientReleaseProfile.Legacy => LegacyRemoteClientExecutableURL,
+                    LauncherSettings.ClientReleaseProfile.Experimental => ExperimentalRemoteClientExecutableURL,
+                    _ => throw new NotSupportedException("Unsupported client release profile.")
+                };
+            }
+        }
+
+        public string PreferredTargetFilePath 
+            => _settingsService.Launcher.ClientProfile == LauncherSettings.ClientReleaseProfile.Experimental
+                ? CrossPlatform.Locate2009scapeExperimentalExecutable()
+                : CrossPlatform.Locate2009scapeLegacyExecutable();
 
         public event EventHandler<float> DownloadProgressChanged;
 
+        public ClientUpdateService(ISettingsService settingsService)
+        {
+            _settingsService = settingsService;
+        }
+
         public async Task<string> FetchRemoteClientHashAsync(CancellationToken cancellationToken)
         {
+            if (_settingsService.Launcher.ClientProfile == LauncherSettings.ClientReleaseProfile.Experimental)
+                return string.Empty;
+            
             using (var httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(RemoteClientHashURL, cancellationToken);
+                var response = await httpClient.GetAsync(LegacyRemoteClientHashURL, cancellationToken);
                 return await response.Content.ReadAsStringAsync(cancellationToken);
             }
         }
@@ -32,11 +63,16 @@ namespace Saradomin.Services
             CurrentDownloadProgress = 0;
 
             if (targetPath == null)
-                targetPath = CrossPlatform.Locate2009scapeExecutable();
+                targetPath = PreferredTargetFilePath;
+
+            if (File.Exists(targetPath))
+            {
+                File.Delete(targetPath);
+            }
 
             using (var httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(RemoteClientExecutableURL, cancellationToken);
+                var response = await httpClient.GetAsync(PreferredDownloadURL, cancellationToken);
                 var contentLength = response.Content.Headers.ContentLength ?? 12 * 1024 * 1024 * 1024f;
 
                 using var responseStream = await response.Content.ReadAsStreamAsync(cancellationToken);
@@ -64,7 +100,7 @@ namespace Saradomin.Services
         public async Task<string> ComputeLocalClientHashAsync(string filePath = null)
         {
             if (filePath == null)
-                filePath = CrossPlatform.Locate2009scapeExecutable();
+                filePath = CrossPlatform.Locate2009scapeLegacyExecutable();
 
             if (!File.Exists(filePath))
                 throw new FileNotFoundException($"Unable to calculate local client hash. File '{filePath}' missing.");

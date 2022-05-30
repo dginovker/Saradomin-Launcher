@@ -91,7 +91,7 @@ namespace Saradomin.ViewModel.Windows
 
             try
             {
-                if (!File.Exists(CrossPlatform.Locate2009scapeExecutable()) || Launcher.CheckForClientUpdatesOnLaunch)
+                if (!File.Exists(_updateService.PreferredTargetFilePath) || Launcher.CheckForClientUpdatesOnLaunch)
                     await AttemptUpdate();
             }
             catch (Exception e)
@@ -137,6 +137,12 @@ namespace Saradomin.ViewModel.Windows
             if (string.IsNullOrEmpty(localClientHash)
                 || remoteClientHash.Trim().ToLower() != localClientHash!.Trim().ToLower())
             {
+                if (Launcher.ClientProfile == LauncherSettings.ClientReleaseProfile.Experimental
+                    && File.Exists(CrossPlatform.Locate2009scapeExperimentalExecutable()))
+                {
+                    return;
+                }
+                
                 LaunchText = $"Updating... (Downloading client: 0%)";
                 Directory.CreateDirectory(CrossPlatform.Locate2009scapeHome());
 
@@ -146,7 +152,7 @@ namespace Saradomin.ViewModel.Windows
                 }
                 catch (Exception)
                 {
-                    var clientPath = CrossPlatform.Locate2009scapeExecutable();
+                    var clientPath = CrossPlatform.Locate2009scapeLegacyExecutable();
 
                     if (!File.Exists(clientPath))
                     {

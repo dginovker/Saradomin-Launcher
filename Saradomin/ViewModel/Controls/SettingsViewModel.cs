@@ -1,7 +1,7 @@
-using System;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Text.Json;
+using Avalonia.Metadata;
 using Glitonea.Extensions;
 using Glitonea.Mvvm;
 using Glitonea.Utilities;
@@ -9,6 +9,7 @@ using Saradomin.Messaging;
 using Saradomin.Model.Settings.Client;
 using Saradomin.Model.Settings.Launcher;
 using Saradomin.Services;
+using Saradomin.Utilities;
 
 namespace Saradomin.ViewModel.Controls
 {
@@ -18,6 +19,17 @@ namespace Saradomin.ViewModel.Controls
 
         public LauncherSettings Launcher => _settingsService.Launcher;
         public ClientSettings Client => _settingsService.Client;
+
+        public bool CanCustomize => Launcher.ClientProfile == LauncherSettings.ClientReleaseProfile.Legacy;
+        
+        public string VersionString
+        {
+            get
+            {
+                var version = Assembly.GetExecutingAssembly().GetName().Version!;
+                return $"Version {version.Major}.{version.Minor}.{version.Build}";
+            }
+        }
 
         public string LoginMusicTheme
         {
@@ -49,9 +61,7 @@ namespace Saradomin.ViewModel.Controls
                         return ClientSettings.ServerProfile.Local;
                     
                     default:
-                        Client.ManagementServerAddress = ClientSettings.ServerProfile.Live.ToDescription().Hint;
-                        Client.GameServerAddress = ClientSettings.ServerProfile.Live.ToDescription().Hint;
-                        return ClientSettings.ServerProfile.Live;
+                        return ClientSettings.ServerProfile.Unsupported;
                 }
             }
 
@@ -85,6 +95,12 @@ namespace Saradomin.ViewModel.Controls
             ClientSettings.ServerProfile.Local.ToDescription()
         };
 
+        public ObservableCollection<EnumDescription> ClientProfiles { get; private set; } = new()
+        {
+            LauncherSettings.ClientReleaseProfile.Legacy.ToDescription(),
+            LauncherSettings.ClientReleaseProfile.Experimental.ToDescription()
+        };
+
         public SettingsViewModel(ISettingsService settingsService)
         {
             _settingsService = settingsService;
@@ -92,6 +108,16 @@ namespace Saradomin.ViewModel.Controls
             App.Messenger.Register<MainViewLoadedMessage>(this, OnMainViewLoaded);
 
             InitializeMusicTitleRepository();
+        }
+
+        private void LaunchScapeWebsite()
+        {
+            CrossPlatform.LaunchURL("https://2009scape.org");
+        }
+        
+        private void LaunchProjectWebsite()
+        {
+            CrossPlatform.LaunchURL("https://gitlab.com/vddcore/saradomin");
         }
 
         private void InitializeMusicTitleRepository()
@@ -111,6 +137,8 @@ namespace Saradomin.ViewModel.Controls
         private void OnSettingsModified(SettingsModifiedMessage _)
         {
             _settingsService.SaveAll();
+
+            OnPropertyChanged(nameof(CanCustomize));
         }
 
         private void ResetSlayerTracker()

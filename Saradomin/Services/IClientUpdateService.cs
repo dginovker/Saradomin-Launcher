@@ -7,6 +7,9 @@ namespace Saradomin.Services
 {
     public interface IClientUpdateService : IService
     {
+        string PreferredDownloadURL { get; }
+        string PreferredTargetFilePath { get; }
+        
         event EventHandler<float> DownloadProgressChanged;
         
         Task<string> FetchRemoteClientHashAsync(CancellationToken cancellationToken);

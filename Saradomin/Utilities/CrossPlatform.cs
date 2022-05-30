@@ -92,9 +92,14 @@ namespace Saradomin.Utilities
             }
         }
         
-        public static string Locate2009scapeExecutable()
+        public static string Locate2009scapeLegacyExecutable()
         {
             return Path.Combine(Locate2009scapeHome(), "2009scape.jar");
+        }
+        
+        public static string Locate2009scapeExperimentalExecutable()
+        {
+            return Path.Combine(Locate2009scapeHome(), "2009scape_pazaz.jar");
         }
     }
 }

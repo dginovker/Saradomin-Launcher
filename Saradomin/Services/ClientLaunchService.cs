@@ -11,12 +11,15 @@ namespace Saradomin.Services
     public class ClientLaunchService : IClientLaunchService
     {
         private readonly ISettingsService _settingsService;
+        private readonly IClientUpdateService _clientUpdateService;
         
         private string JavaExecutablePath { get; }
 
-        public ClientLaunchService(ISettingsService settingsService)
+        public ClientLaunchService(ISettingsService settingsService,
+                                   IClientUpdateService clientUpdateService)
         {
             _settingsService = settingsService;
+            _clientUpdateService = clientUpdateService;
             
             JavaExecutablePath = CrossPlatform.LocateJavaExecutable();
         }
@@ -27,7 +30,7 @@ namespace Saradomin.Services
             {
                 StartInfo = new(JavaExecutablePath)
                 {
-                    Arguments = $"-jar {CrossPlatform.Locate2009scapeExecutable()}", // todo implement profiles
+                    Arguments = $"-jar {_clientUpdateService.PreferredTargetFilePath}",
                     WorkingDirectory = CrossPlatform.Locate2009scapeHome(),
                     UseShellExecute = true
                 }

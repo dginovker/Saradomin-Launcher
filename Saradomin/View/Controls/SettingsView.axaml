@@ -10,7 +10,8 @@
     <Grid ColumnDefinitions="*,*"
           Margin="0,0,2,2">
 
-        <DockPanel Grid.Column="0">
+        <DockPanel Grid.Column="0"
+                   IsEnabled="{Binding CanCustomize}">
             <HeaderedContentControl Classes="GroupBox"
                                     CornerRadius="6,0,0,0"
                                     Header="graphics settings"
@@ -159,108 +160,139 @@
         </DockPanel>
 
 
+        <Border Grid.Column="0"
+                Margin="2,2,0,0"
+                CornerRadius="6,0,0,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                ZIndex="9"
+                Background="#CC3E3529"
+                IsVisible="{Binding !CanCustomize, Mode=TwoWay}">
+            <TextBlock Text="Disabled: Experimental client chosen"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontFamily="avares://Saradomin/Resources/Fonts/runescape_uf.ttf#RuneScape UF"
+                       FontSize="16" />
+        </Border>
+
         <DockPanel Grid.Column="1">
-            <HeaderedContentControl Classes="GroupBox"
-                                    Header="interface settings"
-                                    DockPanel.Dock="Top">
-                <StackPanel Orientation="Vertical">
-                    <Grid RowDefinitions="Auto,Auto"
-                          Margin="2,2,2,4">
-                        <TextBlock Grid.Row="0"
-                                   Foreground="#3E3529"
-                                   Text="Main menu song"
-                                   Margin="0,0,0,2" />
+            <Grid DockPanel.Dock="Top">
+                <Border Margin="2,2,0,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        ZIndex="9"
+                        Background="#CC3E3529"
+                        IsVisible="{Binding !CanCustomize, Mode=TwoWay}">
+                    <TextBlock Text="Disabled: Experimental client chosen"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center" 
+                               FontFamily="avares://Saradomin/Resources/Fonts/runescape_uf.ttf#RuneScape UF"
+                               FontSize="16" />
+                </Border>
+                
+                <HeaderedContentControl Classes="GroupBox"
+                                        Header="interface settings"
+                                        DockPanel.Dock="Top"
+                                        IsEnabled="{Binding CanCustomize}">
+                    <StackPanel Orientation="Vertical">
+                        <Grid RowDefinitions="Auto,Auto"
+                              Margin="2,2,2,4">
+                            <TextBlock Grid.Row="0"
+                                       Foreground="#3E3529"
+                                       Text="Main menu song"
+                                       Margin="0,0,0,2" />
 
-                        <!-- Workaround applies here. Check SettingsViewModel for details. -->
-                        <ComboBox Grid.Row="1"
-                                  Items="{Binding MusicTitles}"
-                                  SelectedItem="{Binding LoginMusicTheme, Mode=TwoWay}"
-                                  VirtualizationMode="Simple" />
-                    </Grid>
+                            <!-- Workaround applies here. Check SettingsViewModel for details. -->
+                            <ComboBox Grid.Row="1"
+                                      Items="{Binding MusicTitles}"
+                                      SelectedItem="{Binding LoginMusicTheme, Mode=TwoWay}"
+                                      VirtualizationMode="Simple" />
+                        </Grid>
 
-                    <CheckBox Content="Enable winter season features"
-                              IsChecked="{Binding Client.Customization.SnowSeasonFeaturesEnabled, Mode=TwoWay}" />
+                        <CheckBox Content="Enable winter season features"
+                                  IsChecked="{Binding Client.Customization.SnowSeasonFeaturesEnabled, Mode=TwoWay}" />
 
-                    <CheckBox Content="Left-click attack on entities above your combat level"
-                              IsChecked="{Binding Client.Customization.RightClickMenu.AttackStrongerEntitiesWithLeftClick, Mode=TwoWay}" />
+                        <CheckBox Content="Left-click attack on entities above your combat level"
+                                  IsChecked="{Binding Client.Customization.RightClickMenu.AttackStrongerEntitiesWithLeftClick, Mode=TwoWay}" />
 
-                    <StackPanel>
-                        <CheckBox Content="Enable Slayer tracker"
-                                  IsChecked="{Binding Client.Customization.SlayerTracker.IsEnabled}" />
+                        <StackPanel>
+                            <CheckBox Content="Enable Slayer tracker"
+                                      IsChecked="{Binding Client.Customization.SlayerTracker.IsEnabled}" />
 
-                        <Grid ColumnDefinitions="*,Auto"
-                              IsVisible="{Binding Client.Customization.SlayerTracker.IsEnabled}"
-                              Margin="0,0,2,0">
-                            <controls:ColorSpinner Grid.Column="0"
-                                                   Margin="2,0,0,0"
-                                                   Header="Background color"
-                                                   TargetColor="{Binding Client.Customization.SlayerTracker.BackgroundColor, Mode=TwoWay}" />
-                            <StackPanel Grid.Column="1"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Right">
-                                <Border BorderThickness="1"
-                                        BorderBrush="#3E3529">
-                                    <Grid>
-                                        <Image Source="avares://Saradomin/Resources/Images/previewbg.png"
-                                               Stretch="None"
-                                               Width="110"
-                                               Height="60"
-                                               Margin="1">
-                                            <Image.Clip>
-                                                <RectangleGeometry Rect="0,0,110,60" />
-                                            </Image.Clip>
-                                        </Image>
+                            <Grid ColumnDefinitions="*,Auto"
+                                  IsVisible="{Binding Client.Customization.SlayerTracker.IsEnabled}"
+                                  Margin="0,0,2,0">
+                                <controls:ColorSpinner Grid.Column="0"
+                                                       Margin="2,0,0,0"
+                                                       Header="Background color"
+                                                       TargetColor="{Binding Client.Customization.SlayerTracker.BackgroundColor, Mode=TwoWay}" />
+                                <StackPanel Grid.Column="1"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Right">
+                                    <Border BorderThickness="1"
+                                            BorderBrush="#3E3529">
+                                        <Grid>
+                                            <Image Source="avares://Saradomin/Resources/Images/previewbg.png"
+                                                   Stretch="None"
+                                                   Width="110"
+                                                   Height="60"
+                                                   Margin="1">
+                                                <Image.Clip>
+                                                    <RectangleGeometry Rect="0,0,110,60" />
+                                                </Image.Clip>
+                                            </Image>
 
-                                        <controls:SlayerPreview Height="40"
-                                                                Width="90"
-                                                                VerticalAlignment="Center"
-                                                                BackgroundColor="{Binding Client.Customization.SlayerTracker.BackgroundColor}" />
-                                    </Grid>
-                                </Border>
+                                            <controls:SlayerPreview Height="40"
+                                                                    Width="90"
+                                                                    VerticalAlignment="Center"
+                                                                    BackgroundColor="{Binding Client.Customization.SlayerTracker.BackgroundColor}" />
+                                        </Grid>
+                                    </Border>
 
-                                <Button Classes="Hyperlink"
-                                        Command="{Binding ResetSlayerTracker}"
-                                        Content="reset colors"
-                                        HorizontalAlignment="Center" />
-                            </StackPanel>
+                                    <Button Classes="Hyperlink"
+                                            Command="{Binding ResetSlayerTracker}"
+                                            Content="reset colors"
+                                            HorizontalAlignment="Center" />
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+
+                        <CheckBox Content="Enable XP tracker"
+                                  IsChecked="{Binding Client.Customization.XpTracker.IsEnabled, Mode=TwoWay}" />
+
+                        <Grid ColumnDefinitions="*,*"
+                              Margin="2,0,1,4"
+                              IsVisible="{Binding Client.Customization.XpTracker.IsEnabled}">
+                            <Grid Grid.Column="0"
+                                  RowDefinitions="Auto,Auto"
+                                  Margin="0,0,4,0">
+                                <TextBlock Grid.Row="0"
+                                           Foreground="#3E3529"
+                                           Text="XP counting mode"
+                                           Margin="0,0,0,2" />
+                                <ComboBox Grid.Row="1"
+                                          Items="{Binding DropModes}"
+                                          SelectedItem="{Binding Client.Customization.XpTracker.DropMode, 
+                                                             Converter={StaticResource EnumDescriptionConverter},
+                                                             Mode=TwoWay}" />
+                            </Grid>
+
+                            <Grid Grid.Column="1"
+                                  RowDefinitions="Auto, Auto">
+                                <TextBlock Grid.Row="0"
+                                           Foreground="#3E3529"
+                                           Text="XP tracking mode"
+                                           Margin="0,0,0,2" />
+                                <ComboBox Grid.Row="1"
+                                          Items="{Binding TrackingModes}"
+                                          SelectedItem="{Binding Client.Customization.XpTracker.TrackingMode, 
+                                                             Converter={StaticResource EnumDescriptionConverter},
+                                                             Mode=TwoWay}" />
+                            </Grid>
                         </Grid>
                     </StackPanel>
-
-                    <CheckBox Content="Enable XP tracker"
-                              IsChecked="{Binding Client.Customization.XpTracker.IsEnabled, Mode=TwoWay}" />
-
-                    <Grid ColumnDefinitions="*,*"
-                          Margin="2,0,1,4"
-                          IsVisible="{Binding Client.Customization.XpTracker.IsEnabled}">
-                        <Grid Grid.Column="0"
-                              RowDefinitions="Auto,Auto"
-                              Margin="0,0,4,0">
-                            <TextBlock Grid.Row="0"
-                                       Foreground="#3E3529"
-                                       Text="XP counting mode"
-                                       Margin="0,0,0,2" />
-                            <ComboBox Grid.Row="1"
-                                      Items="{Binding DropModes}"
-                                      SelectedItem="{Binding Client.Customization.XpTracker.DropMode, 
-                                                             Converter={StaticResource EnumDescriptionConverter},
-                                                             Mode=TwoWay}" />
-                        </Grid>
-
-                        <Grid Grid.Column="1"
-                              RowDefinitions="Auto, Auto">
-                            <TextBlock Grid.Row="0"
-                                       Foreground="#3E3529"
-                                       Text="XP tracking mode"
-                                       Margin="0,0,0,2" />
-                            <ComboBox Grid.Row="1"
-                                      Items="{Binding TrackingModes}"
-                                      SelectedItem="{Binding Client.Customization.XpTracker.TrackingMode, 
-                                                             Converter={StaticResource EnumDescriptionConverter},
-                                                             Mode=TwoWay}" />
-                        </Grid>
-                    </Grid>
-                </StackPanel>
-            </HeaderedContentControl>
+                </HeaderedContentControl>
+            </Grid>
 
             <HeaderedContentControl Classes="GroupBox"
                                     Header="launcher settings"
@@ -272,22 +304,15 @@
                     <CheckBox Content="Close the launcher after executing the client"
                               IsChecked="{Binding Launcher.ExitAfterLaunchingClient, Mode=TwoWay}" />
 
-                    <CheckBox Margin="0,0,0,4"
-                              Content="Check for updates before launching the client"
+                    <CheckBox Content="Check for updates before launching the client"
                               IsChecked="{Binding Launcher.CheckForClientUpdatesOnLaunch, Mode=TwoWay}" />
-                </StackPanel>
-            </HeaderedContentControl>
 
-            <HeaderedContentControl Classes="GroupBox"
-                                    Header="connection settings"
-                                    DockPanel.Dock="Top"
-                                    Margin="2,2,0,0">
-                <StackPanel Orientation="Vertical">
-                    <Grid RowDefinitions="Auto,Auto,Auto,Auto">
+                    <Grid RowDefinitions="Auto, Auto"
+                          Margin="0,0,0,4">
                         <TextBlock Grid.Row="0"
                                    Margin="3,0,0,2"
                                    Text="Server profile"
-                                   Foreground="#3E3529" 
+                                   Foreground="#3E3529"
                                    HorizontalAlignment="Left" />
 
                         <ComboBox Grid.Row="1"
@@ -295,7 +320,7 @@
                                   SelectedItem="{Binding ServerProfile, 
                                                  Converter={StaticResource EnumDescriptionConverter}, 
                                                  Mode=TwoWay}"
-                                  Margin="2,0,4,2">
+                                  Margin="2,0,0,2">
                             <ComboBox.Styles>
                                 <Style Selector="ComboBoxItem">
                                     <Setter Property="ToolTip.Tip" Value="{x:Null}" />
@@ -303,6 +328,58 @@
                             </ComboBox.Styles>
                         </ComboBox>
                     </Grid>
+
+                    <Grid RowDefinitions="Auto, Auto"
+                          Margin="0,0,0,4">
+                        <TextBlock Grid.Row="0"
+                                   Margin="3,0,0,2"
+                                   Text="Client profile"
+                                   Foreground="#3E3529"
+                                   HorizontalAlignment="Left" />
+
+                        <ComboBox Grid.Row="1"
+                                  Items="{Binding ClientProfiles}"
+                                  SelectedItem="{Binding Launcher.ClientProfile, 
+                                                 Converter={StaticResource EnumDescriptionConverter}, 
+                                                 Mode=TwoWay}"
+                                  Margin="2,0,0,2" />
+                    </Grid>
+                </StackPanel>
+            </HeaderedContentControl>
+
+            <HeaderedContentControl Classes="GroupBox"
+                                    Header="about this project"
+                                    DockPanel.Dock="Top"
+                                    Margin="2,2,0,0">
+                <HeaderedContentControl.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Header}"
+                                   HorizontalAlignment="Center" />
+                    </DataTemplate>
+                </HeaderedContentControl.HeaderTemplate>
+
+                <StackPanel HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock HorizontalAlignment="Center"
+                                   Foreground="#3E3529"
+                                   Text="Made with ❤ by vddCore of " />
+                        <Button Classes="Hyperlink"
+                                Command="{Binding LaunchScapeWebsite}"
+                                Content="2009scape." />
+                    </StackPanel>
+
+                    <TextBlock Text=" " />
+
+                    <TextBlock HorizontalAlignment="Center"
+                               Foreground="#3E3529"
+                               Text="{Binding VersionString}" />
+
+                    <Button Classes="Hyperlink"
+                            HorizontalAlignment="Center"
+                            Command="{Binding LaunchProjectWebsite}"
+                            Content="visit project website" 
+                            Margin="0,0,0,4"/>
                 </StackPanel>
             </HeaderedContentControl>
         </DockPanel>

@@ -21,7 +21,10 @@ namespace Saradomin.Model.Settings.Client
             Testing,
             
             [Description("Local server;localhost")]
-            Local
+            Local,
+            
+            [Description("Unsupported server")]
+            Unsupported
         }
 
         [JsonPropertyName("ip_management")]
