@@ -29,7 +29,8 @@ namespace Saradomin.Services
                 {
                     Arguments = $"-jar {_clientUpdateService.PreferredTargetFilePath}",
                     WorkingDirectory = CrossPlatform.Locate2009scapeHome(),
-                    UseShellExecute = true
+                    UseShellExecute = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
                 }
             };
 
