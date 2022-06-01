@@ -202,7 +202,9 @@
                                  Classes="NormalTextBox"
                                  Text="{Binding Launcher.JavaExecutableLocation, Mode=TwoWay}"
                                  Margin="2,0,0,0"
-                                 Watermark="Enter a path to java or java.exe..." />
+                                 Watermark="Enter a path to java or java.exe..."
+								 HorizontalAlignment="Left"
+								 MaxWidth="342"/>
 
                         <Button Grid.Row="1"
                                 Grid.Column="1"
