@@ -2,16 +2,19 @@
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net6.0</TargetFramework>
-        <Version>1.1.0</Version>
+        <Version>1.1.1</Version>
     </PropertyGroup>
     
     <PropertyGroup>
         <TargetPlatform>x64</TargetPlatform>
+
+        <PublishReadyToRun>true</PublishReadyToRun>
         <PublishSingleFile>true</PublishSingleFile>
-        <PublishTrimmed>true</PublishTrimmed>
         <PublishReadyToRun>true</PublishReadyToRun>
         <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+        
         <NoWarn>IL2026;CS0067</NoWarn>
+        
         <ApplicationIcon>Resources\Icons\saradomin.ico</ApplicationIcon>
     </PropertyGroup>
     
@@ -30,18 +33,9 @@
     </ItemGroup>
     
     <ItemGroup>
-      <None Remove="Resources\Icons\09logo.png" />
-      <AvaloniaResource Include="Resources\Icons\09logo.png" />
-      <None Remove="Resources\Icons\settings.png" />
-      <AvaloniaResource Include="Resources\Icons\settings.png" />
-      <None Remove="Resources\Fonts\runescape_uf.ttf" />
       <AvaloniaResource Include="Resources\Fonts\runescape_uf.ttf" />
-      <None Remove="Resources\Images\checkerboard.png" />
-      <None Remove="Resources\Images\previewbg.png" />
       <AvaloniaResource Include="Resources\Images\previewbg.png" />
-      <None Remove="Resources\Images\club.png" />
       <AvaloniaResource Include="Resources\Images\club.png" />
-      <None Remove="Resources\Fonts\runescape_plain.ttf" />
       <AvaloniaResource Include="Resources\Fonts\runescape_plain.ttf" />
     </ItemGroup>
     
@@ -68,7 +62,7 @@
     
     <ItemGroup>
       <None Remove="Resources\Lists\MusicTracks.json" />
-      <Content Include="Resources\Icons\saradomin.ico" />
+      <AvaloniaResource Include="Resources\Icons\saradomin.ico" />
       <EmbeddedResource Include="Resources\Lists\MusicTracks.json" />
     </ItemGroup>
 </Project>

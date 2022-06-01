@@ -1,8 +1,8 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style Selector="Button.CloseButton">
-        <Setter Property="Foreground" Value="#6F5D45" />
-        <Setter Property="Background" Value="#3E3529" />
+        <Setter Property="Foreground" Value="{StaticResource DarkMediumForegroundBrush}" />
+        <Setter Property="Background" Value="{StaticResource DarkBackgroundBrush}" />
 
         <Setter Property="Template">
             <ControlTemplate TargetType="Button">
@@ -20,10 +20,10 @@
     </Style>
 
     <Style Selector="Button.CloseButton:pointerover">
-        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Foreground" Value="{StaticResource MouseOverBrush}" />
     </Style>
 
     <Style Selector="Button.CloseButton:pressed">
-        <Setter Property="Foreground" Value="#F2C954" />
+        <Setter Property="Foreground" Value="{StaticResource AccentBrush}" />
     </Style>
 </Styles>

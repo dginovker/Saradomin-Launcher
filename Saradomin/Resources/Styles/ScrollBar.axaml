@@ -4,10 +4,10 @@
         <Setter Property="Width" Value="10" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Background="#998468"
+                <Border Background="{StaticResource MediumBackgroundBrush}"
                         ClipToBounds="True">
                     <Grid RowDefinitions="Auto,*,Auto"
-                          Background="#4B4535">
+                          Background="{StaticResource DarkBackgroundBrush}">
                         <Track Grid.Row="1"
                                Grid.Column="1"
                                Minimum="{TemplateBinding Minimum}"
@@ -30,11 +30,11 @@
         <Setter Property="Width" Value="10" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Background="#998468"
+                <Border Background="{StaticResource MediumBackgroundBrush}"
                         ClipToBounds="True"
                         CornerRadius="0,6,0,0">
                     <Grid RowDefinitions="Auto,*,Auto"
-                          Background="#4B4535">
+                          Background="{StaticResource DarkBackgroundBrush}">
                         <Track Grid.Row="1"
                                Grid.Column="1"
                                Minimum="{TemplateBinding Minimum}"
@@ -54,14 +54,14 @@
     </Style>
 
     <Style Selector="Thumb#thumb">
-        <Setter Property="Background" Value="#6F5D45" />
+        <Setter Property="Background" Value="{StaticResource DarkMediumBackgroundBrush}" />
     </Style>
 
     <Style Selector="Thumb#thumb:pointerover">
-        <Setter Property="Background" Value="White" />
+        <Setter Property="Background" Value="{StaticResource MouseOverBrush}" />
     </Style>
 
     <Style Selector="Thumb#thumb:pressed">
-        <Setter Property="Background" Value="#F2C954" />
+        <Setter Property="Background" Value="{StaticResource AccentBrush}" />
     </Style>
 </Styles>

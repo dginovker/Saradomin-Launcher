@@ -1,13 +1,13 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style Selector="TextBox.NormalTextBox">
-        <Setter Property="BorderBrush" Value="#3E3529" />
+        <Setter Property="BorderBrush" Value="{StaticResource DarkBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="2" />
-        <Setter Property="Background" Value="#6F5D45" />
-        <Setter Property="CaretBrush" Value="#F2C954" />
-        <Setter Property="Foreground" Value="#F2C954" />
-        <Setter Property="SelectionBrush" Value="#4F463A" />
+        <Setter Property="Background" Value="{StaticResource DarkMediumBackgroundBrush}" />
+        <Setter Property="CaretBrush" Value="{StaticResource AccentBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource AccentBrush}" />
+        <Setter Property="SelectionBrush" Value="{StaticResource SemiDarkBackgroundBrush}" />
         <Setter Property="Margin" Value="0,0,0,4" />
     </Style>
     
@@ -16,15 +16,15 @@
     </Style>
     
     <Style Selector="TextBox.NormalTextBox:focus /template/ Border#border">
-        <Setter Property="BorderBrush" Value="#F2C954" />
+        <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}" />
     </Style>
     
     <Style Selector="TextBox.NormalTextBox:pointerover /template/ Border#border">
-        <Setter Property="BorderBrush" Value="#F2C954" />
+        <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}" />
     </Style>
 
     <Style Selector="TextBox.NormalTextBox:focus">
-        <Setter Property="CaretBrush" Value="#F2C954" />
-        <Setter Property="Foreground" Value="#F2C954" />
+        <Setter Property="CaretBrush" Value="{StaticResource AccentBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource AccentBrush}" />
     </Style>
 </Styles>

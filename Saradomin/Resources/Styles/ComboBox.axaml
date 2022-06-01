@@ -1,9 +1,9 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style Selector="ComboBox">
-        <Setter Property="BorderBrush" Value="#3E3529" />
-        <Setter Property="Background" Value="#6F5D45" />
-        <Setter Property="Foreground" Value="#F2C954" />
+        <Setter Property="BorderBrush" Value="{StaticResource DarkBorderBrush}" />
+        <Setter Property="Background" Value="{StaticResource DarkMediumBackgroundBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource AccentBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="2" />
     </Style>
@@ -13,7 +13,7 @@
         
         <Setter Property="Content">
             <Template>
-                <Path Fill="#F2C954"
+                <Path Fill="{StaticResource AccentBrush}"
                       Width="8"
                       Height="4"
                       Stretch="Uniform"
@@ -25,7 +25,7 @@
     </Style>
 
     <Style Selector="ComboBox:pointerover /template/ Border#border">
-        <Setter Property="BorderBrush" Value="#F2C954" />
+        <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}" />
     </Style>
     
     <Style Selector="ComboBox /template/ Popup">
@@ -35,7 +35,7 @@
     <Style Selector="ComboBox /template/ Popup > Border">
         <Style.Resources>
             <ResourceDictionary>
-                <SolidColorBrush x:Key="ThemeBorderMidBrush" Color="#3E3529" />
+                <SolidColorBrush x:Key="ThemeBorderMidBrush" Color="{StaticResource DarkBorderColor}" />
             </ResourceDictionary>
         </Style.Resources>
         
@@ -44,20 +44,20 @@
     </Style>
     
     <Style Selector="ComboBoxItem">
-        <Setter Property="Background" Value="#6F5D45" />
+        <Setter Property="Background" Value="{StaticResource DarkMediumBackgroundBrush}" />
         
         <Setter Property="ToolTip.Tip" Value="{Binding Hint}" />
     </Style>
     
     <Style Selector="ComboBoxItem:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="#8F7D65" />
+        <Setter Property="Background" Value="{StaticResource MediumBackgroundBrush}" />
     </Style>
     
     <Style Selector="ComboBoxItem:selected /template/ ContentPresenter">
-        <Setter Property="Background" Value="#7F6D55" />
+        <Setter Property="Background" Value="{StaticResource SemiLightMediumBackgroundBrush}" />
     </Style>
     
     <Style Selector="ComboBoxItem:selected:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="#8F7D65" />
+        <Setter Property="Background" Value="{StaticResource MediumBackgroundBrush}" />
     </Style>
 </Styles>

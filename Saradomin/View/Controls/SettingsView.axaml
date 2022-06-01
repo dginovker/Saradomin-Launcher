@@ -33,7 +33,7 @@
                           HorizontalAlignment="Center">
                         <TextBlock Grid.Row="0"
                                    HorizontalAlignment="Center"
-                                   Foreground="#3E3529"
+                                   Foreground="{StaticResource DarkForegroundBrush}"
                                    Text="Anti-aliasing quality"
                                    Margin="0,0,0,2" />
 
@@ -91,7 +91,7 @@
                                 Margin="0,66,0,0">
                         <Border VerticalAlignment="Center"
                                 BorderThickness="1"
-                                BorderBrush="#3E3529">
+                                BorderBrush="{StaticResource DarkBorderBrush}">
                             <Grid>
                                 <Image Source="avares://Saradomin/Resources/Images/previewbg.png"
                                        Stretch="Fill"
@@ -165,7 +165,7 @@
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 ZIndex="9"
-                Background="#CC3E3529"
+                Background="{StaticResource DarkTranslucentBackgroundBrush}"
                 IsVisible="{Binding !CanCustomize, Mode=TwoWay}">
             <TextBlock Text="Disabled: Experimental client chosen"
                        HorizontalAlignment="Center"
@@ -195,7 +195,7 @@
                                    Grid.ColumnSpan="2"
                                    Margin="3,0,0,2"
                                    Text="Java executable location"
-                                   Foreground="#3E3529" />
+                                   Foreground="{StaticResource DarkForegroundBrush}" />
 
                         <TextBox Grid.Row="1"
                                  Grid.Column="0"
@@ -222,7 +222,7 @@
                         <TextBlock Grid.Row="0"
                                    Margin="3,0,0,2"
                                    Text="Server profile"
-                                   Foreground="#3E3529"
+                                   Foreground="{StaticResource DarkForegroundBrush}"
                                    HorizontalAlignment="Left" />
 
                         <ComboBox Grid.Row="1"
@@ -244,7 +244,7 @@
                         <TextBlock Grid.Row="0"
                                    Margin="3,0,0,2"
                                    Text="Client profile"
-                                   Foreground="#3E3529"
+                                   Foreground="{StaticResource DarkForegroundBrush}"
                                    HorizontalAlignment="Left" />
 
                         <ComboBox Grid.Row="1"
@@ -262,7 +262,7 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         ZIndex="9"
-                        Background="#CC3E3529"
+                        Background="{StaticResource DarkTranslucentBackgroundBrush}"
                         IsVisible="{Binding !CanCustomize, Mode=TwoWay}">
                     <TextBlock Text="Disabled: Experimental client chosen"
                                HorizontalAlignment="Center"
@@ -279,7 +279,7 @@
                         <Grid RowDefinitions="Auto,Auto"
                               Margin="2,2,2,4">
                             <TextBlock Grid.Row="0"
-                                       Foreground="#3E3529"
+                                       Foreground="{StaticResource DarkForegroundBrush}"
                                        Text="Main menu song"
                                        Margin="0,0,0,2" />
 
@@ -311,7 +311,7 @@
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Right">
                                     <Border BorderThickness="1"
-                                            BorderBrush="#3E3529">
+                                            BorderBrush="{StaticResource DarkBorderBrush}">
                                         <Grid>
                                             <Image Source="avares://Saradomin/Resources/Images/previewbg.png"
                                                    Stretch="None"
@@ -348,7 +348,7 @@
                                   RowDefinitions="Auto,Auto"
                                   Margin="0,0,4,0">
                                 <TextBlock Grid.Row="0"
-                                           Foreground="#3E3529"
+                                           Foreground="{StaticResource DarkForegroundBrush}"
                                            Text="XP counting mode"
                                            Margin="0,0,0,2" />
                                 <ComboBox Grid.Row="1"
@@ -361,7 +361,7 @@
                             <Grid Grid.Column="1"
                                   RowDefinitions="Auto, Auto">
                                 <TextBlock Grid.Row="0"
-                                           Foreground="#3E3529"
+                                           Foreground="{StaticResource DarkForegroundBrush}"
                                            Text="XP tracking mode"
                                            Margin="0,0,0,2" />
                                 <ComboBox Grid.Row="1"
@@ -390,7 +390,7 @@
                             VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock HorizontalAlignment="Center"
-                                   Foreground="#3E3529"
+                                   Foreground="{StaticResource DarkForegroundBrush}"
                                    Text="Made with ❤ by vddCore of " />
                         <Button Classes="Hyperlink"
                                 Command="{Binding LaunchScapeWebsite}"
@@ -400,7 +400,7 @@
                     <TextBlock Text=" " />
 
                     <TextBlock HorizontalAlignment="Center"
-                               Foreground="#3E3529"
+                               Foreground="{StaticResource DarkForegroundBrush}"
                                Text="{Binding VersionString}" />
 
                     <Button Classes="Hyperlink"
