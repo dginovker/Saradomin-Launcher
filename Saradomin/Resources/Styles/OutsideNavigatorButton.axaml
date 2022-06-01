@@ -10,17 +10,17 @@
         <Setter Property="Margin" Value="1,0,0,0" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Background" Value="#7D694E" />
-        <Setter Property="Foreground" Value="#F0F0F0" />
+        <Setter Property="Background" Value="{StaticResource SemiLightMediumBackgroundBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource LightForegroundBrush}" />
     </Style>
 
     <Style Selector="Button.OutsideNavigator:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-        <Setter Property="Background" Value="White" />
-        <Setter Property="TextBlock.Foreground" Value="#3E3529" />
+        <Setter Property="Background" Value="{StaticResource MouseOverBrush}" />
+        <Setter Property="TextBlock.Foreground" Value="{StaticResource DarkForegroundBrush}" />
     </Style>
 
     <Style Selector="Button.OutsideNavigator:pressed /template/ ContentPresenter#PART_ContentPresenter">
-        <Setter Property="Background" Value="#F2C954" />
-        <Setter Property="TextBlock.Foreground" Value="#3E3529" />
+        <Setter Property="Background" Value="{StaticResource AccentBrush}" />
+        <Setter Property="TextBlock.Foreground" Value="{StaticResource DarkForegroundBrush}" />
     </Style>
 </Styles>

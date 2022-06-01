@@ -134,7 +134,10 @@ namespace Saradomin.Utilities
             }
             else
             {
-                return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                return Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                    "2009scape"
+                );
             }
         }
         

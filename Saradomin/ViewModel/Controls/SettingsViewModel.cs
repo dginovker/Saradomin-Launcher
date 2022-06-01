@@ -7,7 +7,6 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Metadata;
 using Glitonea.Extensions;
 using Glitonea.Mvvm;
 using Glitonea.Utilities;
@@ -123,7 +122,7 @@ namespace Saradomin.ViewModel.Controls
 
         private void LaunchProjectWebsite()
         {
-            CrossPlatform.LaunchURL("https://gitlab.com/vddcore/saradomin");
+            CrossPlatform.LaunchURL("https://github.com/vddCore/Saradomin");
         }
 
         private void InitializeMusicTitleRepository()

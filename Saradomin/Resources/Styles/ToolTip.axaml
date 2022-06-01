@@ -2,8 +2,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style Selector="ToolTip">
         <Setter Property="CornerRadius" Value="2" />
-        <Setter Property="BorderBrush" Value="#3E3529" />
-        <Setter Property="Background" Value="#7D694E" />
-        <Setter Property="Foreground" Value="#F2C954" />
+        <Setter Property="BorderBrush" Value="{StaticResource DarkBorderBrush}" />
+        <Setter Property="Background" Value="{StaticResource SemiLightMediumBackgroundBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource AccentBrush}" />
     </Style>
 </Styles>
