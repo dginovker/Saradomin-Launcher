@@ -122,7 +122,7 @@ namespace Saradomin.ViewModel.Controls
 
         private void LaunchProjectWebsite()
         {
-            CrossPlatform.LaunchURL("https://github.com/vddCore/Saradomin");
+            CrossPlatform.LaunchURL("https://gitlab.com/2009scape/Saradomin-Launcher");
         }
 
         private void InitializeMusicTitleRepository()
