@@ -1,0 +1,44 @@
+image: microsoft/dotnet:latest
+
+variables:
+    COMMON_FLAGS: -p:PublishTrimmed=false -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+    OUTPUT_DIR_WIN64: bin/Release/net6.0/win-x64/publish/Saradomin
+    OUTPUT_DIR_LINUX64: bin/Release/net6.0/linux-x64/publish/Saradomin
+
+stages:
+    - build_self_contained
+    - package_sc
+    - build_no_runtime
+    - package_nort
+
+before_script:
+    - dotnet restore
+    - cd Saradomin
+
+build_self_contained:
+    stage: build_self_contained
+    script:
+        - dotnet publish --self-contained true --runtime linux-x64 -c Release $COMMON_FLAGS
+        - dotnet publish --self-contained true --runtime win-x64 -c Release $COMMON_FLAGS
+        - mv $OUTPUT_DIR_LINUX64/Saradomin $OUTPUT_DIR_LINUX64/2009scape-launcher-$CI_COMMIT_SHORT_SHA-sc
+        - mv $OUTPUT_DIR_WIN64/Saradomin.exe $OUTPUT_DIR_LINUX64/2009scape-launcher-$CI_COMMIT_SHORT_SHA-sc.exe
+#    rules:
+#        - if: $CI_COMMIT_TAG
+    artifacts:
+        name: "self_contained"
+        paths:
+            - $OUTPUT_DIR_WIN64
+            - $OUTPUT_DIR_LINUX64
+
+build_no_runtime:
+    stage: build_no_runtime
+    script:
+        - dotnet publish --self-contained false --runtime linux-x64 -c Release $COMMON_FLAGS
+        - dotnet publish --self-contained false --runtime win-x64 -c Release $COMMON_FLAGS
+        - mv $OUTPUT_DIR_LINUX64/Saradomin $OUTPUT_DIR_LINUX64/2009scape-launcher-$CI_COMMIT_SHORT_SHA-no_rt
+        - mv $OUTPUT_DIR_WIN64/Saradomin.exe $OUTPUT_DIR_LINUX64/2009scape-launcher-$CI_COMMIT_SHORT_SHA-no_rt.exe
+    artifacts:
+        name: "no_runtime"
+        paths:
+            - $OUTPUT_DIR_WIN64
+            - $OUTPUT_DIR_LINUX64
