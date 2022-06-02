@@ -22,16 +22,13 @@ build_all:
     stage: build_all
     script:
         - dotnet publish --runtime linux-x64 --no-self-contained -c Release $COMMON_FLAGS
-            - mv $OUTPUT_DIR_LINUX64/Saradomin $OUTPUT_DIR_LINUX64/$OUTPUT_FILE_PREFIX-no_rt
-
+        - mv $OUTPUT_DIR_LINUX64/Saradomin $OUTPUT_DIR_LINUX64/$OUTPUT_FILE_PREFIX-no_rt
         - dotnet publish --runtime linux-x64 --self-contained -c Release $COMMON_FLAGS
-            - mv $OUTPUT_DIR_LINUX64/Saradomin $OUTPUT_DIR_LINUX64/$OUTPUT_FILE_PREFIX-sc
-
+        - mv $OUTPUT_DIR_LINUX64/Saradomin $OUTPUT_DIR_LINUX64/$OUTPUT_FILE_PREFIX-sc
         - dotnet publish --runtime win-x64 --no-self-contained -c Release $COMMON_FLAGS
-            - mv $OUTPUT_DIR_WIN64/Saradomin.exe $OUTPUT_DIR_WIN64/$OUTPUT_FILE_PREFIX-no_rt.exe
-
+        - mv $OUTPUT_DIR_WIN64/Saradomin.exe $OUTPUT_DIR_WIN64/$OUTPUT_FILE_PREFIX-no_rt.exe
         - dotnet publish --runtime win-x64 --self-contained -c Release $COMMON_FLAGS
-            - mv $OUTPUT_DIR_WIN64/Saradomin.exe $OUTPUT_DIR_WIN64/$OUTPUT_FILE_PREFIX-sc.exe
+        - mv $OUTPUT_DIR_WIN64/Saradomin.exe $OUTPUT_DIR_WIN64/$OUTPUT_FILE_PREFIX-sc.exe
 
 pack_linux_no_rt:
     stage: pack_linux_no_rt
