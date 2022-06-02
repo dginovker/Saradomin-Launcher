@@ -4,6 +4,7 @@ variables:
     COMMON_FLAGS: -p:PublishTrimmed=false -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
     OUTPUT_DIR_WIN64: bin/Release/net6.0/win-x64/publish/Saradomin
     OUTPUT_DIR_LINUX64: bin/Release/net6.0/linux-x64/publish/Saradomin
+    GIT_SUBMODULE_STRATEGY: recursive
 
 stages:
     - build_self_contained
