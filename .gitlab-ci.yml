@@ -2,8 +2,8 @@ image: mcr.microsoft.com/dotnet/sdk:6.0
 
 variables:
     COMMON_FLAGS: -p:PublishTrimmed=false -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
-    OUTPUT_DIR_WIN64: bin/Release/net6.0/win-x64/publish/Saradomin
-    OUTPUT_DIR_LINUX64: bin/Release/net6.0/linux-x64/publish/Saradomin
+    OUTPUT_DIR_WIN64: bin/Release/net6.0/win-x64/publish
+    OUTPUT_DIR_LINUX64: bin/Release/net6.0/linux-x64/publish
     GIT_SUBMODULE_STRATEGY: recursive
 
 stages:
@@ -19,10 +19,10 @@ before_script:
 build_self_contained:
     stage: build_self_contained
     script:
-        - dotnet publish --self-contained true --runtime linux-x64 -c Release $COMMON_FLAGS
-        - dotnet publish --self-contained true --runtime win-x64 -c Release $COMMON_FLAGS
+        - dotnet publish --runtime linux-x64 --self-contained -c Release $COMMON_FLAGS
+        - dotnet publish --runtime win-x64 --self-contained -c Release $COMMON_FLAGS
         - mv $OUTPUT_DIR_LINUX64/Saradomin $OUTPUT_DIR_LINUX64/2009scape-launcher-$CI_COMMIT_SHORT_SHA-sc
-        - mv $OUTPUT_DIR_WIN64/Saradomin.exe $OUTPUT_DIR_LINUX64/2009scape-launcher-$CI_COMMIT_SHORT_SHA-sc.exe
+        - mv $OUTPUT_DIR_WIN64/Saradomin.exe $OUTPUT_DIR_WIN64/2009scape-launcher-$CI_COMMIT_SHORT_SHA-sc.exe
 #    rules:
 #        - if: $CI_COMMIT_TAG
     artifacts:
@@ -34,10 +34,10 @@ build_self_contained:
 build_no_runtime:
     stage: build_no_runtime
     script:
-        - dotnet publish --self-contained false --runtime linux-x64 -c Release $COMMON_FLAGS
-        - dotnet publish --self-contained false --runtime win-x64 -c Release $COMMON_FLAGS
+        - dotnet publish --runtime linux-x64 --no-self-contained -c Release $COMMON_FLAGS
+        - dotnet publish --runtime win-x64 --no-self-contained -c Release $COMMON_FLAGS
         - mv $OUTPUT_DIR_LINUX64/Saradomin $OUTPUT_DIR_LINUX64/2009scape-launcher-$CI_COMMIT_SHORT_SHA-no_rt
-        - mv $OUTPUT_DIR_WIN64/Saradomin.exe $OUTPUT_DIR_LINUX64/2009scape-launcher-$CI_COMMIT_SHORT_SHA-no_rt.exe
+        - mv $OUTPUT_DIR_WIN64/Saradomin.exe $OUTPUT_DIR_WIN64/2009scape-launcher-$CI_COMMIT_SHORT_SHA-no_rt.exe
     artifacts:
         name: "no_runtime"
         paths:
