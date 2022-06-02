@@ -8,9 +8,7 @@ variables:
 
 stages:
     - build_self_contained
-    - package_sc
     - build_no_runtime
-    - package_nort
 
 before_script:
     - dotnet restore
@@ -28,8 +26,8 @@ build_self_contained:
     artifacts:
         name: "self_contained"
         paths:
-            - $OUTPUT_DIR_WIN64/*
-            - $OUTPUT_DIR_LINUX64/*
+            - Saradomin/$OUTPUT_DIR_WIN64/*
+            - Saradomin/$OUTPUT_DIR_LINUX64/*
 
 build_no_runtime:
     stage: build_no_runtime
@@ -41,5 +39,5 @@ build_no_runtime:
     artifacts:
         name: "no_runtime"
         paths:
-            - $OUTPUT_DIR_WIN64/*
-            - $OUTPUT_DIR_LINUX64/*
+            - Saradomin/$OUTPUT_DIR_WIN64/*
+            - Saradomin/$OUTPUT_DIR_LINUX64/*
