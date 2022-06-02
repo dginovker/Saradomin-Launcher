@@ -4,7 +4,7 @@ variables:
     PUBLISH_DIR_LINUX64: bin/Release/net6.0/linux-x64/publish
     ARTIFACT_DIR: Saradomin
     GIT_SUBMODULE_STRATEGY: recursive
-    OUTPUT_FILE_PREFIX: 2009scape-launcher-
+    OUTPUT_FILE_PREFIX: 2009scape-launcher
 
 stages:
     - build_all
