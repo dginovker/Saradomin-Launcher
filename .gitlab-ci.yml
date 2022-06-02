@@ -19,14 +19,15 @@ build_all:
     script:
         - dotnet restore
         - cd Saradomin
+        - pwd
         - dotnet publish --runtime linux-x64 --no-self-contained -c Release $COMMON_FLAGS
-        - mv $PUBLISH_DIR_LINUX64/Saradomin ../$OUTPUT_FILE_PREFIX-no_rt
+        - mv -v $PUBLISH_DIR_LINUX64/Saradomin ../$OUTPUT_FILE_PREFIX-no_rt
         - dotnet publish --runtime linux-x64 --self-contained -c Release $COMMON_FLAGS
-        - mv $PUBLISH_DIR_LINUX64/Saradomin ../$OUTPUT_FILE_PREFIX-sc
+        - mv -v $PUBLISH_DIR_LINUX64/Saradomin ../$OUTPUT_FILE_PREFIX-sc
         - dotnet publish --runtime win-x64 --no-self-contained -c Release $COMMON_FLAGS
-        - mv $PUBLISH_DIR_WIN64/Saradomin.exe ../$OUTPUT_FILE_PREFIX-no_rt.exe
+        - mv -v $PUBLISH_DIR_WIN64/Saradomin.exe ../$OUTPUT_FILE_PREFIX-no_rt.exe
         - dotnet publish --runtime win-x64 --self-contained -c Release $COMMON_FLAGS
-        - mv $PUBLISH_DIR_WIN64/Saradomin.exe ../$OUTPUT_FILE_PREFIX-sc.exe
+        - mv -v $PUBLISH_DIR_WIN64/Saradomin.exe ../$OUTPUT_FILE_PREFIX-sc.exe
     artifacts:
         name: "Combined artifacts"
         untracked: true
