@@ -1,5 +1,3 @@
-image: mcr.microsoft.com/dotnet/sdk:6.0
-
 variables:
     COMMON_FLAGS: -p:PublishTrimmed=false -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
     OUTPUT_DIR_WIN64: bin/Release/net6.0/win-x64/publish
@@ -19,6 +17,7 @@ before_script:
     - cd Saradomin
 
 build_all:
+    image: mcr.microsoft.com/dotnet/sdk:6.0
     stage: build_all
     script:
         - dotnet publish --runtime linux-x64 --no-self-contained -c Release $COMMON_FLAGS
