@@ -1,4 +1,4 @@
-image: microsoft/dotnet:latest
+image: mcr.microsoft.com/dotnet/sdk:6.0
 
 variables:
     COMMON_FLAGS: -p:PublishTrimmed=false -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
