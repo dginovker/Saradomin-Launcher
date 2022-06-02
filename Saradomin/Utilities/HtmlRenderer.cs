@@ -112,11 +112,14 @@ namespace Saradomin.Utilities
             switch (htmlNode.Name)
             {
                 case "#text":
-                    CreateNewInlineTextElement(
-                        HttpUtility.HtmlDecode(
-                            htmlNode.GetDirectInnerText().Trim(' ')
-                        )
+                    var text = HttpUtility.HtmlDecode(
+                        htmlNode.GetDirectInnerText().Trim(' ').Trim('\n')
                     );
+                    if (htmlNode.ParentNode.Name == "li")
+                    {
+                        text = $"• {text}";
+                    }
+                    CreateNewInlineTextElement(text);
                     break;
 
                 case "b":
