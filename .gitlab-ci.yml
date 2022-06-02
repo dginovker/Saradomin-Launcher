@@ -32,6 +32,8 @@ build_all:
 
 pack_linux_no_rt:
     stage: pack_linux_no_rt
+    dependencies:
+        - build_all
     script:
         - echo "Packing no-runtime build for Linux x64..."
     artifacts:
@@ -41,6 +43,8 @@ pack_linux_no_rt:
 
 pack_linux_sc:
     stage: pack_linux_sc
+    dependencies:
+        - build_all
     script:
         - echo "Packing self-contained build for Linux x64..."
     artifacts:
@@ -50,6 +54,8 @@ pack_linux_sc:
 
 pack_windows_no_rt:
     stage: pack_windows_no_rt
+    dependencies:
+        - build_all
     script:
         - echo "Packing no-runtime build for Windows x64..."
     artifacts:
@@ -59,6 +65,8 @@ pack_windows_no_rt:
 
 pack_windows_sc:
     stage: pack_windows_sc
+    dependencies:
+        - build_all
     script:
         - echo "Packing self-contained build for Windows x64..."
     artifacts:
