@@ -8,7 +8,7 @@ variables:
 
 stages:
     - build_self_contained
-    - build_no_runtime
+#    - build_no_runtime
 
 before_script:
     - dotnet restore
@@ -29,15 +29,15 @@ build_self_contained:
             - Saradomin/$OUTPUT_DIR_WIN64/*
             - Saradomin/$OUTPUT_DIR_LINUX64/*
 
-build_no_runtime:
-    stage: build_no_runtime
-    script:
-        - dotnet publish --runtime linux-x64 --no-self-contained -c Release $COMMON_FLAGS
-        - dotnet publish --runtime win-x64 --no-self-contained -c Release $COMMON_FLAGS
-        - mv $OUTPUT_DIR_LINUX64/Saradomin $OUTPUT_DIR_LINUX64/2009scape-launcher-$CI_COMMIT_SHORT_SHA-no_rt
-        - mv $OUTPUT_DIR_WIN64/Saradomin.exe $OUTPUT_DIR_WIN64/2009scape-launcher-$CI_COMMIT_SHORT_SHA-no_rt.exe
-    artifacts:
-        name: "no_runtime"
-        paths:
-            - Saradomin/$OUTPUT_DIR_WIN64/*
-            - Saradomin/$OUTPUT_DIR_LINUX64/*
+#build_no_runtime:
+#    stage: build_no_runtime
+#    script:
+#        - dotnet publish --runtime linux-x64 --no-self-contained -c Release $COMMON_FLAGS
+#        - dotnet publish --runtime win-x64 --no-self-contained -c Release $COMMON_FLAGS
+#        - mv $OUTPUT_DIR_LINUX64/Saradomin $OUTPUT_DIR_LINUX64/2009scape-launcher-$CI_COMMIT_SHORT_SHA-no_rt
+#        - mv $OUTPUT_DIR_WIN64/Saradomin.exe $OUTPUT_DIR_WIN64/2009scape-launcher-$CI_COMMIT_SHORT_SHA-no_rt.exe
+#    artifacts:
+#        name: "no_runtime"
+#        paths:
+#            - Saradomin/$OUTPUT_DIR_WIN64/*
+#            - Saradomin/$OUTPUT_DIR_LINUX64/*
