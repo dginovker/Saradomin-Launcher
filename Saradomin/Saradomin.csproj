@@ -63,6 +63,7 @@
     <ItemGroup>
       <None Remove="Resources\Lists\MusicTracks.json" />
       <AvaloniaResource Include="Resources\Icons\saradomin.ico" />
+      <Content Include="Resources\Icons\saradomin.ico" />
       <EmbeddedResource Include="Resources\Lists\MusicTracks.json" />
     </ItemGroup>
 </Project>

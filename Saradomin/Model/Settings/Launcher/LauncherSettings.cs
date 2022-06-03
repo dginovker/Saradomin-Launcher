@@ -16,7 +16,7 @@ namespace Saradomin.Model.Settings.Launcher
         }
         
         public bool PlaceCloseButtonOnLeft { get; set; } = false;
-        public bool ExitAfterLaunchingClient { get; set; } = false;
+        public bool ExitAfterLaunchingClient { get; set; } = true;
         
         public bool CheckForClientUpdatesOnLaunch { get; set; } = true;
         public string UserFriendlySongName { get; set; } = "Scape Main";
