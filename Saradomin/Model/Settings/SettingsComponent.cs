@@ -14,7 +14,13 @@ namespace Saradomin.Model.Settings
 
         protected void RaiseSettingsModified(object sender, PropertyChangedEventArgs e)
         {
+            OnSettingsModified(e.PropertyName);
+            
             App.Messenger.Send(new SettingsModifiedMessage(e.PropertyName));
+        }
+
+        protected virtual void OnSettingsModified(string propertyName)
+        {
         }
     }
 }

@@ -60,4 +60,8 @@
     <Style Selector="CheckBox:pressed">
         <Setter Property="Foreground" Value="{StaticResource AccentBrush}" />
     </Style>
+    
+    <Style Selector="CheckBox:disabled">
+        <Setter Property="Opacity" Value="0.6" />
+    </Style>
 </Styles>

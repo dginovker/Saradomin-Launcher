@@ -183,10 +183,14 @@
                               IsChecked="{Binding Launcher.PlaceCloseButtonOnLeft, Mode=TwoWay}" />
 
                     <CheckBox Content="Close the launcher after executing the client"
-                              IsChecked="{Binding Launcher.ExitAfterLaunchingClient, Mode=TwoWay}" />
+                              IsChecked="{Binding Launcher.ExitAfterLaunchingClient, Mode=TwoWay}"
+                              IsEnabled="{Binding !Launcher.AllowMultiboxing, Mode=OneWay}" />
 
                     <CheckBox Content="Check for updates before launching the client"
                               IsChecked="{Binding Launcher.CheckForClientUpdatesOnLaunch, Mode=TwoWay}" />
+
+                    <CheckBox Content="Allow multiple client instances to run"
+                              IsChecked="{Binding Launcher.AllowMultiboxing, Mode=TwoWay}" />
 
                     <Grid RowDefinitions="Auto,Auto"
                           ColumnDefinitions="*,Auto"
@@ -203,8 +207,8 @@
                                  Text="{Binding Launcher.JavaExecutableLocation, Mode=TwoWay}"
                                  Margin="2,0,0,0"
                                  Watermark="Enter a path to java or java.exe..."
-         HorizontalAlignment="Left"
-         MaxWidth="342"/>
+                                 HorizontalAlignment="Left"
+                                 Width="342" />
 
                         <Button Grid.Row="1"
                                 Grid.Column="1"

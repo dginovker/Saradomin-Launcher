@@ -129,7 +129,10 @@ namespace Saradomin.ViewModel.Windows
             LaunchText = "Play! (already running)";
             {
                 // Will block this task until client process exits.
-                await _launchService.LaunchClient();
+                var t = _launchService.LaunchClient();
+
+                if (!Launcher.AllowMultiboxing)
+                    await t;
             }
 
             CanLaunch = true;
