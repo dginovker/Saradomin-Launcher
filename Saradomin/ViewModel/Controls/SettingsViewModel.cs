@@ -158,39 +158,9 @@ namespace Saradomin.ViewModel.Controls
 
         private async Task BrowseForJavaExecutable()
         {
-            List<FileDialogFilter> filters;
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                filters = new()
-                {
-                    new FileDialogFilter
-                    {
-                        Name = "java",
-                        Extensions = new() { "exe" }
-                    }
-                };
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                filters = new()
-                {
-                    new FileDialogFilter
-                    {
-                        Name = "java",
-                        Extensions = new() { "*" }
-                    }
-                };
-            }
-            else
-            {
-                throw new NotSupportedException("Your platform is not supported.");
-            }
-
             var ofd = new OpenFileDialog
             {
                 Title = "Browse for Java...",
-                Filters = filters,
                 AllowMultiple = false,
                 Directory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
             };
