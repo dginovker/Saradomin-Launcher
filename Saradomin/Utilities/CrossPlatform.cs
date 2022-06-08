@@ -150,5 +150,10 @@ namespace Saradomin.Utilities
         {
             return Path.Combine(Locate2009scapeHome(), "2009scape_pazaz.jar");
         }
+
+        public static string LocateServerProfilesPath()
+        {
+            return Path.Combine(Locate2009scapeHome(), "server_profiles.json");
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -19,12 +20,13 @@ namespace Saradomin.ViewModel.Windows
     {
         private readonly IClientLaunchService _launchService;
         private readonly IClientUpdateService _updateService;
+        private readonly IRemoteConfigService _remoteConfigService;
+        private readonly ISettingsService _settingsService;
 
         private bool JavaExecutableValid
-            => CrossPlatform.IsJavaExecutableValid(Launcher.JavaExecutableLocation);
+            => CrossPlatform.IsJavaExecutableValid(_settingsService.Launcher.JavaExecutableLocation);
 
         public string Title { get; set; } = "2009scape launcher";
-        public LauncherSettings Launcher { get; private set; }
 
         public bool CanLaunch { get; private set; } = true;
         public string LaunchText { get; private set; } = "Play!";
@@ -33,13 +35,14 @@ namespace Saradomin.ViewModel.Windows
 
         public MainWindowViewModel(IClientLaunchService launchService,
             IClientUpdateService updateService,
-            ISettingsService settingsService)
+            ISettingsService settingsService,
+            IRemoteConfigService remoteConfigService)
         {
             _launchService = launchService;
             _updateService = updateService;
             _updateService.DownloadProgressChanged += OnClientDownloadProgressUpdated;
-
-            Launcher = settingsService.Launcher;
+            _remoteConfigService = remoteConfigService;
+            _settingsService = settingsService;
 
             ContentContainer = new StackPanel
             {
@@ -51,7 +54,7 @@ namespace Saradomin.ViewModel.Windows
 
             if (!JavaExecutableValid)
             {
-                Launcher.JavaExecutableLocation = CrossPlatform.LocateJavaExecutable();
+                _settingsService.Launcher.JavaExecutableLocation = CrossPlatform.LocateJavaExecutable();
             }
         }
 
@@ -99,7 +102,7 @@ namespace Saradomin.ViewModel.Windows
                 "news" => "https://2009scape.org/services/m=news/archives/latest.html",
                 "issues" => "https://gitlab.com/2009scape/2009scape/-/issues",
                 "hiscores" => "https://2009scape.org/services/m=hiscore/hiscores.html?world=2",
-                "discord" => "https://discord.gg/YY7WSttN7H",
+                "matrix" => "https://matrix.to/#/#2009scape:matrix.vddcore.eu",
                 _ => throw new ArgumentException($"{parameter} is not a valid page parameter.")
             };
 
@@ -116,7 +119,8 @@ namespace Saradomin.ViewModel.Windows
 
             try
             {
-                if (!File.Exists(_updateService.PreferredTargetFilePath) || Launcher.CheckForClientUpdatesOnLaunch)
+                if (!File.Exists(_updateService.PreferredTargetFilePath) ||
+                    _settingsService.Launcher.CheckForClientUpdatesOnLaunch)
                     await AttemptUpdate();
             }
             catch (Exception e)
@@ -126,17 +130,59 @@ namespace Saradomin.ViewModel.Windows
                 return;
             }
 
+            if (!File.Exists(CrossPlatform.LocateServerProfilesPath()) ||
+                _settingsService.Launcher.CheckForServerProfilesOnLaunch)
+                await AttemptServerProfileUpdate();
+
             LaunchText = "Play! (already running)";
             {
                 // Will block this task until client process exits.
                 var t = _launchService.LaunchClient();
 
-                if (!Launcher.AllowMultiboxing)
+                if (!_settingsService.Launcher.AllowMultiboxing)
                     await t;
             }
 
             CanLaunch = true;
             LaunchText = "Play!";
+        }
+
+        private async Task AttemptServerProfileUpdate()
+        {
+            var serverProfilePath = CrossPlatform.LocateServerProfilesPath();
+
+            try
+            {
+                await _remoteConfigService.FetchServerProfileConfig(
+                    serverProfilePath
+                );
+            }
+            catch
+            {
+                // Ignore. See next steps.
+            }
+
+            try
+            {
+                await _remoteConfigService.LoadServerProfileConfig(
+                    serverProfilePath
+                );
+            }
+            catch
+            {
+                _remoteConfigService.LoadFailsafeDefaults();
+            }
+
+            var relevantServerProfile = _remoteConfigService.AvailableProfiles.FirstOrDefault(
+                x => x.GameServerAddress == _settingsService.Client.GameServerAddress
+            );
+
+            if (relevantServerProfile == null)
+                return;
+
+            _settingsService.Client.GameServerPort = relevantServerProfile.GameServerPort;
+            _settingsService.Client.CacheServerPort = relevantServerProfile.CacheServerPort;
+            _settingsService.Client.WorldListServerPort = relevantServerProfile.WorldListServerPort;
         }
 
         private async Task AttemptUpdate()
@@ -165,7 +211,7 @@ namespace Saradomin.ViewModel.Windows
             if (string.IsNullOrEmpty(localClientHash)
                 || remoteClientHash.Trim().ToLower() != localClientHash!.Trim().ToLower())
             {
-                if (Launcher.ClientProfile == LauncherSettings.ClientReleaseProfile.Experimental
+                if (_settingsService.Launcher.ClientProfile == LauncherSettings.ClientReleaseProfile.Experimental
                     && File.Exists(CrossPlatform.Locate2009scapeExperimentalExecutable()))
                 {
                     return;
