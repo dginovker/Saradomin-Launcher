@@ -186,8 +186,11 @@
                               IsChecked="{Binding Launcher.ExitAfterLaunchingClient, Mode=TwoWay}"
                               IsEnabled="{Binding !Launcher.AllowMultiboxing, Mode=OneWay}" />
 
-                    <CheckBox Content="Check for updates before launching the client"
+                    <CheckBox Content="Check for client updates on launch"
                               IsChecked="{Binding Launcher.CheckForClientUpdatesOnLaunch, Mode=TwoWay}" />
+                    
+                    <CheckBox Content="Check for updated server profiles on launch"
+                              IsChecked="{Binding Launcher.CheckForServerProfilesOnLaunch, Mode=TwoWay}" />
 
                     <CheckBox Content="Allow multiple client instances to run"
                               IsChecked="{Binding Launcher.AllowMultiboxing, Mode=TwoWay}" />

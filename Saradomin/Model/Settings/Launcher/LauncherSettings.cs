@@ -20,9 +20,11 @@ namespace Saradomin.Model.Settings.Launcher
         public bool AllowMultiboxing { get; set; } = false;
 
         public bool CheckForClientUpdatesOnLaunch { get; set; } = true;
+        public bool CheckForServerProfilesOnLaunch { get; set; } = true;
+        
         public string UserFriendlySongName { get; set; } = "Scape Main";
         public string JavaExecutableLocation { get; set; }
-        
+
         public ClientReleaseProfile ClientProfile { get; set; } = ClientReleaseProfile.Legacy;
 
         protected override void OnSettingsModified(string propertyName)

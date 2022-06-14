@@ -40,7 +40,7 @@ namespace Saradomin.Model.Settings.Client
         public ushort GameServerPort { get; set; } = 43594;
         
         [JsonPropertyName("wl_port")]
-        public ushort WorldListServerPort { get; set; } = 5555;
+        public ushort WorldListServerPort { get; set; } = 43595;
 
         [JsonPropertyName("js5_port")]
         public ushort CacheServerPort { get; set; } = 43595;
