@@ -26,6 +26,8 @@ namespace Saradomin.ViewModel.Windows
         private bool JavaExecutableValid
             => CrossPlatform.IsJavaExecutableValid(_settingsService.Launcher.JavaExecutableLocation);
 
+        private LauncherSettings Launcher { get; }
+
         public string Title { get; set; } = "2009scape launcher";
 
         public bool CanLaunch { get; private set; } = true;
@@ -42,8 +44,10 @@ namespace Saradomin.ViewModel.Windows
             _updateService = updateService;
             _updateService.DownloadProgressChanged += OnClientDownloadProgressUpdated;
             _remoteConfigService = remoteConfigService;
+            
             _settingsService = settingsService;
-
+            Launcher = _settingsService.Launcher;
+            
             ContentContainer = new StackPanel
             {
                 Margin = new(4)
