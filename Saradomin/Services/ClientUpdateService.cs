@@ -15,8 +15,9 @@ namespace Saradomin.Services
         private const string LegacyRemoteClientHashURL = "https://cdn.2009scape.org/2009scape.md5sum";
         private const string LegacyRemoteClientExecutableURL = "https://cdn.2009scape.org/2009scape.jar";
         
-        private const string ExperimentalRemoteClientExecutableURL = "https://github.com/Pazaz/RT4-Client/releases/download/1.0.0/rt4-client-1.0.0.jar";
-
+        private const string ExperimentalRemoteClientExecutableURL = "https://github.com/Pazaz/RT4-Client/releases/latest/download/rt4-client.jar";
+        private const string ExperimentalRemoteClientHashURL = "https://github.com/Pazaz/RT4-Client/releases/latest/download/rt4-client.jar.sha256";
+        
         private readonly ISettingsService _settingsService;
         
         private float CurrentDownloadProgress { get; set; }
@@ -29,6 +30,19 @@ namespace Saradomin.Services
                 {
                     LauncherSettings.ClientReleaseProfile.Legacy => LegacyRemoteClientExecutableURL,
                     LauncherSettings.ClientReleaseProfile.Experimental => ExperimentalRemoteClientExecutableURL,
+                    _ => throw new NotSupportedException("Unsupported client release profile.")
+                };
+            }
+        }
+        
+        public string PreferredHashUrl
+        {
+            get
+            {
+                return _settingsService.Launcher.ClientProfile switch
+                {
+                    LauncherSettings.ClientReleaseProfile.Legacy => LegacyRemoteClientHashURL,
+                    LauncherSettings.ClientReleaseProfile.Experimental => ExperimentalRemoteClientHashURL,
                     _ => throw new NotSupportedException("Unsupported client release profile.")
                 };
             }
@@ -48,12 +62,9 @@ namespace Saradomin.Services
 
         public async Task<string> FetchRemoteClientHashAsync(CancellationToken cancellationToken)
         {
-            if (_settingsService.Launcher.ClientProfile == LauncherSettings.ClientReleaseProfile.Experimental)
-                return string.Empty;
-            
-            using (var httpClient = new HttpClient())
+            using var httpClient = new HttpClient();
             {
-                var response = await httpClient.GetAsync(LegacyRemoteClientHashURL, cancellationToken);
+                var response = await httpClient.GetAsync(PreferredHashUrl, cancellationToken);
                 return await response.Content.ReadAsStringAsync(cancellationToken);
             }
         }
@@ -62,8 +73,7 @@ namespace Saradomin.Services
         {
             CurrentDownloadProgress = 0;
 
-            if (targetPath == null)
-                targetPath = PreferredTargetFilePath;
+            targetPath ??= PreferredTargetFilePath;
 
             if (File.Exists(targetPath))
             {
@@ -99,23 +109,35 @@ namespace Saradomin.Services
 
         public async Task<string> ComputeLocalClientHashAsync(string filePath = null)
         {
-            if (filePath == null)
-                filePath = CrossPlatform.Locate2009scapeLegacyExecutable();
+            var isExperimental = _settingsService.Launcher.ClientProfile == LauncherSettings.ClientReleaseProfile.Experimental;
 
+            filePath ??= PreferredTargetFilePath;
+            
             if (!File.Exists(filePath))
                 throw new FileNotFoundException($"Unable to calculate local client hash. File '{filePath}' missing.");
 
-            using var stream = File.OpenRead(filePath);
+            await using var stream = File.OpenRead(filePath);
+            {
+                if (isExperimental)
+                {
+                    var sha256 = SHA256.Create();
+                    stream.Position = 0;
+                    var hash = await sha256.ComputeHashAsync(stream);
+                    return BitConverter.ToString(hash).Replace("-", string.Empty);
+                }
+                else
+                {
+                    var md5 = MD5.Create();
+                    var hash = await md5.ComputeHashAsync(stream);
 
-            var md5 = MD5.Create();
-            var hash = await md5.ComputeHashAsync(stream);
+                    var sb = new StringBuilder();
 
-            var sb = new StringBuilder();
+                    foreach (var b in hash)
+                        sb.Append($"{b:x2}");
 
-            foreach (var b in hash)
-                sb.Append($"{b:x2}");
-
-            return sb.ToString();
+                    return sb.ToString();
+                }
+            }
         }
     }
 }
