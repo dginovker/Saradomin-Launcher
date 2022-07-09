@@ -18,5 +18,5 @@ Linux: [Self Contained](https://gitlab.com/2009scape/Saradomin-Launcher/-/jobs/a
 
 - [@vddCore](https://www.gitlab.com/vddcore) (Vast majority of the work)
 - [@ceikry](https://gitlab.com/ceikry) (Bugfixes and improvements)
-- [@downthecrop](https://gitlab.com/downthecrop) (Bugfixes and improvements)
+- [@bushtail](https://gitlab.com/bushtail) (Bugfixes and improvements)
 
