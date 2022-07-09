@@ -1,10 +1,10 @@
-
 # Saradomin - C# Launcher for 2009Scape
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
 
 
 Saradomin is an alternative launcher to the mainline java-based 2009Scape launcher that offers some additional features and streamlines configuration options.
 
+![image](/uploads/fb44f9b24f9d844b38e4caa8635c3ebe/image.png)
 
 ## Download latest release
 
