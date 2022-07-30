@@ -71,10 +71,21 @@ namespace Saradomin.ViewModel.Windows
         {
             using (var httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync("https://2009scape.org/services/m=news/archives/latest.html");
+                HtmlNode node;
                 var doc = new HtmlDocument();
-                doc.Load(await response.Content.ReadAsStreamAsync());
-                var node = doc.DocumentNode.SelectSingleNode("//div[@class='msgcontents']");
+                
+                try
+                {
+                    var response =
+                        await httpClient.GetAsync("https://2009scape.org/services/m=news/archives/latest.html");
+                    doc.Load(await response.Content.ReadAsStreamAsync());
+                    node = doc.DocumentNode.SelectSingleNode("//div[@class='msgcontents']");
+                }
+                catch (HttpRequestException ignored)
+                {
+                    doc.LoadHtml("<html><h3>Not Available<h3><br/><body>This content is unavailable, likely due to a lack of an internet connection.</body></html>");
+                    node = doc.DocumentNode;
+                }
 
                 ContentContainer.MaxWidth = 760;
                 var renderer = new HtmlRenderer(ContentContainer, node);
