@@ -120,6 +120,11 @@ namespace Saradomin.ViewModel.Controls
             CrossPlatform.LaunchURL("https://2009scape.org");
         }
 
+        private void OpenPluginTutorial()
+        {
+            CrossPlatform.LaunchURL("https://gitlab.com/2009scape/tools/client-plugins");
+        }
+
         private void LaunchProjectWebsite()
         {
             CrossPlatform.LaunchURL("https://gitlab.com/2009scape/Saradomin-Launcher");
