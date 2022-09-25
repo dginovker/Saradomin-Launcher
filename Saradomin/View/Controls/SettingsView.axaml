@@ -260,6 +260,12 @@
                                                  Converter={StaticResource EnumDescriptionConverter}, 
                                                  Mode=TwoWay}"
                                   Margin="2,0,0,2" />
+                        
+                        <Button Classes="Hyperlink"
+                                IsVisible="{Binding !CanCustomize}"
+                                Command="{Binding OpenPluginTutorial}"
+                                Content="How Do I Install Plugins?"
+                                HorizontalAlignment="Center" />
                     </Grid>
                 </StackPanel>
             </HeaderedContentControl>
