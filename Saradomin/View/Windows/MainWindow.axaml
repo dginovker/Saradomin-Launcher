@@ -73,10 +73,10 @@
 
                 <Button Grid.Column="3"
                         Classes="OutsideNavigator"
-                        Content="discord"
+                        Content="forums"
                         CornerRadius="0,8,8,0"
                         Command="{Binding LaunchPage}"
-                        CommandParameter="discord" />
+                        CommandParameter="forums" />
             </Grid>
 
             <TabControl Grid.Row="1"
