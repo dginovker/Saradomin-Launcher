@@ -117,7 +117,7 @@ namespace Saradomin.ViewModel.Windows
                 "news" => "https://2009scape.org/services/m=news/archives/latest.html",
                 "issues" => "https://gitlab.com/2009scape/2009scape/-/issues",
                 "hiscores" => "https://2009scape.org/services/m=hiscore/hiscores.html?world=2",
-                "matrix" => "https://matrix.to/#/#2009scape:matrix.vddcore.eu",
+                "forums" => "https://forum.2009scape.org/",
                 _ => throw new ArgumentException($"{parameter} is not a valid page parameter.")
             };
 
