@@ -64,7 +64,10 @@ namespace Saradomin.Services
         {
             File.WriteAllText(
                 LauncherSettingsPath,
-                JsonSerializer.Serialize(Launcher)
+                JsonSerializer.Serialize(Launcher, new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                })
             );
         }
 
@@ -72,7 +75,10 @@ namespace Saradomin.Services
         {
             File.WriteAllText(
                 ClientSettingsPath,
-                JsonSerializer.Serialize(Client)
+                JsonSerializer.Serialize(Client, new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                })
             );
         }
     }
