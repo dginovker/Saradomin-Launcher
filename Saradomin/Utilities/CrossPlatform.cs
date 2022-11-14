@@ -128,8 +128,9 @@ namespace Saradomin.Utilities
                 || RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
             {
                 return Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                    ".local/share/2009scape"
+                    // Get the XDG_DATA_HOME environment variable, or if it doesn't exist, use the default ~/.local/share
+                    Environment.GetEnvironmentVariable("XDG_DATA_HOME") ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local", "share"),
+                    "2009scape"
                 );
             }
             else
