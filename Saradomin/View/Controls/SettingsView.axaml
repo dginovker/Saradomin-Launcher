@@ -195,6 +195,9 @@
                     <CheckBox Content="Allow multiple client instances to run"
                               IsChecked="{Binding Launcher.AllowMultiboxing, Mode=TwoWay}" />
 
+                    <CheckBox Content="Scale the client UI by 2x"
+                              IsChecked="{Binding Client.OfficialLauncher.Scale2x, Mode=TwoWay}" />
+
                     <Grid RowDefinitions="Auto,Auto"
                           ColumnDefinitions="*,Auto"
                           Margin="0,2,0,4">

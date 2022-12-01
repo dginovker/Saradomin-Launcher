@@ -9,5 +9,8 @@ namespace Saradomin.Model.Settings.Client
 
         [JsonPropertyName("notifyUpdates")]
         public bool CheckForUpdates { get; set; } = true;
+
+        [JsonPropertyName("scale2x")]
+        public bool Scale2x { get; set; } = false;
     }
 }
