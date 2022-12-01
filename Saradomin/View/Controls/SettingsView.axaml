@@ -307,7 +307,8 @@
                         </Grid>
 
                         <CheckBox Content="Enable winter season features"
-                                  IsChecked="{Binding Client.Customization.SnowSeasonFeaturesEnabled, Mode=TwoWay}" />
+                                  IsChecked="{Binding Client.Customization.SnowSeasonFeaturesEnabled, Mode=TwoWay}"
+                                  IsEnabled="{Binding !CanCustomize}"/>
 
                         <CheckBox Content="Left-click attack on entities above your combat level"
                                   IsChecked="{Binding Client.Customization.RightClickMenu.AttackStrongerEntitiesWithLeftClick, Mode=TwoWay}" />
