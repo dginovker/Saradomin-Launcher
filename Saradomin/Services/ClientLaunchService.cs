@@ -14,6 +14,8 @@ namespace Saradomin.Services
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public string scl = "";
+
         public ClientLaunchService(ISettingsService settingsService,
             IClientUpdateService clientUpdateService)
         {
@@ -23,11 +25,15 @@ namespace Saradomin.Services
 
         public async Task LaunchClient()
         {
+            if(_settingsService.Client.OfficialLauncher.Scale2x)
+            {
+                scl = "-Dsun.java2d.uiScale=2";
+            } 
             var proc = new Process
             {
                 StartInfo = new(_settingsService.Launcher.JavaExecutableLocation)
                 {
-                    Arguments = $"-jar {_clientUpdateService.PreferredTargetFilePath}",
+                    Arguments = $"-jar {scl} {_clientUpdateService.PreferredTargetFilePath}",
                     WorkingDirectory = CrossPlatform.Locate2009scapeHome(),
                     UseShellExecute = true,
                     WindowStyle = ProcessWindowStyle.Hidden
