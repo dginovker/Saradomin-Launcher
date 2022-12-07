@@ -51,6 +51,15 @@ namespace Saradomin.Utilities
                     {
                         return RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
                     }
+
+                    if ((bytes[0] == 0xCF
+                        && bytes[1] == 0xFA)
+                        || (bytes[0] == 0xCA
+                        && bytes[1] == 0xFE))
+                    {
+                        return RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+                    }
+
                 }
             }
             catch
@@ -113,6 +122,27 @@ namespace Saradomin.Utilities
 
                 if (!string.IsNullOrEmpty(data))
                     return UnixPath.GetCompleteRealPath(data.Trim());
+
+                throw new FileNotFoundException("Failed to find Java. Make sure it's installed!");
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                var proc = new Process
+                {
+                    StartInfo = new("/usr/bin/which")
+                    {
+                        Arguments = "java",
+                        RedirectStandardOutput = true,
+                        UseShellExecute = false
+                    }
+                };
+
+                proc.Start();
+                proc.WaitForExit();
+                var data = proc.StandardOutput.ReadToEnd();
+
+                if (!string.IsNullOrEmpty(data))
+                    return Path.Combine(UnixPath.GetCompleteRealPath(data.Trim()));
 
                 throw new FileNotFoundException("Failed to find Java. Make sure it's installed!");
             }
