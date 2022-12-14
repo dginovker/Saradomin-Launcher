@@ -4,9 +4,9 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using PropertyChanged;
-using Saradomin.Messaging;
+using Saradomin.Infrastructure.Messaging;
 
-namespace Saradomin.Views.Windows
+namespace Saradomin.View.Windows
 {
     [DoNotNotify]
     public class MainWindow : Window

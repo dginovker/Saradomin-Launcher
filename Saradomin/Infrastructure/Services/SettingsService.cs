@@ -4,7 +4,7 @@ using Saradomin.Model.Settings.Client;
 using Saradomin.Model.Settings.Launcher;
 using Saradomin.Utilities;
 
-namespace Saradomin.Services
+namespace Saradomin.Infrastructure.Services
 {
     public class SettingsService : ISettingsService
     {

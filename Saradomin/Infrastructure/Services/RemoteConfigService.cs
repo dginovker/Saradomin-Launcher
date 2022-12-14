@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Saradomin.Model;
 
-namespace Saradomin.Services
+namespace Saradomin.Infrastructure.Services
 {
     public class RemoteConfigService : IRemoteConfigService
     {

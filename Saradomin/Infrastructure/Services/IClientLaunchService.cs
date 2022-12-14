@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Glitonea.Mvvm;
 
-namespace Saradomin.Services
+namespace Saradomin.Infrastructure.Services
 {
     public interface IClientLaunchService : IService
     {

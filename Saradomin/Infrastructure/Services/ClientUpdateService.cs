@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Saradomin.Model.Settings.Launcher;
 using Saradomin.Utilities;
 
-namespace Saradomin.Services
+namespace Saradomin.Infrastructure.Services
 {
     public class ClientUpdateService : IClientUpdateService
     {

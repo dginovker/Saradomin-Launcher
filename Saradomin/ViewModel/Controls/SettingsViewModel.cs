@@ -10,10 +10,10 @@ using Avalonia.Controls;
 using Glitonea.Extensions;
 using Glitonea.Mvvm;
 using Glitonea.Utilities;
-using Saradomin.Messaging;
+using Saradomin.Infrastructure.Messaging;
+using Saradomin.Infrastructure.Services;
 using Saradomin.Model.Settings.Client;
 using Saradomin.Model.Settings.Launcher;
-using Saradomin.Services;
 using Saradomin.Utilities;
 
 namespace Saradomin.ViewModel.Controls

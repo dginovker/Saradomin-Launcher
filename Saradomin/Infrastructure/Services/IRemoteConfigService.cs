@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Glitonea.Mvvm;
 using Saradomin.Model;
 
-namespace Saradomin.Services
+namespace Saradomin.Infrastructure.Services
 {
     public interface IRemoteConfigService : IService
     {

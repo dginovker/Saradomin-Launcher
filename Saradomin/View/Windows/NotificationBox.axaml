@@ -1,0 +1,56 @@
+<glitonea:WindowEx x:Class="Saradomin.View.Windows.NotificationBox"
+                   xmlns="https://github.com/avaloniaui"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:glitonea="clr-namespace:Glitonea;assembly=Glitonea"
+                   xmlns:mvvm="clr-namespace:Glitonea.Mvvm;assembly=Glitonea"
+                   xmlns:windows="clr-namespace:Saradomin.ViewModel.Windows"
+                   Name="NotificationBox"
+                   Title="{Binding Title}"
+                   Height="120"
+                   MaxWidth="400"
+                   Background="{StaticResource WindowBackgroundBrush}"
+                   CanResize="False"
+                   DataContext="{Binding #NotificationBox}"
+                   ShowActivated="True"
+                   ShowInTaskbar="False"
+                   SizeToContent="WidthAndHeight"
+                   SystemDecorations="None"
+                   WindowStartupLocation="CenterOwner">
+    <Border BorderBrush="{StaticResource AccentBrush}"
+            BorderThickness="1">
+        <Grid RowDefinitions="24,*,32">
+            <Grid Grid.Row="0"
+                  Background="{StaticResource DarkBackgroundBrush}">
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontFamily="Open Sans"
+                           FontSize="14"
+                           FontWeight="Light"
+                           Foreground="{StaticResource AccentBrush}"
+                           Text="{Binding #NotificationBox.Title}"
+                           TextAlignment="Center">
+                </TextBlock>
+            </Grid>
+
+            <Grid Grid.Row="1"
+                  Margin="8">
+                <TextBlock Text="{Binding Message}"
+                           TextAlignment="Center"
+                           TextWrapping="Wrap" />
+            </Grid>
+
+            <Border Grid.Row="2"
+                    Background="Transparent"
+                    BorderThickness="0,0,0,0">
+                <Button Width="NaN"
+                        Height="NaN"
+                        Margin="4,0,4,4"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Classes="OutsideNavigator"
+                        Command="{Binding Close}"
+                        Content="OK" />
+            </Border>
+        </Grid>
+    </Border>
+</glitonea:WindowEx>

@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using PropertyChanged;
-using Saradomin.Messaging;
 
 namespace Saradomin.View.Controls
 {

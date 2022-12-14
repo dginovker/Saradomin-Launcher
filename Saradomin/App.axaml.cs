@@ -4,7 +4,7 @@ using Avalonia.Markup.Xaml;
 using Glitonea;
 using Glitonea.Mvvm;
 using PropertyChanged;
-using Saradomin.Views.Windows;
+using Saradomin.View.Windows;
 
 namespace Saradomin
 {

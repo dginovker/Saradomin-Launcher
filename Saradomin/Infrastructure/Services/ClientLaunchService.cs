@@ -5,7 +5,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Saradomin.Utilities;
 
-namespace Saradomin.Services
+namespace Saradomin.Infrastructure.Services
 {
     public class ClientLaunchService : IClientLaunchService
     {

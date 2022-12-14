@@ -1,4 +1,4 @@
-namespace Saradomin.Messaging
+namespace Saradomin.Infrastructure.Messaging
 {
     public class SettingsModifiedMessage
     {

@@ -2,7 +2,7 @@ using Glitonea.Mvvm;
 using Saradomin.Model.Settings.Client;
 using Saradomin.Model.Settings.Launcher;
 
-namespace Saradomin.Services
+namespace Saradomin.Infrastructure.Services
 {
     public interface ISettingsService : IService
     {

@@ -2,16 +2,15 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Metadata;
 using Glitonea.Mvvm;
 using HtmlAgilityPack;
-using Saradomin.Messaging;
+using Saradomin.Infrastructure.Messaging;
+using Saradomin.Infrastructure.Services;
 using Saradomin.Model.Settings.Launcher;
-using Saradomin.Services;
 using Saradomin.Utilities;
 
 namespace Saradomin.ViewModel.Windows
@@ -29,10 +28,11 @@ namespace Saradomin.ViewModel.Windows
         private LauncherSettings Launcher { get; }
 
         public string Title { get; set; } = "2009scape launcher";
-
+        
         public bool CanLaunch { get; private set; } = true;
         public string LaunchText { get; private set; } = "Play!";
 
+        public bool DimContent { get; private set; }
         public StackPanel ContentContainer { get; private set; }
 
         public MainWindowViewModel(IClientLaunchService launchService,
@@ -55,6 +55,7 @@ namespace Saradomin.ViewModel.Windows
 
             App.Messenger.Register<MainViewLoadedMessage>(this, MainViewLoaded);
             App.Messenger.Register<SettingsModifiedMessage>(this, SettingsModified);
+            App.Messenger.Register<NotificationBoxStateChangedMessage>(this, NotificatationBoxStateChanged);
 
             if (!JavaExecutableValid)
             {
@@ -81,7 +82,7 @@ namespace Saradomin.ViewModel.Windows
                     doc.Load(await response.Content.ReadAsStreamAsync());
                     node = doc.DocumentNode.SelectSingleNode("//div[@class='msgcontents']");
                 }
-                catch (HttpRequestException ignored)
+                catch (HttpRequestException)
                 {
                     doc.LoadHtml("<html><h3>Not Available<h3><br/><body>This content is unavailable, likely due to a lack of an internet connection.</body></html>");
                     node = doc.DocumentNode;
@@ -109,6 +110,11 @@ namespace Saradomin.ViewModel.Windows
                 }
             }
         }
+        
+        public void NotificatationBoxStateChanged(NotificationBoxStateChangedMessage msg)
+        {
+            DimContent = msg.WasOpened;
+        }
 
         public void LaunchPage(string parameter)
         {
@@ -117,7 +123,8 @@ namespace Saradomin.ViewModel.Windows
                 "news" => "https://2009scape.org/services/m=news/archives/latest.html",
                 "issues" => "https://gitlab.com/2009scape/2009scape/-/issues",
                 "hiscores" => "https://2009scape.org/services/m=hiscore/hiscores.html?world=2",
-                "forums" => "https://forum.2009scape.org/",
+                "forums" => "https://forum.2009scape.org",
+                "discord" => "https://discord.gg/43YPGND",
                 _ => throw new ArgumentException($"{parameter} is not a valid page parameter.")
             };
 
