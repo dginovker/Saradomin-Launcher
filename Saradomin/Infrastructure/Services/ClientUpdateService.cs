@@ -50,8 +50,8 @@ namespace Saradomin.Infrastructure.Services
 
         public string PreferredTargetFilePath 
             => _settingsService.Launcher.ClientProfile == LauncherSettings.ClientReleaseProfile.Experimental
-                ? CrossPlatform.Locate2009scapeExperimentalExecutable()
-                : CrossPlatform.Locate2009scapeLegacyExecutable();
+                ? CrossPlatform.Locate2009scapeExperimentalExecutable(_settingsService.Launcher.InstallationDirectory)
+                : CrossPlatform.Locate2009scapeLegacyExecutable(_settingsService.Launcher.InstallationDirectory);
 
         public event EventHandler<float> DownloadProgressChanged;
 

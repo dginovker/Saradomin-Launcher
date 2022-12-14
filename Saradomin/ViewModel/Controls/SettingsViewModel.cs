@@ -177,5 +177,21 @@ namespace Saradomin.ViewModel.Controls
                 Launcher.JavaExecutableLocation = paths[0];
             }
         }
+        
+        private async Task BrowseForInstallationDirectory()
+        {
+            var ofd = new OpenFolderDialog
+            {
+                Title = "Browse for Installation Directory...",
+                Directory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
+            };
+
+            var path = await ofd.ShowAsync(Application.Current.GetMainWindow());
+
+            if (path != null)
+            {
+                Launcher.InstallationDirectory = path;
+            }
+        }
     }
 }

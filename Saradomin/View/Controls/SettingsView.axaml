@@ -1,24 +1,24 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl x:Class="Saradomin.View.Controls.SettingsView"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Saradomin.View.Controls"
+             xmlns:converters="clr-namespace:Glitonea.Mvvm.Converters;assembly=Glitonea"
              xmlns:glitonea="clr-namespace:Glitonea;assembly=Glitonea"
              xmlns:mvvm="clr-namespace:Glitonea.Mvvm;assembly=Glitonea"
              xmlns:vm="clr-namespace:Saradomin.ViewModel.Controls"
-             xmlns:controls="clr-namespace:Saradomin.View.Controls"
-             xmlns:converters="clr-namespace:Glitonea.Mvvm.Converters;assembly=Glitonea"
-             x:Class="Saradomin.View.Controls.SettingsView"
              DataContext="{mvvm:DataContextSource vm:SettingsViewModel}">
-    <Grid ColumnDefinitions="*,*"
-          Margin="0,0,2,2">
+    <Grid Margin="0,0,2,2"
+          ColumnDefinitions="*,*">
         <DockPanel Grid.Column="0"
                    IsEnabled="{Binding CanCustomize}">
             <HeaderedContentControl Classes="GroupBox"
                                     CornerRadius="6,0,0,0"
-                                    Header="graphics settings"
-                                    DockPanel.Dock="Top">
+                                    DockPanel.Dock="Top"
+                                    Header="graphics settings">
                 <Grid ColumnDefinitions="Auto,*">
                     <StackPanel Grid.Column="0"
-                                Orientation="Vertical"
-                                VerticalAlignment="Center">
+                                VerticalAlignment="Center"
+                                Orientation="Vertical">
                         <CheckBox Content="Mini-map smoothing"
                                   IsChecked="{Binding Client.Customization.MiniMapSmoothingEnabled, Mode=TwoWay}" />
 
@@ -28,101 +28,96 @@
 
                     <Grid Grid.Column="1"
                           Grid.ColumnSpan="2"
-                          RowDefinitions="Auto,Auto,Auto"
+                          HorizontalAlignment="Center"
                           VerticalAlignment="Center"
-                          HorizontalAlignment="Center">
+                          RowDefinitions="Auto,Auto,Auto">
                         <TextBlock Grid.Row="0"
+                                   Margin="0,0,0,2"
                                    HorizontalAlignment="Center"
                                    Foreground="{StaticResource DarkForegroundBrush}"
-                                   Text="Anti-aliasing quality"
-                                   Margin="0,0,0,2" />
+                                   Text="Anti-aliasing quality" />
 
                         <controls:AntiAliasingSelector Grid.Row="1"
-                                                       HorizontalAlignment="Center"
                                                        Margin="0,0,0,4"
+                                                       HorizontalAlignment="Center"
                                                        AntiAliasingLevel="{Binding Client.Customization.AntiAliasingSampleCount, Mode=TwoWay}" />
                     </Grid>
                 </Grid>
             </HeaderedContentControl>
 
             <HeaderedContentControl Classes="GroupBox"
-                                    Header="right-click menu settings"
-                                    DockPanel.Dock="Top">
-                <Grid ColumnDefinitions="*,*"
-                      RowDefinitions="Auto,Auto,Auto,Auto"
-                      Margin="2,4,0,4">
+                                    DockPanel.Dock="Top"
+                                    Header="right-click menu settings">
+                <Grid Margin="2,4,0,4"
+                      ColumnDefinitions="*,*"
+                      RowDefinitions="Auto,Auto,Auto,Auto">
 
                     <StackPanel Grid.Column="0"
-                                Orientation="Vertical"
-                                Margin="0,0,4,0">
+                                Margin="0,0,4,0"
+                                Orientation="Vertical">
                         <CheckBox Margin="-2,0,0,0"
                                   Content="Use RS3-style menu border"
-                                  IsChecked="{Binding Client.Customization.RightClickMenu.Styles.UseRuneScape3Border,
-                                          Mode=TwoWay}" />
+                                  IsChecked="{Binding Client.Customization.RightClickMenu.Styles.UseRuneScape3Border, Mode=TwoWay}" />
 
-                        <controls:ColorSpinner Header="Background color"
+                        <controls:ColorSpinner Margin="0,0,0,4"
                                                HorizontalAlignment="Right"
-                                               Margin="0,0,0,4"
-                                               TargetColor="{Binding Client.Customization.RightClickMenu.Background.BackgroundColor,
-                                                         Mode=TwoWay}" />
+                                               Header="Background color"
+                                               TargetColor="{Binding Client.Customization.RightClickMenu.Background.BackgroundColor, Mode=TwoWay}" />
 
-                        <controls:ColorSpinner Header="Title bar color"
+                        <controls:ColorSpinner Margin="0,0,0,4"
                                                HorizontalAlignment="Right"
-                                               Margin="0,0,0,4"
-                                               TargetColor="{Binding Client.Customization.RightClickMenu.TitleBar.BackgroundColor,
-                                                         Mode=TwoWay}" />
+                                               Header="Title bar color"
+                                               TargetColor="{Binding Client.Customization.RightClickMenu.TitleBar.BackgroundColor, Mode=TwoWay}" />
 
-                        <controls:ColorSpinner Header="Title text color"
+                        <controls:ColorSpinner Margin="0,0,0,4"
                                                HorizontalAlignment="Right"
                                                EnableAlphaSpinner="False"
-                                               Margin="0,0,0,4"
-                                               TargetColor="{Binding Client.Customization.RightClickMenu.TitleBar.ForegroundColor,
-                                                         Mode=TwoWay}" />
+                                               Header="Title text color"
+                                               TargetColor="{Binding Client.Customization.RightClickMenu.TitleBar.ForegroundColor, Mode=TwoWay}" />
 
-                        <controls:ColorSpinner Header="Border color"
+                        <controls:ColorSpinner Margin="0,0,0,2"
                                                HorizontalAlignment="Right"
-                                               Margin="0,0,0,2"
-                                               TargetColor="{Binding Client.Customization.RightClickMenu.Border.BackgroundColor,
-                                                         Mode=TwoWay}" />
+                                               Header="Border color"
+                                               TargetColor="{Binding Client.Customization.RightClickMenu.Border.BackgroundColor, Mode=TwoWay}" />
                     </StackPanel>
 
-                    <StackPanel Grid.Column="1"
-                                Grid.RowSpan="3"
+                    <StackPanel Grid.RowSpan="3"
+                                Grid.Column="1"
                                 Margin="0,66,0,0">
                         <Border VerticalAlignment="Center"
-                                BorderThickness="1"
-                                BorderBrush="{StaticResource DarkBorderBrush}">
+                                BorderBrush="{StaticResource DarkBorderBrush}"
+                                BorderThickness="1">
                             <Grid>
-                                <Image Source="avares://Saradomin/Resources/Images/previewbg.png"
-                                       Stretch="Fill"
-                                       Width="150"
+                                <Image Width="150"
                                        Height="160"
-                                       Margin="1" />
+                                       Margin="1"
+                                       Source="avares://Saradomin/Resources/Images/previewbg.png"
+                                       Stretch="Fill" />
 
                                 <controls:MenuPreview Name="MenuPreview"
-                                                      VerticalAlignment="Center"
                                                       Width="130"
-                                                      UseRs3Border="{Binding Client.Customization.RightClickMenu.Styles.UseRuneScape3Border}"
+                                                      VerticalAlignment="Center"
                                                       BackgroundColor="{Binding Client.Customization.RightClickMenu.Background.BackgroundColor.Brush}"
+                                                      BorderColor="{Binding Client.Customization.RightClickMenu.Border.BackgroundColor.Brush}"
                                                       TitleBarColor="{Binding Client.Customization.RightClickMenu.TitleBar.BackgroundColor.Brush}"
                                                       TitleFontColor="{Binding Client.Customization.RightClickMenu.TitleBar.ForegroundColor.Brush}"
-                                                      BorderColor="{Binding Client.Customization.RightClickMenu.Border.BackgroundColor.Brush}" />
+                                                      UseRs3Border="{Binding Client.Customization.RightClickMenu.Styles.UseRuneScape3Border}" />
                             </Grid>
                         </Border>
 
-                        <Button Classes="Hyperlink"
+                        <Button HorizontalAlignment="Center"
+                                Classes="Hyperlink"
                                 Command="{Binding ResetRightClickMenu}"
-                                Content="reset colors"
-                                HorizontalAlignment="Center" />
+                                Content="reset colors" />
                     </StackPanel>
 
                 </Grid>
             </HeaderedContentControl>
 
-            <HeaderedContentControl Classes="GroupBox"
-                                    Header="debugging settings"
+            <HeaderedContentControl HorizontalAlignment="Stretch"
+                                    Classes="GroupBox"
                                     DockPanel.Dock="Left"
-                                    HorizontalAlignment="Stretch">
+                                    Header="debugging settings">
                 <Grid ColumnDefinitions="Auto,Auto">
                     <StackPanel Grid.Column="0"
                                 Orientation="Vertical">
@@ -137,15 +132,15 @@
                     </StackPanel>
 
                     <StackPanel Grid.Column="1"
-                                Orientation="Vertical"
-                                Margin="8,0,0,0">
+                                Margin="8,0,0,0"
+                                Orientation="Vertical">
                         <CheckBox Content="Enable login screen debugging"
                                   IsChecked="{Binding Client.Debugging.HdLoginRegionDebuggingEnabled, Mode=TwoWay}" />
 
-                        <CheckBox Content="Verbose?"
-                                  Margin="18,0,0,0"
-                                  IsVisible="{Binding Client.Debugging.HdLoginRegionDebuggingEnabled, Mode=TwoWay}"
-                                  IsChecked="{Binding Client.Debugging.HdLoginRegionVerboseDebuggingEnabled, Mode=TwoWay}" />
+                        <CheckBox Margin="18,0,0,0"
+                                  Content="Verbose?"
+                                  IsChecked="{Binding Client.Debugging.HdLoginRegionVerboseDebuggingEnabled, Mode=TwoWay}"
+                                  IsVisible="{Binding Client.Debugging.HdLoginRegionDebuggingEnabled, Mode=TwoWay}" />
 
                         <CheckBox Content="Enable cache debugging"
                                   IsChecked="{Binding Client.Debugging.CacheDebuggingEnabled, Mode=TwoWay}"
@@ -161,23 +156,23 @@
 
         <Border Grid.Column="0"
                 Margin="2,2,0,0"
-                CornerRadius="6,0,0,0"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
-                ZIndex="9"
                 Background="{StaticResource DarkTranslucentBackgroundBrush}"
-                IsVisible="{Binding !CanCustomize, Mode=TwoWay}">
-            <TextBlock Text="Disabled: Experimental client chosen"
-                       HorizontalAlignment="Center"
+                CornerRadius="6,0,0,0"
+                IsVisible="{Binding !CanCustomize, Mode=TwoWay}"
+                ZIndex="9">
+            <TextBlock HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        FontFamily="avares://Saradomin/Resources/Fonts/runescape_uf.ttf#RuneScape UF"
-                       FontSize="16" />
+                       FontSize="16"
+                       Text="Disabled: Experimental client chosen" />
         </Border>
 
         <DockPanel Grid.Column="1">
             <HeaderedContentControl Classes="GroupBox"
-                                    Header="launcher settings"
-                                    DockPanel.Dock="Top">
+                                    DockPanel.Dock="Top"
+                                    Header="launcher settings">
                 <StackPanel Orientation="Vertical">
                     <CheckBox Content="Place 'X' button on the left"
                               IsChecked="{Binding Launcher.PlaceCloseButtonOnLeft, Mode=TwoWay}" />
@@ -188,7 +183,7 @@
 
                     <CheckBox Content="Check for client updates on launch"
                               IsChecked="{Binding Launcher.CheckForClientUpdatesOnLaunch, Mode=TwoWay}" />
-                    
+
                     <CheckBox Content="Check for updated server profiles on launch"
                               IsChecked="{Binding Launcher.CheckForServerProfilesOnLaunch, Mode=TwoWay}" />
 
@@ -198,49 +193,81 @@
                     <CheckBox Content="Scale the client UI by 2x"
                               IsChecked="{Binding Client.OfficialLauncher.Scale2x, Mode=TwoWay}" />
 
-                    <Grid RowDefinitions="Auto,Auto"
+                    <Grid Margin="0,2,0,4"
                           ColumnDefinitions="*,Auto"
-                          Margin="0,2,0,4">
+                          RowDefinitions="Auto,Auto">
                         <TextBlock Grid.Row="0"
                                    Grid.ColumnSpan="2"
                                    Margin="3,0,0,2"
-                                   Text="Java executable location"
-                                   Foreground="{StaticResource DarkForegroundBrush}" />
+                                   Foreground="{StaticResource DarkForegroundBrush}"
+                                   Text="Java executable location" />
 
                         <TextBox Grid.Row="1"
                                  Grid.Column="0"
+                                 Width="342"
+                                 Margin="2,0,0,0"
+                                 HorizontalAlignment="Left"
                                  Classes="NormalTextBox"
                                  Text="{Binding Launcher.JavaExecutableLocation, Mode=TwoWay}"
-                                 Margin="2,0,0,0"
-                                 Watermark="Enter a path to java or java.exe..."
-                                 HorizontalAlignment="Left"
-                                 Width="342" />
+                                 Watermark="Enter a path to java or java.exe..." />
 
                         <Button Grid.Row="1"
                                 Grid.Column="1"
                                 Width="22"
                                 Height="24"
-                                Classes="OutsideNavigator"
-                                Content="..."
                                 Margin="2,0,0,0"
+                                Classes="OutsideNavigator"
                                 Command="{Binding BrowseForJavaExecutable}"
+                                Content="..."
                                 ToolTip.Tip="Browse..." />
                     </Grid>
 
-                    <Grid RowDefinitions="Auto, Auto"
-                          Margin="0,0,0,4">
+                    <Grid Margin="0,2,0,4"
+                          ColumnDefinitions="*,Auto"
+                          RowDefinitions="Auto,Auto">
+                        <TextBlock Grid.Row="0"
+                                   Grid.ColumnSpan="2"
+                                   Margin="3,0,0,2"
+                                   Foreground="{StaticResource DarkForegroundBrush}"
+                                   Text="2009scape installation directory" />
+
+                        <!--
+                            Don't let the user edit it directly to avoid creating a ton of directories,
+                            since we get a notification every time the textbox is updated.
+                        -->
+                        <TextBox Grid.Row="1"
+                                 Grid.Column="0"
+                                 Width="342"
+                                 Margin="2,0,0,0"
+                                 HorizontalAlignment="Left"
+                                 Classes="NormalTextBox"
+                                 IsReadOnly="True"
+                                 Text="{Binding Launcher.InstallationDirectory, Mode=TwoWay}"
+                                 Watermark="Enter a path to your preferred installation directory..." />
+
+                        <Button Grid.Row="1"
+                                Grid.Column="1"
+                                Width="22"
+                                Height="24"
+                                Margin="2,0,0,0"
+                                Classes="OutsideNavigator"
+                                Command="{Binding BrowseForInstallationDirectory}"
+                                Content="..."
+                                ToolTip.Tip="Browse..." />
+                    </Grid>
+
+                    <Grid Margin="0,0,0,4"
+                          RowDefinitions="Auto, Auto">
                         <TextBlock Grid.Row="0"
                                    Margin="3,0,0,2"
-                                   Text="Server profile"
+                                   HorizontalAlignment="Left"
                                    Foreground="{StaticResource DarkForegroundBrush}"
-                                   HorizontalAlignment="Left" />
+                                   Text="Server profile" />
 
                         <ComboBox Grid.Row="1"
+                                  Margin="2,0,0,2"
                                   Items="{Binding ServerProfiles}"
-                                  SelectedItem="{Binding ServerProfile, 
-                                                 Converter={StaticResource EnumDescriptionConverter}, 
-                                                 Mode=TwoWay}"
-                                  Margin="2,0,0,2">
+                                  SelectedItem="{Binding ServerProfile, Converter={StaticResource EnumDescriptionConverter}, Mode=TwoWay}">
                             <ComboBox.Styles>
                                 <Style Selector="ComboBoxItem">
                                     <Setter Property="ToolTip.Tip" Value="{x:Null}" />
@@ -249,26 +276,24 @@
                         </ComboBox>
                     </Grid>
 
-                    <Grid RowDefinitions="Auto, Auto"
-                          Margin="0,0,0,4">
+                    <Grid Margin="0,0,0,4"
+                          RowDefinitions="Auto, Auto">
                         <TextBlock Grid.Row="0"
                                    Margin="3,0,0,2"
-                                   Text="Client profile"
+                                   HorizontalAlignment="Left"
                                    Foreground="{StaticResource DarkForegroundBrush}"
-                                   HorizontalAlignment="Left" />
+                                   Text="Client profile" />
 
                         <ComboBox Grid.Row="1"
+                                  Margin="2,0,0,2"
                                   Items="{Binding ClientProfiles}"
-                                  SelectedItem="{Binding Launcher.ClientProfile, 
-                                                 Converter={StaticResource EnumDescriptionConverter}, 
-                                                 Mode=TwoWay}"
-                                  Margin="2,0,0,2" />
-                        
-                        <Button Classes="Hyperlink"
-                                IsVisible="{Binding !CanCustomize}"
+                                  SelectedItem="{Binding Launcher.ClientProfile, Converter={StaticResource EnumDescriptionConverter}, Mode=TwoWay}" />
+
+                        <Button HorizontalAlignment="Center"
+                                Classes="Hyperlink"
                                 Command="{Binding OpenPluginTutorial}"
                                 Content="How Do I Install Plugins?"
-                                HorizontalAlignment="Center" />
+                                IsVisible="{Binding !CanCustomize}" />
                     </Grid>
                 </StackPanel>
             </HeaderedContentControl>
@@ -277,29 +302,29 @@
                 <Border Margin="2,2,0,0"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
-                        ZIndex="9"
                         Background="{StaticResource DarkTranslucentBackgroundBrush}"
-                        IsVisible="{Binding !CanCustomize, Mode=TwoWay}">
-                    <TextBlock Text="Disabled: Experimental client chosen"
-                               HorizontalAlignment="Center"
+                        IsVisible="{Binding !CanCustomize, Mode=TwoWay}"
+                        ZIndex="9">
+                    <TextBlock HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                FontFamily="avares://Saradomin/Resources/Fonts/runescape_uf.ttf#RuneScape UF"
-                               FontSize="16" />
+                               FontSize="16"
+                               Text="Disabled: Experimental client chosen" />
                 </Border>
 
                 <HeaderedContentControl Classes="GroupBox"
-                                        Header="interface settings"
                                         DockPanel.Dock="Top"
+                                        Header="interface settings"
                                         IsEnabled="{Binding CanCustomize}">
                     <StackPanel Orientation="Vertical">
-                        <Grid RowDefinitions="Auto,Auto"
-                              Margin="2,2,2,4">
+                        <Grid Margin="2,2,2,4"
+                              RowDefinitions="Auto,Auto">
                             <TextBlock Grid.Row="0"
+                                       Margin="0,0,0,2"
                                        Foreground="{StaticResource DarkForegroundBrush}"
-                                       Text="Main menu song"
-                                       Margin="0,0,0,2" />
+                                       Text="Main menu song" />
 
-                            <!-- Workaround applies here. Check SettingsViewModel for details. -->
+                            <!--  Workaround applies here. Check SettingsViewModel for details.  -->
                             <ComboBox Grid.Row="1"
                                       Items="{Binding MusicTitles}"
                                       SelectedItem="{Binding LoginMusicTheme, Mode=TwoWay}"
@@ -308,7 +333,7 @@
 
                         <CheckBox Content="Enable winter season features"
                                   IsChecked="{Binding Client.Customization.SnowSeasonFeaturesEnabled, Mode=TwoWay}"
-                                  IsEnabled="{Binding !CanCustomize}"/>
+                                  IsEnabled="{Binding !CanCustomize}" />
 
                         <CheckBox Content="Left-click attack on entities above your combat level"
                                   IsChecked="{Binding Client.Customization.RightClickMenu.AttackStrongerEntitiesWithLeftClick, Mode=TwoWay}" />
@@ -317,40 +342,40 @@
                             <CheckBox Content="Enable Slayer tracker"
                                       IsChecked="{Binding Client.Customization.SlayerTracker.IsEnabled}" />
 
-                            <Grid ColumnDefinitions="*,Auto"
-                                  IsVisible="{Binding Client.Customization.SlayerTracker.IsEnabled}"
-                                  Margin="0,0,2,0">
+                            <Grid Margin="0,0,2,0"
+                                  ColumnDefinitions="*,Auto"
+                                  IsVisible="{Binding Client.Customization.SlayerTracker.IsEnabled}">
                                 <controls:ColorSpinner Grid.Column="0"
                                                        Margin="2,0,0,0"
                                                        Header="Background color"
                                                        TargetColor="{Binding Client.Customization.SlayerTracker.BackgroundColor, Mode=TwoWay}" />
                                 <StackPanel Grid.Column="1"
-                                            VerticalAlignment="Center"
-                                            HorizontalAlignment="Right">
-                                    <Border BorderThickness="1"
-                                            BorderBrush="{StaticResource DarkBorderBrush}">
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Center">
+                                    <Border BorderBrush="{StaticResource DarkBorderBrush}"
+                                            BorderThickness="1">
                                         <Grid>
-                                            <Image Source="avares://Saradomin/Resources/Images/previewbg.png"
-                                                   Stretch="None"
-                                                   Width="110"
+                                            <Image Width="110"
                                                    Height="60"
-                                                   Margin="1">
+                                                   Margin="1"
+                                                   Source="avares://Saradomin/Resources/Images/previewbg.png"
+                                                   Stretch="None">
                                                 <Image.Clip>
                                                     <RectangleGeometry Rect="0,0,110,60" />
                                                 </Image.Clip>
                                             </Image>
 
-                                            <controls:SlayerPreview Height="40"
-                                                                    Width="90"
+                                            <controls:SlayerPreview Width="90"
+                                                                    Height="40"
                                                                     VerticalAlignment="Center"
                                                                     BackgroundColor="{Binding Client.Customization.SlayerTracker.BackgroundColor}" />
                                         </Grid>
                                     </Border>
 
-                                    <Button Classes="Hyperlink"
+                                    <Button HorizontalAlignment="Center"
+                                            Classes="Hyperlink"
                                             Command="{Binding ResetSlayerTracker}"
-                                            Content="reset colors"
-                                            HorizontalAlignment="Center" />
+                                            Content="reset colors" />
                                 </StackPanel>
                             </Grid>
                         </StackPanel>
@@ -358,48 +383,44 @@
                         <CheckBox Content="Enable XP tracker"
                                   IsChecked="{Binding Client.Customization.XpTracker.IsEnabled, Mode=TwoWay}" />
 
-                        <Grid ColumnDefinitions="*,*"
-                              Margin="2,0,1,4"
+                        <Grid Margin="2,0,1,4"
+                              ColumnDefinitions="*,*"
                               IsVisible="{Binding Client.Customization.XpTracker.IsEnabled}">
                             <Grid Grid.Column="0"
-                                  RowDefinitions="Auto,Auto"
-                                  Margin="0,0,4,0">
+                                  Margin="0,0,4,0"
+                                  RowDefinitions="Auto,Auto">
                                 <TextBlock Grid.Row="0"
+                                           Margin="0,0,0,2"
                                            Foreground="{StaticResource DarkForegroundBrush}"
-                                           Text="XP counting mode"
-                                           Margin="0,0,0,2" />
+                                           Text="XP counting mode" />
                                 <ComboBox Grid.Row="1"
                                           Items="{Binding DropModes}"
-                                          SelectedItem="{Binding Client.Customization.XpTracker.DropMode, 
-                                                             Converter={StaticResource EnumDescriptionConverter},
-                                                             Mode=TwoWay}" />
+                                          SelectedItem="{Binding Client.Customization.XpTracker.DropMode, Converter={StaticResource EnumDescriptionConverter}, Mode=TwoWay}" />
                             </Grid>
 
                             <Grid Grid.Column="1"
                                   RowDefinitions="Auto, Auto">
                                 <TextBlock Grid.Row="0"
+                                           Margin="0,0,0,2"
                                            Foreground="{StaticResource DarkForegroundBrush}"
-                                           Text="XP tracking mode"
-                                           Margin="0,0,0,2" />
+                                           Text="XP tracking mode" />
                                 <ComboBox Grid.Row="1"
                                           Items="{Binding TrackingModes}"
-                                          SelectedItem="{Binding Client.Customization.XpTracker.TrackingMode, 
-                                                             Converter={StaticResource EnumDescriptionConverter},
-                                                             Mode=TwoWay}" />
+                                          SelectedItem="{Binding Client.Customization.XpTracker.TrackingMode, Converter={StaticResource EnumDescriptionConverter}, Mode=TwoWay}" />
                             </Grid>
                         </Grid>
                     </StackPanel>
                 </HeaderedContentControl>
             </Grid>
 
-            <HeaderedContentControl Classes="GroupBox"
-                                    Header="about this project"
+            <HeaderedContentControl Margin="2,2,0,0"
+                                    Classes="GroupBox"
                                     DockPanel.Dock="Top"
-                                    Margin="2,2,0,0">
+                                    Header="about this project">
                 <HeaderedContentControl.HeaderTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Header}"
-                                   HorizontalAlignment="Center" />
+                        <TextBlock HorizontalAlignment="Center"
+                                   Text="{Binding Header}" />
                     </DataTemplate>
                 </HeaderedContentControl.HeaderTemplate>
 
@@ -420,11 +441,11 @@
                                Foreground="{StaticResource DarkForegroundBrush}"
                                Text="{Binding VersionString}" />
 
-                    <Button Classes="Hyperlink"
+                    <Button Margin="0,0,0,4"
                             HorizontalAlignment="Center"
+                            Classes="Hyperlink"
                             Command="{Binding LaunchProjectWebsite}"
-                            Content="visit project website"
-                            Margin="0,0,0,4" />
+                            Content="visit project website" />
                 </StackPanel>
             </HeaderedContentControl>
         </DockPanel>

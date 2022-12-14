@@ -34,7 +34,7 @@ namespace Saradomin.Infrastructure.Services
                 StartInfo = new(_settingsService.Launcher.JavaExecutableLocation)
                 {
                     Arguments = $"-jar {scl} {_clientUpdateService.PreferredTargetFilePath}",
-                    WorkingDirectory = CrossPlatform.Locate2009scapeHome(),
+                    WorkingDirectory = _settingsService.Launcher.InstallationDirectory,
                     UseShellExecute = true,
                     WindowStyle = ProcessWindowStyle.Hidden
                 }

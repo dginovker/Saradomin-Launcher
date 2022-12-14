@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using Saradomin.Utilities;
 
 namespace Saradomin.Model.Settings.Launcher
 {
@@ -25,6 +26,8 @@ namespace Saradomin.Model.Settings.Launcher
         
         public string UserFriendlySongName { get; set; } = "Scape Main";
         public string JavaExecutableLocation { get; set; }
+
+        public string InstallationDirectory { get; set; } = CrossPlatform.LocateDefault2009scapeHome();
 
         public ClientReleaseProfile ClientProfile { get; set; } = RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ? ClientReleaseProfile.Experimental : ClientReleaseProfile.Legacy;
 

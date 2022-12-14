@@ -152,7 +152,7 @@ namespace Saradomin.ViewModel.Windows
                 return;
             }
 
-            if (!File.Exists(CrossPlatform.LocateServerProfilesPath()) ||
+            if (!File.Exists(CrossPlatform.LocateServerProfilesPath(Launcher.InstallationDirectory)) ||
                 _settingsService.Launcher.CheckForServerProfilesOnLaunch)
                 await AttemptServerProfileUpdate();
 
@@ -171,7 +171,7 @@ namespace Saradomin.ViewModel.Windows
 
         private async Task AttemptServerProfileUpdate()
         {
-            var serverProfilePath = CrossPlatform.LocateServerProfilesPath();
+            var serverProfilePath = CrossPlatform.LocateServerProfilesPath(Launcher.InstallationDirectory);
 
             try
             {
@@ -235,7 +235,7 @@ namespace Saradomin.ViewModel.Windows
             {
 
                 LaunchText = $"Updating... (Downloading client: 0%)";
-                Directory.CreateDirectory(CrossPlatform.Locate2009scapeHome());
+                Directory.CreateDirectory(Launcher.InstallationDirectory);
 
                 try
                 {
