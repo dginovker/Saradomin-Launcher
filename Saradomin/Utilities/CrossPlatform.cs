@@ -122,14 +122,24 @@ namespace Saradomin.Utilities
             }
         }
 
-        public static string Locate2009scapeHome()
+        public static string LocateUnixUserHome()
+        {
+            return Environment.GetEnvironmentVariable("XDG_DATA_HOME")
+                ?? Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                    ".local",
+                    "share"
+                );
+        }
+
+        public static string LocateDefault2009scapeHome()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
                 || RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
             {
                 return Path.Combine(
                     // Get the XDG_DATA_HOME environment variable, or if it doesn't exist, use the default ~/.local/share
-                    Environment.GetEnvironmentVariable("XDG_DATA_HOME") ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local", "share"),
+                    LocateUnixUserHome(),
                     "2009scape"
                 );
             }
@@ -141,20 +151,60 @@ namespace Saradomin.Utilities
                 );
             }
         }
-        
-        public static string Locate2009scapeLegacyExecutable()
+
+        public static string LocateSaradominHome()
         {
-            return Path.Combine(Locate2009scapeHome(), "2009scape.jar");
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
+                || RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
+            {
+                return Path.Combine(
+                    // Get the XDG_DATA_HOME environment variable, or if it doesn't exist, use the default ~/.local/share
+                    LocateUnixUserHome(),
+                    "saradomin"
+                );
+            }
+            else
+            {
+                return Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                    "saradomin"
+                );
+            }
         }
         
-        public static string Locate2009scapeExperimentalExecutable()
+        public static string Locate2009scapeLegacyExecutable(string baseDirectory)
         {
-            return Path.Combine(Locate2009scapeHome(), "2009scape_pazaz.jar");
+            baseDirectory ??= LocateDefault2009scapeHome();
+            return Path.Combine(baseDirectory, "2009scape.jar");
+        }
+        
+        public static string Locate2009scapeExperimentalExecutable(string baseDirectory)
+        {
+            baseDirectory ??= LocateDefault2009scapeHome();
+            return Path.Combine(baseDirectory, "2009scape_pazaz.jar");
         }
 
-        public static string LocateServerProfilesPath()
+        public static string LocateServerProfilesPath(string baseDirectory)
         {
-            return Path.Combine(Locate2009scapeHome(), "server_profiles.json");
+            baseDirectory ??= LocateDefault2009scapeHome();
+            return Path.Combine(baseDirectory, "server_profiles.json");
+        }
+
+        public static bool IsDirectoryWritable(string directoryPath)
+        {
+            var testFilePath = Path.Combine(directoryPath, "test");
+
+            try
+            {
+                File.Create(testFilePath).Dispose();
+                File.Delete(testFilePath);
+
+                return true;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return false;
+            }
         }
     }
 }
