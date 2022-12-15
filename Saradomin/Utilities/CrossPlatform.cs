@@ -189,5 +189,22 @@ namespace Saradomin.Utilities
             baseDirectory ??= LocateDefault2009scapeHome();
             return Path.Combine(baseDirectory, "server_profiles.json");
         }
+
+        public static bool IsDirectoryWritable(string directoryPath)
+        {
+            var testFilePath = Path.Combine(directoryPath, "test");
+
+            try
+            {
+                File.Create(testFilePath).Dispose();
+                File.Delete(testFilePath);
+
+                return true;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return false;
+            }
+        }
     }
 }

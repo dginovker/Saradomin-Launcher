@@ -15,6 +15,7 @@ using Saradomin.Infrastructure.Services;
 using Saradomin.Model.Settings.Client;
 using Saradomin.Model.Settings.Launcher;
 using Saradomin.Utilities;
+using Saradomin.View.Windows;
 
 namespace Saradomin.ViewModel.Controls
 {
@@ -190,7 +191,18 @@ namespace Saradomin.ViewModel.Controls
 
             if (path != null)
             {
-                Launcher.InstallationDirectory = path;
+                if (CrossPlatform.IsDirectoryWritable(path))
+                {
+                    Launcher.InstallationDirectory = path;
+                }
+                else
+                {
+                    NotificationBox.DisplayNotification(
+                        "Access denied",
+                        "The location you have selected is not writable. Select the one you have permissions for.",
+                        Application.Current.GetMainWindow()
+                    );
+                }
             }
         }
     }

@@ -12,6 +12,7 @@ using Saradomin.Infrastructure.Messaging;
 using Saradomin.Infrastructure.Services;
 using Saradomin.Model.Settings.Launcher;
 using Saradomin.Utilities;
+using Saradomin.View.Windows;
 
 namespace Saradomin.ViewModel.Windows
 {

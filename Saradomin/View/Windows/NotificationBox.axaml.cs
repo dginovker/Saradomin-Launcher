@@ -1,6 +1,9 @@
+using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Glitonea.Extensions;
 using PropertyChanged;
 using Saradomin.Infrastructure.Messaging;
 
@@ -9,6 +12,8 @@ namespace Saradomin.View.Windows
     [DoNotNotify]
     public class NotificationBox : Window
     {
+        private static Queue<NotificationBox> _notificationQueue = new();
+        
         public static NotificationBox Current { get; private set; }
         
         public static readonly StyledProperty<string> MessageProperty = new(
@@ -31,11 +36,6 @@ namespace Saradomin.View.Windows
             InitializeComponent();
         }
 
-        private NotificationBox(string message)
-            : this("Notification", message)
-        {
-        }
-
         private NotificationBox(string title, string message)
             : this()
         {
@@ -43,17 +43,25 @@ namespace Saradomin.View.Windows
             Message = message;
         }
 
+        public static void DisplayNotification(string message)
+            => DisplayNotification("Notification", message);
+
+        public static void DisplayNotification(string title, string message)
+            => DisplayNotification(title, message, Application.Current.GetMainWindow());
+
         public static void DisplayNotification(string title, string message, Window owner)
         {
+            var box = new NotificationBox(title, message) { Owner = owner };
+            
             if (Current != null)
             {
+                _notificationQueue.Enqueue(box);
                 Current.Activate();
             }
             else
             {
-                Current = new NotificationBox(title, message);
+                Current = box;
                 Current.ShowDialog(owner);
-
                 App.Messenger.Send(new NotificationBoxStateChangedMessage(true));
             }
         }
@@ -63,9 +71,16 @@ namespace Saradomin.View.Windows
             if (Current != null)
             {
                 Current = null;
+                
                 base.Close();
-
                 App.Messenger.Send(new NotificationBoxStateChangedMessage(false));
+            }
+
+            if (_notificationQueue.Any())
+            {
+                Current = _notificationQueue.Dequeue();
+                Current.ShowDialog(Current.Owner as Window);
+                App.Messenger.Send(new NotificationBoxStateChangedMessage(true));
             }
         }
 
