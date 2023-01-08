@@ -10,6 +10,8 @@ stages:
     - build_all
     - pack_linux_no_rt
     - pack_linux_sc
+    - pack_linux_arm_no_rt
+    - pack_linux_arm_sc
     - pack_windows_no_rt
     - pack_windows_sc
 
@@ -24,6 +26,12 @@ build_all:
         - mv -v $PUBLISH_DIR_LINUX64/Saradomin ./$OUTPUT_FILE_PREFIX-no_rt
         - dotnet publish --runtime linux-x64 --self-contained -c Release $COMMON_FLAGS
         - mv -v $PUBLISH_DIR_LINUX64/Saradomin ./$OUTPUT_FILE_PREFIX-sc
+
+        - dotnet publish --runtime linux-arm64 --no-self-contained -c Release $COMMON_FLAGS
+        - mv -v $PUBLISH_DIR_LINUX64/Saradomin ./$OUTPUT_FILE_PREFIX-arm-no_rt
+        - dotnet publish --runtime linux-arm64 --self-contained -c Release $COMMON_FLAGS
+        - mv -v $PUBLISH_DIR_LINUX64/Saradomin ./$OUTPUT_FILE_PREFIX-arm-sc
+
         - dotnet publish --runtime win-x64 --no-self-contained -c Release $COMMON_FLAGS
         - mv -v $PUBLISH_DIR_WIN64/Saradomin.exe ./$OUTPUT_FILE_PREFIX-no_rt.exe
         - dotnet publish --runtime win-x64 --self-contained -c Release $COMMON_FLAGS
@@ -34,6 +42,10 @@ build_all:
         paths:
             - $ARTIFACT_DIR/$OUTPUT_FILE_PREFIX-no_rt
             - $ARTIFACT_DIR/$OUTPUT_FILE_PREFIX-sc
+            
+            - $ARTIFACT_DIR/$OUTPUT_FILE_PREFIX-arm-no_rt
+            - $ARTIFACT_DIR/$OUTPUT_FILE_PREFIX-arm-sc
+            
             - $ARTIFACT_DIR/$OUTPUT_FILE_PREFIX-no_rt.exe
             - $ARTIFACT_DIR/$OUTPUT_FILE_PREFIX-sc.exe
         expire_in: 1 week
@@ -60,6 +72,30 @@ pack_linux_sc:
         name: "Linux x64 (self-contained)"
         paths:
             - $ARTIFACT_DIR/$OUTPUT_FILE_PREFIX-sc
+        expire_in: 1 week
+
+pack_linux_arm_no_rt:
+    stage: pack_linux_arm_no_rt
+    dependencies:
+        - build_all
+    script:
+        - echo "Packing no-runtime build for Linux arm64..."
+    artifacts:
+        name: "Linux arm64 (no embedded runtime)"
+        paths:
+            - $ARTIFACT_DIR/$OUTPUT_FILE_PREFIX-arm-no_rt
+        expire_in: 1 week
+
+pack_linux_arm_sc:
+    stage: pack_linux_arm_sc
+    dependencies:
+        - build_all
+    script:
+        - echo "Packing self-contained build for Linux arm64..."
+    artifacts:
+        name: "Linux arm64 (self-contained)"
+        paths:
+            - $ARTIFACT_DIR/$OUTPUT_FILE_PREFIX-arm-sc
         expire_in: 1 week
 
 pack_windows_no_rt:
