@@ -26,7 +26,7 @@ namespace Saradomin.ViewModel.Controls
         public LauncherSettings Launcher => _settingsService.Launcher;
         public ClientSettings Client => _settingsService.Client;
 
-        public bool CanCustomize => Launcher.ClientProfile == LauncherSettings.ClientReleaseProfile.Legacy;
+        public bool CanCustomize => false;
 
         public string VersionString
         {
@@ -99,12 +99,6 @@ namespace Saradomin.ViewModel.Controls
             ClientSettings.ServerProfile.Live.ToDescription(),
             ClientSettings.ServerProfile.Testing.ToDescription(),
             ClientSettings.ServerProfile.Local.ToDescription()
-        };
-
-        public ObservableCollection<EnumDescription> ClientProfiles { get; private set; } = new()
-        {
-            LauncherSettings.ClientReleaseProfile.Legacy.ToDescription(),
-            LauncherSettings.ClientReleaseProfile.Experimental.ToDescription()
         };
 
         public SettingsViewModel(ISettingsService settingsService)
