@@ -25,10 +25,11 @@ namespace Saradomin.Infrastructure.Services
 
         public async Task LaunchClient()
         {
-            if(_settingsService.Client.OfficialLauncher.Scale2x)
+            if (_settingsService.Client.OfficialLauncher.Scale2x)
             {
                 scl = "-Dsun.java2d.uiScale=2";
-            } 
+            }
+
             var proc = new Process
             {
                 StartInfo = new(_settingsService.Launcher.JavaExecutableLocation)

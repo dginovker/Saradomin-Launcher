@@ -1,6 +1,7 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="clr-namespace:Saradomin.View.Controls"
+             xmlns:default="clr-namespace:Avalonia.Themes.Default;assembly=Avalonia.Themes.Default"
              x:Class="Saradomin.App">
     <Application.Resources>
         <Color x:Key="DarkBackgroundColor">#3E3529</Color>
@@ -70,8 +71,7 @@
     </Application.Resources>
     
     <Application.Styles>
-        <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseDark.xaml" />
-        <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml" />
+        <default:DefaultTheme />
         
         <StyleInclude Source="avares://Saradomin/Resources/Styles/TopBarNavigation.axaml" />
         <StyleInclude Source="avares://Saradomin/Resources/Styles/CloseButton.axaml" />

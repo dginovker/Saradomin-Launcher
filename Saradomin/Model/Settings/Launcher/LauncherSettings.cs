@@ -15,7 +15,6 @@ namespace Saradomin.Model.Settings.Launcher
         public bool CheckForClientUpdatesOnLaunch { get; set; } = true;
         public bool CheckForServerProfilesOnLaunch { get; set; } = true;
         
-        public string UserFriendlySongName { get; set; } = "Scape Main";
         public string JavaExecutableLocation { get; set; }
 
         public string InstallationDirectory { get; set; } = CrossPlatform.LocateDefault2009scapeHome();

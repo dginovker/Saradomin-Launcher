@@ -160,6 +160,7 @@ namespace Saradomin.Utilities
                 return Path.Combine(
                     // Get the XDG_DATA_HOME environment variable, or if it doesn't exist, use the default ~/.local/share
                     LocateUnixUserHome(),
+                    "2009scape",
                     "saradomin"
                 );
             }
@@ -167,21 +168,16 @@ namespace Saradomin.Utilities
             {
                 return Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                    "2009scape",
                     "saradomin"
                 );
             }
         }
         
-        public static string Locate2009scapeLegacyExecutable(string baseDirectory)
+        public static string Locate2009scapeExecutable(string baseDirectory)
         {
             baseDirectory ??= LocateDefault2009scapeHome();
             return Path.Combine(baseDirectory, "2009scape.jar");
-        }
-        
-        public static string Locate2009scapeExperimentalExecutable(string baseDirectory)
-        {
-            baseDirectory ??= LocateDefault2009scapeHome();
-            return Path.Combine(baseDirectory, "2009scape_pazaz.jar");
         }
 
         public static string LocateServerProfilesPath(string baseDirectory)

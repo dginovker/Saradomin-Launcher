@@ -30,7 +30,7 @@ namespace Saradomin.Infrastructure.Services
         public string PreferredHashUrl => ExperimentalRemoteClientHashURL;
 
         public string PreferredTargetFilePath =>
-            CrossPlatform.Locate2009scapeExperimentalExecutable(_settingsService.Launcher.InstallationDirectory);
+            CrossPlatform.Locate2009scapeExecutable(_settingsService.Launcher.InstallationDirectory);
 
         public event EventHandler<float> DownloadProgressChanged;
 

@@ -37,20 +37,6 @@ namespace Saradomin.ViewModel.Controls
             }
         }
 
-        public string LoginMusicTheme
-        {
-            get => Launcher.UserFriendlySongName;
-            set
-            {
-                // Workaround for client behavior where it fails to retrieve
-                // songs with apostrophes in names from the cache.
-                Client.Customization.LoginMusicTheme = value.Replace("'", "");
-                Launcher.UserFriendlySongName = value;
-
-                OnPropertyChanged(nameof(LoginMusicTheme));
-            }
-        }
-
         public ClientSettings.ServerProfile ServerProfile
         {
             get
