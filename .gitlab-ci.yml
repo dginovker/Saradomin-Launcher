@@ -2,6 +2,7 @@ variables:
     COMMON_FLAGS: -p:PublishTrimmed=false -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
     PUBLISH_DIR_WIN64: bin/Release/net6.0/win-x64/publish
     PUBLISH_DIR_LINUX64: bin/Release/net6.0/linux-x64/publish
+    PUBLISH_DIR_OSX: bin/Release/net6.0/osx-x64/publish
     ARTIFACT_DIR: Saradomin
     GIT_SUBMODULE_STRATEGY: recursive
     OUTPUT_FILE_PREFIX: 2009scape-launcher
@@ -12,6 +13,7 @@ stages:
     - pack_linux_sc
     - pack_windows_no_rt
     - pack_windows_sc
+    - pack_macos_sc
 
 build_all:
     image: mcr.microsoft.com/dotnet/sdk:6.0
@@ -28,6 +30,8 @@ build_all:
         - mv -v $PUBLISH_DIR_WIN64/Saradomin.exe ./$OUTPUT_FILE_PREFIX-no_rt.exe
         - dotnet publish --runtime win-x64 --self-contained -c Release $COMMON_FLAGS
         - mv -v $PUBLISH_DIR_WIN64/Saradomin.exe ./$OUTPUT_FILE_PREFIX-sc.exe
+        - dotnet publish --runtime osx-x64 --self-contained -c Release -p:IncludeAllContentForSelfExtract=true $COMMON_FLAGS
+        - mv -v $PUBLISH_DIR_OSX/Saradomin ./$OUTPUT_FILE_PREFIX-osx-sc
     artifacts:
         name: "Combined artifacts"
         untracked: true
@@ -36,6 +40,7 @@ build_all:
             - $ARTIFACT_DIR/$OUTPUT_FILE_PREFIX-sc
             - $ARTIFACT_DIR/$OUTPUT_FILE_PREFIX-no_rt.exe
             - $ARTIFACT_DIR/$OUTPUT_FILE_PREFIX-sc.exe
+            - $ARTIFACT_DIR/$OUTPUT_FILE_PREFIX-osx-sc
         expire_in: 1 week
 
 pack_linux_no_rt:
@@ -60,6 +65,18 @@ pack_linux_sc:
         name: "Linux x64 (self-contained)"
         paths:
             - $ARTIFACT_DIR/$OUTPUT_FILE_PREFIX-sc
+        expire_in: 1 week
+
+pack_macos_sc:
+    stage: pack_macos_sc
+    dependencies:
+        - build_all
+    script:
+        - echo "Packing self-contained build for macOS x64..."
+    artifacts:
+        name: "macOS x64 (self-contained)"
+        paths:
+            - $ARTIFACT_DIR/$OUTPUT_FILE_PREFIX-osx-sc
         expire_in: 1 week
 
 pack_windows_no_rt:
