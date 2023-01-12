@@ -55,13 +55,9 @@
             <DependentUpon>MenuPreview.axaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
-        <Compile Update="View\Controls\AntiAliasingSelector.axaml.cs">
-            <DependentUpon>AntiAliasingSelector.axaml</DependentUpon>
-        </Compile>
     </ItemGroup>
 
     <ItemGroup>
         <AvaloniaResource Include="Resources\Icons\saradomin.ico" />
-        <EmbeddedResource Include="Resources\Lists\MusicTracks.json" />
     </ItemGroup>
 </Project>

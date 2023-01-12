@@ -45,10 +45,7 @@ namespace Saradomin.Model.Settings.Client
         [JsonPropertyName("js5_port")]
         public ushort CacheServerPort { get; set; } = 43595;
 
-        [JsonPropertyName("customization")]
-        public CustomizationSettings Customization { get; set; } = new();
-
-        [JsonPropertyName("launcher")]
-        public OfficialLauncherSettings OfficialLauncher { get; set; } = new();
+        [JsonPropertyName("ui_scale")]
+        public int UiScale { get; set; } = 1;
     }
 }

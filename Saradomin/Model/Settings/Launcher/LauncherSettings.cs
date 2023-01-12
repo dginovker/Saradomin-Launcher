@@ -1,5 +1,3 @@
-using System.ComponentModel;
-using System.Runtime.InteropServices;
 using Saradomin.Utilities;
 
 namespace Saradomin.Model.Settings.Launcher
@@ -16,7 +14,6 @@ namespace Saradomin.Model.Settings.Launcher
         public bool CheckForServerProfilesOnLaunch { get; set; } = true;
         
         public string JavaExecutableLocation { get; set; }
-
         public string InstallationDirectory { get; set; } = CrossPlatform.LocateDefault2009scapeHome();
 
         protected override void OnSettingsModified(string propertyName)

@@ -26,8 +26,6 @@ namespace Saradomin.ViewModel.Controls
         public LauncherSettings Launcher => _settingsService.Launcher;
         public ClientSettings Client => _settingsService.Client;
 
-        public bool CanCustomize => false;
-
         public string VersionString
         {
             get
@@ -66,20 +64,6 @@ namespace Saradomin.ViewModel.Controls
             }
         }
 
-        public ObservableCollection<string> MusicTitles { get; private set; }
-
-        public ObservableCollection<EnumDescription> DropModes { get; private set; } = new()
-        {
-            XpTrackerSettings.DropModeSetting.Instant.ToDescription(),
-            XpTrackerSettings.DropModeSetting.Incremental.ToDescription(),
-        };
-
-        public ObservableCollection<EnumDescription> TrackingModes { get; private set; } = new()
-        {
-            XpTrackerSettings.TrackingModeSetting.TotalXP.ToDescription(),
-            XpTrackerSettings.TrackingModeSetting.RecentSkill.ToDescription(),
-        };
-
         public ObservableCollection<EnumDescription> ServerProfiles { get; private set; } = new()
         {
             ClientSettings.ServerProfile.Live.ToDescription(),
@@ -92,8 +76,6 @@ namespace Saradomin.ViewModel.Controls
             _settingsService = settingsService;
 
             App.Messenger.Register<MainViewLoadedMessage>(this, OnMainViewLoaded);
-
-            InitializeMusicTitleRepository();
         }
 
         private void LaunchScapeWebsite()
@@ -111,15 +93,6 @@ namespace Saradomin.ViewModel.Controls
             CrossPlatform.LaunchURL("https://gitlab.com/2009scape/Saradomin-Launcher");
         }
 
-        private void InitializeMusicTitleRepository()
-        {
-            using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(
-                "Saradomin.Resources.Lists.MusicTracks.json"
-            );
-
-            MusicTitles = JsonSerializer.Deserialize<ObservableCollection<string>>(stream!);
-        }
-
         private void OnMainViewLoaded(MainViewLoadedMessage _)
         {
             App.Messenger.Register<SettingsModifiedMessage>(this, OnSettingsModified);
@@ -128,18 +101,6 @@ namespace Saradomin.ViewModel.Controls
         private void OnSettingsModified(SettingsModifiedMessage _)
         {
             _settingsService.SaveAll();
-
-            OnPropertyChanged(nameof(CanCustomize));
-        }
-
-        private void ResetSlayerTracker()
-        {
-            Client.Customization.SlayerTracker.SetDefaults();
-        }
-
-        private void ResetRightClickMenu()
-        {
-            Client.Customization.RightClickMenu.SetDefaults();
         }
 
         private async Task BrowseForJavaExecutable()
