@@ -30,7 +30,7 @@ namespace Saradomin.Infrastructure.Services
                 StartInfo = new(_settingsService.Launcher.JavaExecutableLocation)
                 {
                     Arguments = $"-Dsun.java2d.uiScale={_settingsService.Client.UiScale} " +
-                                $"-DclientHomeOverride={_settingsService.Launcher.InstallationDirectory} " +
+                                $"-DclientHomeOverride={_settingsService.Launcher.InstallationDirectory}/ " +
                                 $"-jar {_clientUpdateService.PreferredTargetFilePath}",
                     WorkingDirectory = _settingsService.Launcher.InstallationDirectory,
                     UseShellExecute = true,
