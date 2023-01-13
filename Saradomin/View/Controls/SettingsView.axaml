@@ -187,15 +187,7 @@
                                             BorderThickness="0"
                                             Classes="GroupBox"
                                             Header="plugin management">
-                        <StackPanel VerticalAlignment="Center">
-                            <TextBlock HorizontalAlignment="Center"
-                                       Foreground="{StaticResource DarkForegroundBrush}"
-                                       Text="Here would be a plugin manager" />
-
-                            <TextBlock HorizontalAlignment="Center"
-                                       Foreground="{StaticResource DarkForegroundBrush}"
-                                       Text="thing i suppose :)" />
-                        </StackPanel>
+                        <controls:PluginManagerView Margin="-2,2" />
                     </HeaderedContentControl>
                 </Grid>
             </HeaderedContentControl>

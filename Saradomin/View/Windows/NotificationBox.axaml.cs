@@ -3,6 +3,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Glitonea;
 using Glitonea.Extensions;
 using PropertyChanged;
 using Saradomin.Infrastructure.Messaging;
@@ -10,7 +11,7 @@ using Saradomin.Infrastructure.Messaging;
 namespace Saradomin.View.Windows
 {
     [DoNotNotify]
-    public class NotificationBox : Window
+    public class NotificationBox : WindowEx
     {
         private static Queue<NotificationBox> _notificationQueue = new();
         

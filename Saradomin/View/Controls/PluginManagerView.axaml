@@ -1,0 +1,124 @@
+<UserControl x:Class="Saradomin.View.Controls.PluginManagerView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Saradomin.View.Controls"
+             xmlns:model="clr-namespace:Saradomin.Model"
+             xmlns:mvvm="clr-namespace:Glitonea.Mvvm;assembly=Glitonea"
+             xmlns:vm="clr-namespace:Saradomin.ViewModel.Controls"
+             DataContext="{mvvm:DataContextSource vm:PluginManagerViewModel}">
+    <Grid RowDefinitions="*,Auto,*">
+        <Border Grid.Row="0">
+            <Grid RowDefinitions="Auto,*">
+                <TextBlock Grid.Row="0"
+                           Foreground="{StaticResource DarkForegroundBrush}"
+                           Text="Installed plugins" />
+
+                <Border Grid.Row="1"
+                        Height="154"
+                        Margin="0,2,0,0"
+                        BorderBrush="{StaticResource DarkBorderBrush}"
+                        BorderThickness="1,1,0,1"
+                        ClipToBounds="True">
+                    <Grid>
+                        <TextBlock HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Foreground="#BBFFFFFF"
+                                   IsVisible="{Binding !!!LocalPlugins.Count}"
+                                   Text="No plugins installed"
+                                   ZIndex="9999" />
+                        <ScrollViewer ClipToBounds="True"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      VerticalScrollBarVisibility="Visible">
+
+
+                            <ListBox Classes="PluginList"
+                                     Items="{Binding LocalPlugins}"
+                                     SelectionMode="Single">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type model:PluginInfo}">
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <TextBlock Grid.Column="0"
+                                                       Margin="2,0,0,0"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="#BBFFFFFF"
+                                                       Text="{Binding Name}" />
+
+                                            <Button Grid.Column="1"
+                                                    Margin="0,2,2,2"
+                                                    BorderBrush="{StaticResource DarkBorderBrush}"
+                                                    BorderThickness="1"
+                                                    Classes="OutsideNavigator"
+                                                    Command="{Binding $parent[local:PluginManagerView].DataContext.UninstallLocalPlugin}"
+                                                    CommandParameter="{Binding}"
+                                                    Content="Uninstall"
+                                                    IsEnabled="{Binding !$parent[local:PluginManagerView].DataContext.IsTransactionInProgress}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1"
+                Height="2"
+                Margin="1,2"
+                BorderBrush="{StaticResource DarkMediumBorderBrush}"
+                BorderThickness="0,1,0,0" />
+
+        <Border Grid.Row="2">
+            <Grid RowDefinitions="Auto,*">
+                <TextBlock Grid.Row="0"
+                           Foreground="{StaticResource DarkForegroundBrush}"
+                           Text="Available plugins" />
+
+                <Border Grid.Row="1"
+                        Height="154"
+                        Margin="0,2,0,0"
+                        BorderBrush="{StaticResource DarkBorderBrush}"
+                        BorderThickness="1,1,0,1"
+                        ClipToBounds="True">
+                    <Grid>
+                        <TextBlock HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Foreground="#BBFFFFFF"
+                                   IsVisible="{Binding !!!RemotePlugins.Count}"
+                                   Text="No plugins available for download, or lookup failed."
+                                   ZIndex="9999" />
+                        <ScrollViewer ClipToBounds="True"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      VerticalScrollBarVisibility="Visible">
+                            <ListBox Classes="PluginList"
+                                     Items="{Binding RemotePlugins}"
+                                     SelectionMode="Single">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type model:PluginInfo}">
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <TextBlock Grid.Column="0"
+                                                       Margin="2,0,0,0"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="#BBFFFFFF"
+                                                       Text="{Binding Name}" />
+
+                                            <Button Grid.Column="1"
+                                                    Margin="0,2,2,2"
+                                                    BorderBrush="{StaticResource DarkBorderBrush}"
+                                                    BorderThickness="1"
+                                                    Classes="OutsideNavigator"
+                                                    Command="{Binding $parent[local:PluginManagerView].DataContext.InstallRemotePlugin}"
+                                                    CommandParameter="{Binding}"
+                                                    Content="Install"
+                                                    IsEnabled="{Binding !$parent[local:PluginManagerView].DataContext.IsTransactionInProgress}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

@@ -23,7 +23,6 @@
                   Background="{StaticResource DarkBackgroundBrush}">
                 <TextBlock HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                           FontFamily="Open Sans"
                            FontSize="14"
                            FontWeight="Light"
                            Foreground="{StaticResource AccentBrush}"
@@ -34,8 +33,7 @@
 
             <Grid Grid.Row="1"
                   Margin="8">
-                <TextBlock FontFamily="Open Sans"
-                           FontSize="13"
+                <TextBlock FontSize="13"
                            Foreground="{StaticResource DarkForegroundBrush}"
                            Text="{Binding Message}"
                            TextAlignment="Center"

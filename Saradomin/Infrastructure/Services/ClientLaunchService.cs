@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Saradomin.Utilities;
 
 namespace Saradomin.Infrastructure.Services
 {
@@ -13,8 +12,6 @@ namespace Saradomin.Infrastructure.Services
         private readonly IClientUpdateService _clientUpdateService;
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public string scl = "";
 
         public ClientLaunchService(ISettingsService settingsService,
             IClientUpdateService clientUpdateService)
