@@ -12,22 +12,12 @@ namespace Saradomin.Infrastructure.Services
 {
     public class ClientUpdateService : IClientUpdateService
     {
-        private const string LegacyRemoteClientHashURL = "https://cdn.2009scape.org/2009scape.md5sum";
-        private const string LegacyRemoteClientExecutableURL = "https://cdn.2009scape.org/2009scape.jar";
-
-        private const string ExperimentalRemoteClientExecutableURL =
-            "https://github.com/Pazaz/RT4-Client/releases/latest/download/rt4-client.jar";
-
-        private const string ExperimentalRemoteClientHashURL =
-            "https://github.com/Pazaz/RT4-Client/releases/latest/download/rt4-client.jar.sha256";
-
         private readonly ISettingsService _settingsService;
 
         private float CurrentDownloadProgress { get; set; }
 
-        public string PreferredDownloadURL => ExperimentalRemoteClientExecutableURL;
-
-        public string PreferredHashUrl => ExperimentalRemoteClientHashURL;
+        public string ClientDownloadURL => "https://github.com/Pazaz/RT4-Client/releases/latest/download/rt4-client.jar";
+        public string ClientHashURL => "https://github.com/Pazaz/RT4-Client/releases/latest/download/rt4-client.jar.sha256";
 
         public string PreferredTargetFilePath =>
             CrossPlatform.Locate2009scapeExecutable(_settingsService.Launcher.InstallationDirectory);
@@ -43,7 +33,7 @@ namespace Saradomin.Infrastructure.Services
         {
             using var httpClient = new HttpClient();
             {
-                var response = await httpClient.GetAsync(PreferredHashUrl, cancellationToken);
+                var response = await httpClient.GetAsync(ClientHashURL, cancellationToken);
                 return await response.Content.ReadAsStringAsync(cancellationToken);
             }
         }
@@ -62,7 +52,7 @@ namespace Saradomin.Infrastructure.Services
 
             using (var httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(PreferredDownloadURL, cancellationToken);
+                var response = await httpClient.GetAsync(ClientDownloadURL, cancellationToken);
                 var contentLength = response.Content.Headers.ContentLength ?? 12 * 1024 * 1024 * 1024f;
 
                 using var responseStream = await response.Content.ReadAsStreamAsync(cancellationToken);
