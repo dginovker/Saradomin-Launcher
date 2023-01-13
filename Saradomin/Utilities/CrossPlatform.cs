@@ -51,6 +51,15 @@ namespace Saradomin.Utilities
                     {
                         return RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
                     }
+
+                    if ((bytes[0] == 0xCF
+                        && bytes[1] == 0xFA)
+                        || (bytes[0] == 0xCA
+                        && bytes[1] == 0xFE))
+                    {
+                        return RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+                    }
+
                 }
             }
             catch
@@ -116,6 +125,27 @@ namespace Saradomin.Utilities
 
                 throw new FileNotFoundException("Failed to find Java. Make sure it's installed!");
             }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                var proc = new Process
+                {
+                    StartInfo = new("/usr/bin/which")
+                    {
+                        Arguments = "java",
+                        RedirectStandardOutput = true,
+                        UseShellExecute = false
+                    }
+                };
+
+                proc.Start();
+                proc.WaitForExit();
+                var data = proc.StandardOutput.ReadToEnd();
+
+                if (!string.IsNullOrEmpty(data))
+                    return Path.Combine(UnixPath.GetCompleteRealPath(data.Trim()));
+
+                throw new FileNotFoundException("Failed to find Java. Make sure it's installed!");
+            }
             else
             {
                 throw new NotSupportedException("Your platform is not supported.");
@@ -160,6 +190,7 @@ namespace Saradomin.Utilities
                 return Path.Combine(
                     // Get the XDG_DATA_HOME environment variable, or if it doesn't exist, use the default ~/.local/share
                     LocateUnixUserHome(),
+                    "2009scape",
                     "saradomin"
                 );
             }
@@ -167,21 +198,16 @@ namespace Saradomin.Utilities
             {
                 return Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                    "2009scape",
                     "saradomin"
                 );
             }
         }
         
-        public static string Locate2009scapeLegacyExecutable(string baseDirectory)
+        public static string Locate2009scapeExecutable(string baseDirectory)
         {
             baseDirectory ??= LocateDefault2009scapeHome();
             return Path.Combine(baseDirectory, "2009scape.jar");
-        }
-        
-        public static string Locate2009scapeExperimentalExecutable(string baseDirectory)
-        {
-            baseDirectory ??= LocateDefault2009scapeHome();
-            return Path.Combine(baseDirectory, "2009scape_pazaz.jar");
         }
 
         public static string LocateServerProfilesPath(string baseDirectory)

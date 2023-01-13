@@ -13,7 +13,7 @@ namespace Saradomin.Utilities
     public class HtmlRenderer
     {
         private int _listDescent = 0;
-        
+
         private Stack<StackPanel> _panels = new();
         private StackPanel _container;
         private HtmlNode _rootNode;
@@ -115,10 +115,15 @@ namespace Saradomin.Utilities
                     var text = HttpUtility.HtmlDecode(
                         htmlNode.GetDirectInnerText().Trim(' ').Trim('\n')
                     );
+                    
                     if (htmlNode.ParentNode.Name == "li")
                     {
-                        text = $"• {text}";
+                        if (!string.IsNullOrWhiteSpace(text))
+                        {
+                            text = $"• {text}";
+                        }
                     }
+                    
                     CreateNewInlineTextElement(text);
                     break;
 
@@ -145,7 +150,6 @@ namespace Saradomin.Utilities
                     }
                     break;
             }
-
         }
     }
 }

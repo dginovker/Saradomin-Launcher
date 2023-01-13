@@ -1,78 +1,101 @@
-<Application xmlns="https://github.com/avaloniaui"
+<Application x:Class="Saradomin.App"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="clr-namespace:Saradomin.View.Controls"
-             x:Class="Saradomin.App">
+             xmlns:default="clr-namespace:Avalonia.Themes.Default;assembly=Avalonia.Themes.Default">
     <Application.Resources>
         <Color x:Key="DarkBackgroundColor">#3E3529</Color>
         <Color x:Key="DarkTranslucentBackgroundColor">#CC3E3529</Color>
         <Color x:Key="DarkForegroundColor">#3E3529</Color>
         <Color x:Key="DarkBorderColor">#3E3529</Color>
-        
+
         <Color x:Key="SemiDarkBackgroundColor">#4F463A</Color>
         <Color x:Key="SemiDarkForegroundColor">#4F463A</Color>
         <Color x:Key="SemiDarkBorderColor">#4F463A</Color>
-        
+
         <Color x:Key="DarkMediumBackgroundColor">#6F5D45</Color>
         <Color x:Key="DarkMediumForegroundColor">#6F5D45</Color>
         <Color x:Key="DarkMediumBorderColor">#6F5D45</Color>
-        
+
         <Color x:Key="SemiLightMediumBackgroundColor">#7F6D55</Color>
         <Color x:Key="SemiLightMediumForegroundColor">#7F6D55</Color>
         <Color x:Key="SemiLightMediumBorderColor">#7F6D55</Color>
-        
+
         <Color x:Key="LightMediumBackgroundColor">#8F7D65</Color>
         <Color x:Key="LightMediumForegroundColor">#8F7D65</Color>
-        
+
         <Color x:Key="MediumBackgroundColor">#998468</Color>
         <Color x:Key="MediumForegroundColor">#998468</Color>
-        
+
         <Color x:Key="WindowBackgroundColor">#A1855C</Color>
-        
+
         <Color x:Key="LightForegroundColor">#F0F0F0</Color>
         <Color x:Key="LightBackgroundColor">#F0F0F0</Color>
-        
+
         <Color x:Key="MouseOverColor">#FFFFFF</Color>
-        
+
         <Color x:Key="AccentColor">#F2C954</Color>
         <Color x:Key="DarkAccentColor">#B28914</Color>
-        
-        <SolidColorBrush x:Key="DarkBackgroundBrush" Color="{StaticResource DarkBackgroundColor}" />
-        <SolidColorBrush x:Key="DarkTranslucentBackgroundBrush" Color="{StaticResource DarkTranslucentBackgroundColor}" />
-        <SolidColorBrush x:Key="DarkForegroundBrush" Color="{StaticResource DarkForegroundColor}" />
-        <SolidColorBrush x:Key="DarkBorderBrush" Color="{StaticResource DarkBorderColor}" />
-        
-        <SolidColorBrush x:Key="SemiDarkBackgroundBrush" Color="{StaticResource SemiDarkBackgroundColor}" />
-        <SolidColorBrush x:Key="SemiDarkForegroundBrush" Color="{StaticResource SemiDarkForegroundColor}" />
-        <SolidColorBrush x:Key="SemiDarkBorderBrush" Color="{StaticResource SemiDarkBorderColor}" />
-        
-        <SolidColorBrush x:Key="DarkMediumBackgroundBrush" Color="{StaticResource DarkMediumBackgroundColor}" />
-        <SolidColorBrush x:Key="DarkMediumForegroundBrush" Color="{StaticResource DarkMediumForegroundColor}" />
-        <SolidColorBrush x:Key="DarkMediumBorderBrush" Color="{StaticResource DarkMediumBorderColor}" />
-        
-        <SolidColorBrush x:Key="MediumBackgroundBrush" Color="{StaticResource MediumBackgroundColor}" />
-        <SolidColorBrush x:Key="MediumForegroundBrush" Color="{StaticResource MediumForegroundColor}" />
-        <SolidColorBrush x:Key="SemiLightMediumBackgroundBrush" Color="{StaticResource SemiLightMediumBackgroundColor}" />
-        <SolidColorBrush x:Key="SemiLightMediumForegroundBrush" Color="{StaticResource SemiLightMediumForegroundColor}" />
-        <SolidColorBrush x:Key="SemiLightMediumBorderBrush" Color="{StaticResource SemiLightMediumBorderColor}" />
-        <SolidColorBrush x:Key="LightMediumBackgroundBrush" Color="{StaticResource LightMediumBackgroundColor}" />
-        <SolidColorBrush x:Key="LightMediumForegroundBrush" Color="{StaticResource LightMediumForegroundColor}" />
-        
-        <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{StaticResource WindowBackgroundColor}" />
-        
-        <SolidColorBrush x:Key="LightBackgroundBrush" Color="{StaticResource LightBackgroundColor}" />
-        <SolidColorBrush x:Key="LightForegroundBrush" Color="{StaticResource LightForegroundColor}" />
-        
-        <SolidColorBrush x:Key="MouseOverBrush" Color="{StaticResource MouseOverColor}" />
-        <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}" />
-        
+
+        <SolidColorBrush x:Key="DarkBackgroundBrush"
+                         Color="{StaticResource DarkBackgroundColor}" />
+        <SolidColorBrush x:Key="DarkTranslucentBackgroundBrush"
+                         Color="{StaticResource DarkTranslucentBackgroundColor}" />
+        <SolidColorBrush x:Key="DarkForegroundBrush"
+                         Color="{StaticResource DarkForegroundColor}" />
+        <SolidColorBrush x:Key="DarkBorderBrush"
+                         Color="{StaticResource DarkBorderColor}" />
+
+        <SolidColorBrush x:Key="SemiDarkBackgroundBrush"
+                         Color="{StaticResource SemiDarkBackgroundColor}" />
+        <SolidColorBrush x:Key="SemiDarkForegroundBrush"
+                         Color="{StaticResource SemiDarkForegroundColor}" />
+        <SolidColorBrush x:Key="SemiDarkBorderBrush"
+                         Color="{StaticResource SemiDarkBorderColor}" />
+
+        <SolidColorBrush x:Key="DarkMediumBackgroundBrush"
+                         Color="{StaticResource DarkMediumBackgroundColor}" />
+        <SolidColorBrush x:Key="DarkMediumForegroundBrush"
+                         Color="{StaticResource DarkMediumForegroundColor}" />
+        <SolidColorBrush x:Key="DarkMediumBorderBrush"
+                         Color="{StaticResource DarkMediumBorderColor}" />
+
+        <SolidColorBrush x:Key="MediumBackgroundBrush"
+                         Color="{StaticResource MediumBackgroundColor}" />
+        <SolidColorBrush x:Key="MediumForegroundBrush"
+                         Color="{StaticResource MediumForegroundColor}" />
+        <SolidColorBrush x:Key="SemiLightMediumBackgroundBrush"
+                         Color="{StaticResource SemiLightMediumBackgroundColor}" />
+        <SolidColorBrush x:Key="SemiLightMediumForegroundBrush"
+                         Color="{StaticResource SemiLightMediumForegroundColor}" />
+        <SolidColorBrush x:Key="SemiLightMediumBorderBrush"
+                         Color="{StaticResource SemiLightMediumBorderColor}" />
+        <SolidColorBrush x:Key="LightMediumBackgroundBrush"
+                         Color="{StaticResource LightMediumBackgroundColor}" />
+        <SolidColorBrush x:Key="LightMediumForegroundBrush"
+                         Color="{StaticResource LightMediumForegroundColor}" />
+
+        <SolidColorBrush x:Key="WindowBackgroundBrush"
+                         Color="{StaticResource WindowBackgroundColor}" />
+
+        <SolidColorBrush x:Key="LightBackgroundBrush"
+                         Color="{StaticResource LightBackgroundColor}" />
+        <SolidColorBrush x:Key="LightForegroundBrush"
+                         Color="{StaticResource LightForegroundColor}" />
+
+        <SolidColorBrush x:Key="MouseOverBrush"
+                         Color="{StaticResource MouseOverColor}" />
+        <SolidColorBrush x:Key="AccentBrush"
+                         Color="{StaticResource AccentColor}" />
+
         <Image x:Key="ApplicationIcon"
                Source="avares://Saradomin/Resources/Icons/saradomin.ico" />
     </Application.Resources>
-    
+
     <Application.Styles>
         <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseDark.xaml" />
         <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml" />
-        
+
         <StyleInclude Source="avares://Saradomin/Resources/Styles/TopBarNavigation.axaml" />
         <StyleInclude Source="avares://Saradomin/Resources/Styles/CloseButton.axaml" />
         <StyleInclude Source="avares://Saradomin/Resources/Styles/OutsideNavigatorButton.axaml" />
@@ -81,12 +104,12 @@
         <StyleInclude Source="avares://Saradomin/Resources/Styles/ComboBox.axaml" />
         <StyleInclude Source="avares://Saradomin/Resources/Styles/TextBox.axaml" />
         <StyleInclude Source="avares://Saradomin/Resources/Styles/ScrollBar.axaml" />
-        <StyleInclude Source="avares://Saradomin/Resources/Styles/MenuPreviewEntry.axaml" />
         <StyleInclude Source="avares://Saradomin/Resources/Styles/NumericUpDown.axaml" />
         <StyleInclude Source="avares://Saradomin/Resources/Styles/Hyperlink.axaml" />
         <StyleInclude Source="avares://Saradomin/Resources/Styles/ToolTip.axaml" />
-        <StyleInclude Source="avares://Saradomin/Resources/Styles/AntiAliasingRadioButton.axaml" />
         <StyleInclude Source="avares://Saradomin/Resources/Styles/RadioButton.axaml" />
+        <StyleInclude Source="avares://Saradomin/Resources/Styles/ListBox.axaml" />
+        <StyleInclude Source="avares://Saradomin/Resources/Styles/ListBoxItem.axaml" />
 
         <StyleInclude Source="avares://Glitonea/Glitonea.axaml" />
     </Application.Styles>

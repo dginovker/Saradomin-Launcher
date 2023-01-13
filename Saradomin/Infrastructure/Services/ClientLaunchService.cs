@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Saradomin.Utilities;
 
 namespace Saradomin.Infrastructure.Services
 {
@@ -14,8 +13,6 @@ namespace Saradomin.Infrastructure.Services
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string scl = "";
-
         public ClientLaunchService(ISettingsService settingsService,
             IClientUpdateService clientUpdateService)
         {
@@ -25,15 +22,13 @@ namespace Saradomin.Infrastructure.Services
 
         public async Task LaunchClient()
         {
-            if(_settingsService.Client.OfficialLauncher.Scale2x)
-            {
-                scl = "-Dsun.java2d.uiScale=2";
-            } 
             var proc = new Process
             {
                 StartInfo = new(_settingsService.Launcher.JavaExecutableLocation)
                 {
-                    Arguments = $"-jar {scl} {_clientUpdateService.PreferredTargetFilePath}",
+                    Arguments = $"-Dsun.java2d.uiScale={_settingsService.Client.UiScale} " +
+                                $"-DclientHomeOverride={_settingsService.Launcher.InstallationDirectory}/ " +
+                                $"-jar {_clientUpdateService.PreferredTargetFilePath}",
                     WorkingDirectory = _settingsService.Launcher.InstallationDirectory,
                     UseShellExecute = true,
                     WindowStyle = ProcessWindowStyle.Hidden
