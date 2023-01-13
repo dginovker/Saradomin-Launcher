@@ -7,7 +7,7 @@ namespace Saradomin.Infrastructure.Services
 {
     public interface IClientUpdateService : IService
     {
-        string PreferredDownloadURL { get; }
+        string ClientDownloadURL { get; }
         string PreferredTargetFilePath { get; }
         
         event EventHandler<float> DownloadProgressChanged;

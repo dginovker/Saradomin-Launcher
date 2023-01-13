@@ -45,10 +45,11 @@ namespace Saradomin.ViewModel.Windows
             _updateService = updateService;
             _updateService.DownloadProgressChanged += OnClientDownloadProgressUpdated;
             _remoteConfigService = remoteConfigService;
+
             
             _settingsService = settingsService;
             Launcher = _settingsService.Launcher;
-            
+
             ContentContainer = new StackPanel
             {
                 Margin = new(4)
