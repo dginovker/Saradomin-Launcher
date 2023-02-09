@@ -12,7 +12,7 @@ Saradomin is an alternative launcher to the mainline java-based 2009Scape launch
 
 Windows: [Self Contained](https://gitlab.com/2009scape/Saradomin-Launcher/-/jobs/artifacts/master/raw/Saradomin/2009scape-launcher-sc.exe?job=pack_windows_sc) | [No Runtime](https://gitlab.com/2009scape/Saradomin-Launcher/-/jobs/artifacts/master/raw/Saradomin/2009scape-launcher-no_rt.exe?job=pack_windows_no_rt)
 
-Linux: [Self Contained](https://gitlab.com/2009scape/Saradomin-Launcher/-/jobs/artifacts/master/raw/Saradomin/2009scape-launcher-sc?job=pack_linux_sc) | [No Runtime](https://gitlab.com/2009scape/Saradomin-Launcher/-/jobs/artifacts/master/raw/Saradomin/2009scape-launcher-no_rt?job=pack_linux_no_rt)
+Linux: [Get it on Flathub](https://flathub.org/apps/details/org._2009scape.Launcher) | [Self Contained](https://gitlab.com/2009scape/Saradomin-Launcher/-/jobs/artifacts/master/raw/Saradomin/2009scape-launcher-sc?job=pack_linux_sc) | [No Runtime](https://gitlab.com/2009scape/Saradomin-Launcher/-/jobs/artifacts/master/raw/Saradomin/2009scape-launcher-no_rt?job=pack_linux_no_rt)
 
 ## Authors
 
