@@ -63,7 +63,8 @@ namespace Saradomin.View.Windows
             {
                 Current = box;
                 Current.ShowDialog(owner);
-                App.Messenger.Send(new NotificationBoxStateChangedMessage(true));
+                new NotificationBoxStateChangedMessage(true)
+                    .Broadcast();
             }
         }
 
@@ -74,14 +75,16 @@ namespace Saradomin.View.Windows
                 Current = null;
                 
                 base.Close();
-                App.Messenger.Send(new NotificationBoxStateChangedMessage(false));
+                new NotificationBoxStateChangedMessage(false)
+                    .Broadcast();
             }
 
             if (_notificationQueue.Any())
             {
                 Current = _notificationQueue.Dequeue();
                 Current.ShowDialog(Current.Owner as Window);
-                App.Messenger.Send(new NotificationBoxStateChangedMessage(true));
+                new NotificationBoxStateChangedMessage(true)
+                    .Broadcast();
             }
         }
 

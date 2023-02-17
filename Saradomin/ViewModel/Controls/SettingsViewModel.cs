@@ -9,6 +9,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Glitonea.Extensions;
 using Glitonea.Mvvm;
+using Glitonea.Mvvm.Messaging;
 using Glitonea.Utilities;
 using Saradomin.Infrastructure.Messaging;
 using Saradomin.Infrastructure.Services;
@@ -75,7 +76,7 @@ namespace Saradomin.ViewModel.Controls
         {
             _settingsService = settingsService;
 
-            App.Messenger.Register<MainViewLoadedMessage>(this, OnMainViewLoaded);
+           Message.Subscribe<MainViewLoadedMessage>(this, OnMainViewLoaded);
         }
 
         private void LaunchScapeWebsite()
@@ -95,7 +96,7 @@ namespace Saradomin.ViewModel.Controls
 
         private void OnMainViewLoaded(MainViewLoadedMessage _)
         {
-            App.Messenger.Register<SettingsModifiedMessage>(this, OnSettingsModified);
+            Message.Subscribe<SettingsModifiedMessage>(this, OnSettingsModified);
         }
 
         private void OnSettingsModified(SettingsModifiedMessage _)

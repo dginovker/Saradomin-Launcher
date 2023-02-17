@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using Glitonea.Mvvm.Messaging;
 using PropertyChanged;
 using Saradomin.Infrastructure.Messaging;
 
@@ -21,9 +22,8 @@ namespace Saradomin.View.Windows
 
         protected override void OnOpened(EventArgs e)
         {
-            App.Messenger.Send(
-                new MainViewLoadedMessage()
-            );
+            new MainViewLoadedMessage()
+                .Broadcast();
         }
 
         private void InitializeComponent()

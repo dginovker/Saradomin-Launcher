@@ -1,6 +1,8 @@
+using Glitonea.Mvvm.Messaging;
+
 namespace Saradomin.Infrastructure.Messaging
 {
-    public class SettingsModifiedMessage
+    public class SettingsModifiedMessage : Message
     {
         public string SettingName { get; }
 

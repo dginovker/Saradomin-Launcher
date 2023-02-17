@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Metadata;
 using Glitonea.Mvvm;
+using Glitonea.Mvvm.Messaging;
 using HtmlAgilityPack;
 using Saradomin.Infrastructure.Messaging;
 using Saradomin.Infrastructure.Services;
@@ -55,9 +56,9 @@ namespace Saradomin.ViewModel.Windows
                 Margin = new(4)
             };
 
-            App.Messenger.Register<MainViewLoadedMessage>(this, MainViewLoaded);
-            App.Messenger.Register<SettingsModifiedMessage>(this, SettingsModified);
-            App.Messenger.Register<NotificationBoxStateChangedMessage>(this, NotificatationBoxStateChanged);
+            Message.Subscribe<MainViewLoadedMessage>(this, MainViewLoaded);
+            Message.Subscribe<SettingsModifiedMessage>(this, SettingsModified);
+            Message.Subscribe<NotificationBoxStateChangedMessage>(this, NotificatationBoxStateChanged);
 
             if (!JavaExecutableValid)
             {

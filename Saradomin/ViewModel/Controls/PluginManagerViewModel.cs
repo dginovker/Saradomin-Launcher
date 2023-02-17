@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Glitonea.Mvvm;
+using Glitonea.Mvvm.Messaging;
 using Saradomin.Infrastructure.Messaging;
 using Saradomin.Infrastructure.Services;
 using Saradomin.Model;
@@ -27,10 +28,7 @@ namespace Saradomin.ViewModel.Controls
             _pluginManagementService = pluginManagementService;
             _pluginDownloadService = pluginDownloadService;
             
-            App.Messenger.Register<MainViewLoadedMessage>(this, async (_) =>
-            {
-                await RefreshPluginCollections();
-            });
+            Message.Subscribe<MainViewLoadedMessage>(this, MainViewLoaded);
         }
 
         public async Task RefreshPluginCollections()

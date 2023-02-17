@@ -11,13 +11,11 @@ namespace Saradomin
     [DoNotNotify]
     public class App : Application
     {
-        public static Messenger Messenger { get; private set; }
 
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
             GlitoneaCore.Initialize();
-            Messenger = new Messenger();
         }
 
         public override void OnFrameworkInitializationCompleted()
