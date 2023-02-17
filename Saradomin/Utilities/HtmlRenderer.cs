@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Encodings.Web;
 using System.Web;
 using Avalonia;
 using Avalonia.Controls;

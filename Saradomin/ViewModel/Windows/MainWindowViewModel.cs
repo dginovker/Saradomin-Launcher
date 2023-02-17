@@ -159,17 +159,29 @@ namespace Saradomin.ViewModel.Windows
                 _settingsService.Launcher.CheckForServerProfilesOnLaunch)
                 await AttemptServerProfileUpdate();
 
-            LaunchText = "Play! (already running)";
+            try
             {
-                // Will block this task until client process exits.
-                var t = _launchService.LaunchClient();
+                LaunchText = "Play! (already running)";
+                {
+                    // Will block this task until client process exits.
+                    var t = _launchService.LaunchClient();
 
-                if (!_settingsService.Launcher.AllowMultiboxing)
-                    await t;
+                    if (!_settingsService.Launcher.AllowMultiboxing)
+                        await t;
+                }
             }
-
-            CanLaunch = true;
-            LaunchText = "Play!";
+            catch (Exception e)
+            {
+                NotificationBox.DisplayNotification(
+                    "Error",
+                    $"Unable to launch the 2009scape client.\n\n{e.Message}"
+                );
+            }
+            finally
+            {
+                CanLaunch = true;
+                LaunchText = "Play!";
+            }
         }
 
         private async Task AttemptServerProfileUpdate()
