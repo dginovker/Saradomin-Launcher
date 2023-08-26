@@ -54,7 +54,7 @@ build_all:
             
             - $ARTIFACT_DIR/$OUTPUT_FILE_PREFIX-no_rt.exe
             - $ARTIFACT_DIR/$OUTPUT_FILE_PREFIX-sc.exe
-            - $ARTIFACT_DIR/$OUTPUT_FILE_PREFIX-osx-sc
+            - $ARTIFACT_DIR/$OUTPUT_FILE_PREFIX-osx-sc.app
         expire_in: 1 week
 
 pack_linux_no_rt:
