@@ -67,7 +67,7 @@ namespace Saradomin.Infrastructure.Services
 
             settingsService.Launcher.JavaExecutableLocation = Path.Combine(
                 extractedPath,
-                "bin/java"
+                "bin" + Path.DirectorySeparatorChar + "java"
             );
             settingsService.SaveAll();
         }
