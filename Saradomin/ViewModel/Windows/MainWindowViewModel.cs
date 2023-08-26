@@ -169,7 +169,7 @@ namespace Saradomin.ViewModel.Windows
             } catch (Exception e)
             {
                 CanLaunch = true;
-                LaunchText = $"Failed to download and set Java 11: {e.Message}";
+                LaunchText = $"Failed to download and set Java 11: {e.Message}. Please set it manually.";
                 return;
             }
             
