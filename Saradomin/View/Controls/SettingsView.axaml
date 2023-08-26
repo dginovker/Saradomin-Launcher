@@ -183,11 +183,27 @@
 
                     <HeaderedContentControl Grid.Row="1"
                                             Margin="0,4,0,4"
-                                            Padding="0"
+                                            Padding="3,0,7,0"
                                             BorderThickness="0"
                                             Classes="GroupBox"
                                             Header="plugin management">
-                        <controls:PluginManagerView Margin="-2,2" />
+                        <DockPanel>
+                            <controls:PluginManagerView Margin="-2,2" Name="PmView"/>
+                            <Button
+                                    Margin="-141,-17,0,2"
+                                    Width="140"
+                                    Height="17"
+                                    BorderBrush="{StaticResource DarkBorderBrush}"
+                                    BorderThickness="1"
+                                    Classes="OutsideNavigator"
+                                    Command="{Binding #PmView.DataContext.CheckForUpdates}"
+                                    VerticalAlignment="Top"
+                                    Opacity="1"
+                                    FontSize="11"
+                                    Content="check for updates"
+                                    ZIndex="9999"
+                                    IsEnabled="{Binding !#PmView.DataContext.IsTransactionInProgress}" />
+                        </DockPanel>
                     </HeaderedContentControl>
                 </Grid>
             </HeaderedContentControl>

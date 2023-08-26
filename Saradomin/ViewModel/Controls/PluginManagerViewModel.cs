@@ -17,9 +17,7 @@ namespace Saradomin.ViewModel.Controls
         private readonly IPluginDownloadService _pluginDownloadService;
 
         public bool IsTransactionInProgress { get; private set; }
-        
-        public ObservableCollection<PluginInfo> LocalPlugins { get; private set; } = new();
-        public ObservableCollection<PluginInfo> RemotePlugins { get; private set; } = new();
+        public ObservableCollection<PluginInfo> PluginList { get; private set; } = new();
 
         public PluginManagerViewModel(
             IPluginManagementService pluginManagementService,
@@ -33,27 +31,12 @@ namespace Saradomin.ViewModel.Controls
 
         public async Task RefreshPluginCollections()
         {
-            RemotePlugins.Clear();
-            LocalPlugins.Clear();
-            
-            var localPlugins = (await _pluginManagementService.EnumerateInstalledPlugins())
-                .OrderBy(x => x)
-                .ToList();
-            
-            var remotePlugins = (await _pluginDownloadService.FetchAvailablePluginNames())
-                .OrderBy(x => x)
-                .ToList();
+            PluginList.Clear();
 
-            RemotePlugins = new ObservableCollection<PluginInfo>(
-                remotePlugins
-                .Except(localPlugins)
-                .Select(x => new PluginInfo(x))
-            );
-
-            LocalPlugins = new ObservableCollection<PluginInfo>(
-                localPlugins
-                .Select(x => new PluginInfo(x))
-            );
+            var remotePlugins =
+                await _pluginDownloadService
+                    .GetAllMetadata(_pluginManagementService.PluginRepositoryPath, false, false);
+            PluginList = new ObservableCollection<PluginInfo>(remotePlugins.OrderByDescending(x => x.Installed));
         }
 
         public async Task InstallRemotePlugin(PluginInfo pluginInfo)
@@ -70,10 +53,7 @@ namespace Saradomin.ViewModel.Controls
                     _pluginManagementService.PluginRepositoryPath
                 );
 
-                RemotePlugins.Remove(pluginInfo);
-                LocalPlugins.Add(pluginInfo);
-
-                LocalPlugins = new(LocalPlugins.OrderBy(x => x.Name));
+                await RefreshPluginCollections();
             }
             catch (Exception e)
             {
@@ -99,16 +79,78 @@ namespace Saradomin.ViewModel.Controls
                 
                 await _pluginManagementService.UninstallPlugin(pluginInfo.Name);
                 
-                LocalPlugins.Remove(pluginInfo);
-                RemotePlugins.Add(pluginInfo);
+                PluginList.Add(pluginInfo);
 
-                RemotePlugins = new(RemotePlugins.OrderBy(x => x.Name));
+                PluginList = new(PluginList.OrderByDescending(x => x.Installed));
             }
             catch (Exception e)
             {
                 NotificationBox.DisplayNotification(
                     "Error",
                     $"Plugin removal failed: {e.Message}" 
+                );
+            }
+            finally
+            {
+                IsTransactionInProgress = false;
+            }
+        }
+
+        public async Task CheckForUpdates()
+        {
+            if (IsTransactionInProgress)
+                return;
+            IsTransactionInProgress = true;
+            
+            try
+            {
+                var updatablePlugins =
+                    await _pluginDownloadService.GetAllMetadata(
+                        _pluginManagementService.PluginRepositoryPath,
+                        true,
+                        true
+                    );
+
+                foreach (var plugin in updatablePlugins)
+                {
+                    PluginList.Remove(PluginList.First(x => x.Name == plugin.Name));
+                    PluginList.Add(plugin);
+                }
+
+                PluginList = new(PluginList.OrderByDescending(x => x.Installed));
+            }
+            finally
+            {
+                IsTransactionInProgress = false;
+            }
+        }
+
+        public async Task UpdateLocalPlugin (PluginInfo info)
+        {
+            if (IsTransactionInProgress)
+                return;
+
+            try
+            {
+                IsTransactionInProgress = true;
+                
+                await _pluginDownloadService.DownloadPluginFiles(info.Name, _pluginManagementService.PluginRepositoryPath);
+                await RefreshPluginCollections();
+
+                var newInfo = PluginList.First(x => x.Name == info.Name);
+                if (newInfo.Version != info.Version)
+                {
+                    NotificationBox.DisplayNotification(
+                        "Success!",
+                        $"Successfully updated {info.Name} to version {newInfo.Version}!"
+                    );
+                }
+            }
+            catch (Exception e)
+            {
+                NotificationBox.DisplayNotification(
+                    "Error",
+                    $"Plugin update failed: {e.Message}" 
                 );
             }
             finally

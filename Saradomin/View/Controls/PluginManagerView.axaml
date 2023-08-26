@@ -6,76 +6,16 @@
              xmlns:mvvm="clr-namespace:Glitonea.Mvvm;assembly=Glitonea"
              xmlns:vm="clr-namespace:Saradomin.ViewModel.Controls"
              DataContext="{mvvm:DataContextSource vm:PluginManagerViewModel}">
-    <Grid RowDefinitions="*,Auto,*">
-        <Border Grid.Row="0">
-            <Grid RowDefinitions="Auto,*">
-                <TextBlock Grid.Row="0"
-                           Foreground="{StaticResource DarkForegroundBrush}"
-                           Text="Installed plugins" />
-
-                <Border Grid.Row="1"
-                        Height="154"
-                        Margin="0,2,0,0"
-                        BorderBrush="{StaticResource DarkBorderBrush}"
-                        BorderThickness="1,1,0,1"
-                        ClipToBounds="True">
-                    <Grid>
-                        <TextBlock HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Foreground="#BBFFFFFF"
-                                   IsVisible="{Binding !!!LocalPlugins.Count}"
-                                   Text="No plugins installed"
-                                   ZIndex="9999" />
-                        <ScrollViewer ClipToBounds="True"
-                                      HorizontalScrollBarVisibility="Hidden"
-                                      VerticalScrollBarVisibility="Visible">
-
-
-                            <ListBox Classes="PluginList"
-                                     Items="{Binding LocalPlugins}"
-                                     SelectionMode="Single">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type model:PluginInfo}">
-                                        <Grid ColumnDefinitions="*,Auto">
-                                            <TextBlock Grid.Column="0"
-                                                       Margin="2,0,0,0"
-                                                       VerticalAlignment="Center"
-                                                       Foreground="#BBFFFFFF"
-                                                       Text="{Binding Name}" />
-
-                                            <Button Grid.Column="1"
-                                                    Margin="0,2,2,2"
-                                                    BorderBrush="{StaticResource DarkBorderBrush}"
-                                                    BorderThickness="1"
-                                                    Classes="OutsideNavigator"
-                                                    Command="{Binding $parent[local:PluginManagerView].DataContext.UninstallLocalPlugin}"
-                                                    CommandParameter="{Binding}"
-                                                    Content="Uninstall"
-                                                    IsEnabled="{Binding !$parent[local:PluginManagerView].DataContext.IsTransactionInProgress}" />
-                                        </Grid>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </ScrollViewer>
-                    </Grid>
-                </Border>
-            </Grid>
-        </Border>
-
+    <Grid RowDefinitions="*,Auto">
         <Border Grid.Row="1"
                 Height="2"
                 Margin="1,2"
                 BorderBrush="{StaticResource DarkMediumBorderBrush}"
                 BorderThickness="0,1,0,0" />
-
-        <Border Grid.Row="2">
+        <Border Grid.Row="0">
             <Grid RowDefinitions="Auto,*">
-                <TextBlock Grid.Row="0"
-                           Foreground="{StaticResource DarkForegroundBrush}"
-                           Text="Available plugins" />
-
-                <Border Grid.Row="1"
-                        Height="154"
+                <Border Grid.Row="0"
+                        Height="350"
                         Margin="0,2,0,0"
                         BorderBrush="{StaticResource DarkBorderBrush}"
                         BorderThickness="1,1,0,1"
@@ -84,38 +24,81 @@
                         <TextBlock HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Foreground="#BBFFFFFF"
-                                   IsVisible="{Binding !!!RemotePlugins.Count}"
-                                   Text="No plugins available for download, or lookup failed."
-                                   ZIndex="9999" />
-                        <ScrollViewer ClipToBounds="True"
-                                      HorizontalScrollBarVisibility="Hidden"
-                                      VerticalScrollBarVisibility="Visible">
-                            <ListBox Classes="PluginList"
-                                     Items="{Binding RemotePlugins}"
-                                     SelectionMode="Single">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type model:PluginInfo}">
-                                        <Grid ColumnDefinitions="*,Auto">
-                                            <TextBlock Grid.Column="0"
-                                                       Margin="2,0,0,0"
-                                                       VerticalAlignment="Center"
-                                                       Foreground="#BBFFFFFF"
-                                                       Text="{Binding Name}" />
+                                   IsVisible="{Binding !!!PluginList.Count}"
+                                   Text="Fetching plugin metadata..."
+                                   ZIndex="9999"
+                                   Width="425" />
+                        <ListBox Classes="PluginList"
+                                 Items="{Binding PluginList}"
+                                 SelectionMode="Single"
+                                 ClipToBounds="True"
+                                 IsVisible="{Binding PluginList.Count}"
+                                 VirtualizationMode="Simple">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="{x:Type model:PluginInfo}">
+                                    <Grid ColumnDefinitions="250,50,100" RowDefinitions="*" >
+                                        <TextBlock Grid.Column="1"
+                                            Margin="2,5,2,0"
+                                            VerticalAlignment="Top"
+                                            HorizontalAlignment="Right"
+                                            Foreground="#BBFFFFFF"
+                                            FontSize="11"
+                                            Text="{Binding Version}" />
+                                        <Button Grid.Row="0" Grid.Column="2"
+                                                Margin="-125,0,2,2"
+                                                BorderBrush="{StaticResource DarkBorderBrush}"
+                                                BorderThickness="1"
+                                                Classes="OutsideNavigator"
+                                                Command="{Binding $parent[local:PluginManagerView].DataContext.UpdateLocalPlugin}"
+                                                VerticalAlignment="Top"
+                                                Content="Update"
+                                                IsVisible="{Binding CanUpdate}"
+                                                IsEnabled="{Binding !$parent[local:PluginManagerView].DataContext.IsTransactionInProgress}" />
+                                        <Button Grid.Row="0" Grid.Column="2"
+                                                Margin="0,0,2,2"
+                                                BorderBrush="{StaticResource DarkBorderBrush}"
+                                                BorderThickness="1"
+                                                Classes="OutsideNavigator"
+                                                Command="{Binding $parent[local:PluginManagerView].DataContext.InstallRemotePlugin}"
+                                                CommandParameter="{Binding}"
+                                                VerticalAlignment="Top"
+                                                Content="Install"
+                                                IsVisible="{Binding !Installed}"
+                                                IsEnabled="{Binding !$parent[local:PluginManagerView].DataContext.IsTransactionInProgress}" />
+                                        <Button Grid.Row="0" Grid.Column="2"
+                                                Margin="0,0,2,2"
+                                                BorderBrush="{StaticResource DarkBorderBrush}"
+                                                BorderThickness="1"
+                                                Classes="OutsideNavigator"
+                                                Command="{Binding $parent[local:PluginManagerView].DataContext.UninstallLocalPlugin}"
+                                                CommandParameter="{Binding}"
+                                                VerticalAlignment="Top"
+                                                Content="Uninstall"
+                                                IsVisible="{Binding Installed}"
+                                                IsEnabled="{Binding !$parent[local:PluginManagerView].DataContext.IsTransactionInProgress}" />
+                                        <Expander Grid.Column="0" Grid.Row="0" Header="{Binding Name}">
+                                            <StackPanel>
+                                                <TextBlock
+                                                    Margin="2,0,0,0"
+                                                    VerticalAlignment="Center"
+                                                    Foreground="#BBFFFFFF"
+                                                    FontSize="11"
+                                                    FontStyle="Oblique"
+                                                    Text="{Binding Author}" />
 
-                                            <Button Grid.Column="1"
-                                                    Margin="0,2,2,2"
-                                                    BorderBrush="{StaticResource DarkBorderBrush}"
-                                                    BorderThickness="1"
-                                                    Classes="OutsideNavigator"
-                                                    Command="{Binding $parent[local:PluginManagerView].DataContext.InstallRemotePlugin}"
-                                                    CommandParameter="{Binding}"
-                                                    Content="Install"
-                                                    IsEnabled="{Binding !$parent[local:PluginManagerView].DataContext.IsTransactionInProgress}" />
-                                        </Grid>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </ScrollViewer>
+                                                <TextBlock
+                                                    Margin="2,5,0,4"
+                                                    VerticalAlignment="Bottom"
+                                                    Foreground="#BBFFFFFF"
+                                                    TextWrapping="Wrap"
+                                                    FontSize="11"
+                                                    Text="{Binding Description}" />
+                                            </StackPanel>
+                                        </Expander>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                     </Grid>
                 </Border>
             </Grid>
