@@ -21,6 +21,7 @@ namespace Saradomin.ViewModel.Windows
     {
         private readonly IClientLaunchService _launchService;
         private readonly IClientUpdateService _updateService;
+        private readonly IJavaUpdateService _javaUpdateService;
         private readonly IRemoteConfigService _remoteConfigService;
         private readonly ISettingsService _settingsService;
 
@@ -40,12 +41,16 @@ namespace Saradomin.ViewModel.Windows
         public MainWindowViewModel(IClientLaunchService launchService,
             IClientUpdateService updateService,
             ISettingsService settingsService,
-            IRemoteConfigService remoteConfigService)
+            IRemoteConfigService remoteConfigService,
+            IJavaUpdateService javaUpdateService)
         {
             _launchService = launchService;
             _updateService = updateService;
             _updateService.DownloadProgressChanged += OnClientDownloadProgressUpdated;
             _remoteConfigService = remoteConfigService;
+            _javaUpdateService = javaUpdateService;
+            _javaUpdateService.JavaDownloadProgressChanged += OnJavaDownloadProgressUpdated;
+  
 
             
             _settingsService = settingsService;
@@ -154,6 +159,20 @@ namespace Saradomin.ViewModel.Windows
                 LaunchText = $"Failed to update 2009scape: {e.Message}";
                 return;
             }
+
+            try
+            {
+                if (!IsJavaVersion11())
+                {
+                    await _javaUpdateService.DownloadAndSetJava11(_settingsService);
+                }
+            } catch (Exception e)
+            {
+                CanLaunch = true;
+                LaunchText = $"Failed to download and set Java 11: {e.Message}";
+                return;
+            }
+            
 
             if (!File.Exists(CrossPlatform.LocateServerProfilesPath(Launcher.InstallationDirectory)) ||
                 _settingsService.Launcher.CheckForServerProfilesOnLaunch)
@@ -269,9 +288,26 @@ namespace Saradomin.ViewModel.Windows
             }
         }
 
+        private bool IsJavaVersion11()
+        {
+            string javaVersionOutput = CrossPlatform.RunCommandAndGetOutput(
+                $"{_settingsService.Launcher.JavaExecutableLocation} -version"
+            );
+            return javaVersionOutput.Contains("11");
+        }
+        
         private void OnClientDownloadProgressUpdated(object sender, float e)
         {
             LaunchText = $"Updating... (Downloading client: {e * 100:F2}%)";
+        }
+        private void OnJavaDownloadProgressUpdated(object sender, float e)
+        {
+            if (e >= 0.999f)
+            {
+                LaunchText = "Updating... (Extracting Java)";
+                return;
+            }
+            LaunchText = $"Updating... (Downloading Java: {e * 100:F2}%)";
         }
     }
 }

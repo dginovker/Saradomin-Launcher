@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 using Microsoft.Win32;
 using Mono.Unix;
 
@@ -216,6 +217,95 @@ namespace Saradomin.Utilities
             return Path.Combine(baseDirectory, "server_profiles.json");
         }
 
+        public static string RunCommandAndGetOutput(string command)
+        {
+            Process process = new Process();
+            StringBuilder output = new StringBuilder();
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                process.StartInfo = new ProcessStartInfo("cmd.exe", "/c " + command)
+                {
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                };
+            }
+            else if (
+                RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
+                || RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+            )
+            {
+                process.StartInfo = new ProcessStartInfo("bash", "-c \"" + command + "\"")
+                {
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                };
+            }
+
+            process.OutputDataReceived += (_, e) =>
+            {
+                if (e.Data != null) output.AppendLine(e.Data);
+            };
+
+            process.ErrorDataReceived += (_, e) =>
+            {
+                if (e.Data != null) output.AppendLine(e.Data);
+            };
+
+            process.Start();
+
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+
+            process.WaitForExit();
+
+            return output.ToString();
+        }
+
+        public static string GetJava11DownloadUrl()
+        {
+            string architecture = GetSystemArchitecture();
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return "https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.20%2B8/OpenJDK11U-jre_x64_windows_hotspot_11.0.20_8.zip";
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                return architecture == "x64"
+                    ? "https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.20%2B8/OpenJDK11U-jre_x64_linux_hotspot_11.0.20_8.tar.gz"
+                    : "https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.20%2B8/OpenJDK11U-jre_aarch64_linux_hotspot_11.0.20_8.tar.gz";
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                return architecture == "x64"
+                    ? "https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.20%2B8/OpenJDK11U-jre_x64_mac_hotspot_11.0.20_8.tar.gz"
+                    : "https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.20%2B8/OpenJDK11U-jre_aarch64_mac_hotspot_11.0.20_8.tar.gz";
+            }
+            else
+            {
+                throw new NotSupportedException("Your platform is not supported.");
+            }
+        }
+
+        private static string GetSystemArchitecture()
+        {
+            if (RuntimeInformation.OSArchitecture == Architecture.X64)
+            {
+                return "x64";
+            }
+            else if (RuntimeInformation.OSArchitecture == Architecture.Arm64)
+            {
+                return "aarch64";
+            }
+            else
+            {
+                throw new NotSupportedException("Your architecture is not supported.");
+            }
+        }
         public static bool IsDirectoryWritable(string directoryPath)
         {
             var testFilePath = Path.Combine(directoryPath, "test");
