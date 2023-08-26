@@ -53,13 +53,16 @@ namespace Saradomin.Infrastructure.Services
             }
             
             JavaDownloadProgressChanged?.Invoke(this, 1f);
+            
+            if (Directory.Exists(extractedPath)) Directory.Delete(extractedPath, true);
+            Directory.CreateDirectory(extractedPath);
+            
             if (Path.GetExtension(downloadUrl) == ".zip")
             {
                 await Task.Run(() => ZipFile.ExtractToDirectory(downloadPath, extractedPath));
             }
             else if (Path.GetExtension(downloadUrl) == ".gz" || Path.GetExtension(downloadUrl) == ".tar.gz")
             {
-                if (!Directory.Exists(extractedPath)) Directory.CreateDirectory(extractedPath);
                 await Task.Run(() => CrossPlatform.RunCommandAndGetOutput($"tar xf {downloadPath} -C {extractedPath} --strip-components 1"));
             }
             
