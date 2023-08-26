@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 using Microsoft.Win32;
 using Mono.Unix;
 
@@ -219,6 +220,7 @@ namespace Saradomin.Utilities
         public static string RunCommandAndGetOutput(string command)
         {
             Process process = new Process();
+            StringBuilder output = new StringBuilder();
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
@@ -244,11 +246,24 @@ namespace Saradomin.Utilities
                 };
             }
 
+            process.OutputDataReceived += (_, e) =>
+            {
+                if (e.Data != null) output.AppendLine(e.Data);
+            };
+
+            process.ErrorDataReceived += (_, e) =>
+            {
+                if (e.Data != null) output.AppendLine(e.Data);
+            };
+
             process.Start();
-            var output = process.StandardError.ReadToEnd();
+
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+
             process.WaitForExit();
 
-            return output;
+            return output.ToString();
         }
 
         public static string GetJava11DownloadUrl()
