@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -155,6 +156,24 @@ namespace Saradomin.ViewModel.Windows
                 return;
             }
 
+            Console.WriteLine("Launching client...");
+            try
+            {
+                if (!IsJavaVersion11())
+                {
+                    Console.WriteLine("Java version is not 11. Downloading and setting Java 11.");
+                    await DownloadAndSetJava11();
+                }
+            } catch (Exception e)
+            {
+                CanLaunch = true;
+                Console.WriteLine($"Failed to download and set Java 11: {e.Message}");
+                LaunchText = $"Failed to download and set Java 11: {e.Message}";
+                return;
+            }
+            
+            Console.WriteLine($"Done making sure Java 11 is set. Launching client with Java 11 at {_settingsService.Launcher.JavaExecutableLocation}.");
+
             if (!File.Exists(CrossPlatform.LocateServerProfilesPath(Launcher.InstallationDirectory)) ||
                 _settingsService.Launcher.CheckForServerProfilesOnLaunch)
                 await AttemptServerProfileUpdate();
@@ -267,6 +286,58 @@ namespace Saradomin.ViewModel.Windows
                     }
                 }
             }
+        }
+
+        private bool IsJavaVersion11()
+        {
+            string javaVersionOutput = CrossPlatform.RunCommandAndGetOutput(
+                $"{_settingsService.Launcher.JavaExecutableLocation} -version"
+            );
+            Console.WriteLine($"Checking if Java version is 11. Output: {javaVersionOutput}");
+            return javaVersionOutput.Contains("11");
+        }
+        
+        private async Task DownloadAndSetJava11()
+        {
+            LaunchText = "Updating... (Downloading Java 11)";
+            string downloadUrl = CrossPlatform.GetJava11DownloadUrl();
+            Console.WriteLine($"Downloading Java 11 from {downloadUrl}.");
+            string downloadPath = Path.Combine(
+                CrossPlatform.LocateDefault2009scapeHome(),
+                "jre11" + Path.GetExtension(downloadUrl)
+            );
+            string extractedPath = Path.Combine(
+                CrossPlatform.LocateDefault2009scapeHome(),
+                "jre11"
+            );
+            Console.WriteLine($"Download path: {downloadPath}, extracted path: {extractedPath}.");
+
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var data = await httpClient.GetByteArrayAsync(downloadUrl);
+                await File.WriteAllBytesAsync(downloadPath, data);
+            }
+
+            LaunchText = "Updating... (Extracting Java 11)";
+            if (Path.GetExtension(downloadUrl) == ".zip")
+            {
+                ZipFile.ExtractToDirectory(downloadPath, extractedPath);
+            }
+            else if (Path.GetExtension(downloadUrl) == ".gz" || Path.GetExtension(downloadUrl) == ".tar.gz")
+            {
+                if (!Directory.Exists(extractedPath)) Directory.CreateDirectory(extractedPath);
+                string extractOutput = CrossPlatform.RunCommandAndGetOutput($"tar xf {downloadPath} -C {extractedPath} --strip-components 1");
+                Console.WriteLine($"Extract output: {extractOutput}");
+            }
+
+            Console.WriteLine($"Old Java executable location: {_settingsService.Launcher.JavaExecutableLocation}.");
+            _settingsService.Launcher.JavaExecutableLocation = Path.Combine(
+                extractedPath,
+                "bin/java"
+            );
+            _settingsService.SaveAll();
+            
+            Console.WriteLine($"New Java executable location: {_settingsService.Launcher.JavaExecutableLocation}.");
         }
 
         private void OnClientDownloadProgressUpdated(object sender, float e)
