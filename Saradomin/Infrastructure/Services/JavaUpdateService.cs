@@ -29,16 +29,16 @@ namespace Saradomin.Infrastructure.Services
             using (HttpClient httpClient = new HttpClient())
             {
                 var response = await httpClient.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead);
-                var contentLength = response.Content.Headers.ContentLength ?? 1;
+                var contentLength = response.Content.Headers.ContentLength ?? 40 * 1024 * 1024L;
                 var totalRead = 0L;
                 var buffer = new byte[8192];
 
                 // Create a FileStream to write the downloaded bytes to
-                using (var fileStream = new FileStream(downloadPath, FileMode.Create, FileAccess.Write, FileShare.None))
+                await using (var fileStream = new FileStream(downloadPath, FileMode.Create, FileAccess.Write, FileShare.None))
                 {
-                    using (var stream = await response.Content.ReadAsStreamAsync())
+                    await using (var stream = await response.Content.ReadAsStreamAsync())
                     {
-                        var bytesRead = 0;
+                        int bytesRead;
                         do
                         {
                             bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
@@ -53,16 +53,16 @@ namespace Saradomin.Infrastructure.Services
                     }
                 }
             }
-
+            
+            JavaDownloadProgressChanged?.Invoke(this, 1f);
             if (Path.GetExtension(downloadUrl) == ".zip")
             {
-                ZipFile.ExtractToDirectory(downloadPath, extractedPath);
+                await Task.Run(() => ZipFile.ExtractToDirectory(downloadPath, extractedPath));
             }
             else if (Path.GetExtension(downloadUrl) == ".gz" || Path.GetExtension(downloadUrl) == ".tar.gz")
             {
                 if (!Directory.Exists(extractedPath)) Directory.CreateDirectory(extractedPath);
-                string extractOutput = CrossPlatform.RunCommandAndGetOutput($"tar xf {downloadPath} -C {extractedPath} --strip-components 1");
-                Console.WriteLine($"Extract output: {extractOutput}");
+                await Task.Run(() => CrossPlatform.RunCommandAndGetOutput($"tar xf {downloadPath} -C {extractedPath} --strip-components 1"));
             }
             
             File.Delete(downloadPath);

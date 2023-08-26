@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -308,6 +307,12 @@ namespace Saradomin.ViewModel.Windows
         }
         private void OnJavaDownloadProgressUpdated(object sender, float e)
         {
+            if (e >= 0.999f)
+            {
+                Console.WriteLine($"Writing about extracting Java");
+                LaunchText = "Updating... (Extracting Java)";
+                return;
+            }
             LaunchText = $"Updating... (Downloading Java: {e * 100:F2}%)";
         }
     }
