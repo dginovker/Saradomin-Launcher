@@ -13,11 +13,11 @@ namespace Saradomin.Infrastructure.Services
 {
     public class ClientLaunchService : IClientLaunchService
     {
-        private readonly ISettingsService _settingsService;  // Use the interface here
+        private readonly ISettingsService _settingsService;
         private readonly IClientUpdateService _clientUpdateService;
 
         public ClientLaunchService(
-            ISettingsService settingsService,  // Use the interface here
+            ISettingsService settingsService,
             IClientUpdateService clientUpdateService
         )
         {
@@ -27,7 +27,6 @@ namespace Saradomin.Infrastructure.Services
 
         public async Task LaunchClient()
         {
-            // Original code to launch the game
             var proc = new Process
             {
                 StartInfo = new ProcessStartInfo(
