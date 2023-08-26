@@ -111,10 +111,27 @@ pack_macos_sc:
         - build_all
     script:
         - echo "Packing self-contained build for macOS x64..."
+        - mkdir -p $OUTPUT_FILE_PREFIX-osx-sc.app/Contents/MacOS
+        - mkdir -p $OUTPUT_FILE_PREFIX-osx-sc.app/Contents/Resources
+        - cp Saradomin/Resources/Icons/saradomin.icns $OUTPUT_FILE_PREFIX-osx-sc.app/Contents/Resources/
+        - cp $ARTIFACT_DIR/$OUTPUT_FILE_PREFIX-osx-sc $OUTPUT_FILE_PREFIX-osx-sc.app/Contents/MacOS/
+        - chmod +x $OUTPUT_FILE_PREFIX-osx-sc.app/Contents/MacOS/$OUTPUT_FILE_PREFIX-osx-sc
+        # Create the Info.plist file
+        - echo '<?xml version="1.0" encoding="UTF-8"?>' > $OUTPUT_FILE_PREFIX-osx-sc.app/Contents/Info.plist
+        - echo '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >> $OUTPUT_FILE_PREFIX-osx-sc.app/Contents/Info.plist
+        - echo '<plist version="1.0">' >> $OUTPUT_FILE_PREFIX-osx-sc.app/Contents/Info.plist
+        - echo '<dict>' >> $OUTPUT_FILE_PREFIX-osx-sc.app/Contents/Info.plist
+        - echo '    <key>CFBundleExecutable</key>' >> $OUTPUT_FILE_PREFIX-osx-sc.app/Contents/Info.plist
+        - echo "    <string>$OUTPUT_FILE_PREFIX-osx-sc</string>" >> $OUTPUT_FILE_PREFIX-osx-sc.app/Contents/Info.plist
+        - echo '    <key>CFBundleIconFile</key>' >> $OUTPUT_FILE_PREFIX-osx-sc.app/Contents/Info.plist
+        - echo '    <string>saradomin.icns</string>' >> $OUTPUT_FILE_PREFIX-osx-sc.app/Contents/Info.plist
+        # Add other keys and values as needed
+        - echo '</dict>' >> $OUTPUT_FILE_PREFIX-osx-sc.app/Contents/Info.plist
+        - echo '</plist>' >> $OUTPUT_FILE_PREFIX-osx-sc.app/Contents/Info.plist
     artifacts:
         name: "macOS x64 (self-contained)"
         paths:
-            - $ARTIFACT_DIR/$OUTPUT_FILE_PREFIX-osx-sc
+            - $OUTPUT_FILE_PREFIX-osx-sc.app
         expire_in: 1 week
 
 pack_windows_no_rt:
