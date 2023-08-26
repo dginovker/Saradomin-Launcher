@@ -160,23 +160,19 @@ namespace Saradomin.ViewModel.Windows
                 return;
             }
 
-            Console.WriteLine("Launching client...");
             try
             {
                 if (!IsJavaVersion11())
                 {
-                    Console.WriteLine("Java version is not 11. Downloading and setting Java 11.");
                     await _javaUpdateService.DownloadAndSetJava11(_settingsService);
                 }
             } catch (Exception e)
             {
                 CanLaunch = true;
-                Console.WriteLine($"Failed to download and set Java 11: {e.Message}");
                 LaunchText = $"Failed to download and set Java 11: {e.Message}";
                 return;
             }
             
-            Console.WriteLine($"Done making sure Java 11 is set. Launching client with Java 11 at {_settingsService.Launcher.JavaExecutableLocation}.");
 
             if (!File.Exists(CrossPlatform.LocateServerProfilesPath(Launcher.InstallationDirectory)) ||
                 _settingsService.Launcher.CheckForServerProfilesOnLaunch)
@@ -297,7 +293,6 @@ namespace Saradomin.ViewModel.Windows
             string javaVersionOutput = CrossPlatform.RunCommandAndGetOutput(
                 $"{_settingsService.Launcher.JavaExecutableLocation} -version"
             );
-            Console.WriteLine($"Checking if Java version is 11. Output: {javaVersionOutput}");
             return javaVersionOutput.Contains("11");
         }
         
@@ -309,7 +304,6 @@ namespace Saradomin.ViewModel.Windows
         {
             if (e >= 0.999f)
             {
-                Console.WriteLine($"Writing about extracting Java");
                 LaunchText = "Updating... (Extracting Java)";
                 return;
             }

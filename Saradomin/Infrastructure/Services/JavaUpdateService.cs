@@ -15,7 +15,6 @@ namespace Saradomin.Infrastructure.Services
         {
             string downloadUrl = CrossPlatform.GetJava11DownloadUrl();
             
-            Console.WriteLine($"Downloading Java 11 from {downloadUrl}.");
             string downloadPath = Path.Combine(
                 CrossPlatform.LocateDefault2009scapeHome(),
                 "jre11" + Path.GetExtension(downloadUrl)
@@ -24,7 +23,6 @@ namespace Saradomin.Infrastructure.Services
                 CrossPlatform.LocateDefault2009scapeHome(),
                 "jre11"
             );
-            Console.WriteLine($"Download path: {downloadPath}, extracted path: {extractedPath}.");
 
             using (HttpClient httpClient = new HttpClient())
             {
