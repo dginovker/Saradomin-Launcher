@@ -22,6 +22,7 @@ namespace Saradomin.ViewModel.Windows
     {
         private readonly IClientLaunchService _launchService;
         private readonly IClientUpdateService _updateService;
+        private readonly IJavaUpdateService _javaUpdateService;
         private readonly IRemoteConfigService _remoteConfigService;
         private readonly ISettingsService _settingsService;
 
@@ -41,12 +42,16 @@ namespace Saradomin.ViewModel.Windows
         public MainWindowViewModel(IClientLaunchService launchService,
             IClientUpdateService updateService,
             ISettingsService settingsService,
-            IRemoteConfigService remoteConfigService)
+            IRemoteConfigService remoteConfigService,
+            IJavaUpdateService javaUpdateService)
         {
             _launchService = launchService;
             _updateService = updateService;
             _updateService.DownloadProgressChanged += OnClientDownloadProgressUpdated;
             _remoteConfigService = remoteConfigService;
+            _javaUpdateService = javaUpdateService;
+            _javaUpdateService.JavaDownloadProgressChanged += OnJavaDownloadProgressUpdated;
+  
 
             
             _settingsService = settingsService;
@@ -162,7 +167,7 @@ namespace Saradomin.ViewModel.Windows
                 if (!IsJavaVersion11())
                 {
                     Console.WriteLine("Java version is not 11. Downloading and setting Java 11.");
-                    await DownloadAndSetJava11();
+                    await _javaUpdateService.DownloadAndSetJava11(_settingsService);
                 }
             } catch (Exception e)
             {
@@ -297,51 +302,13 @@ namespace Saradomin.ViewModel.Windows
             return javaVersionOutput.Contains("11");
         }
         
-        private async Task DownloadAndSetJava11()
-        {
-            LaunchText = "Updating... (Downloading Java 11)";
-            string downloadUrl = CrossPlatform.GetJava11DownloadUrl();
-            Console.WriteLine($"Downloading Java 11 from {downloadUrl}.");
-            string downloadPath = Path.Combine(
-                CrossPlatform.LocateDefault2009scapeHome(),
-                "jre11" + Path.GetExtension(downloadUrl)
-            );
-            string extractedPath = Path.Combine(
-                CrossPlatform.LocateDefault2009scapeHome(),
-                "jre11"
-            );
-            Console.WriteLine($"Download path: {downloadPath}, extracted path: {extractedPath}.");
-
-            using (HttpClient httpClient = new HttpClient())
-            {
-                var data = await httpClient.GetByteArrayAsync(downloadUrl);
-                await File.WriteAllBytesAsync(downloadPath, data);
-            }
-
-            LaunchText = "Updating... (Extracting Java 11)";
-            if (Path.GetExtension(downloadUrl) == ".zip")
-            {
-                ZipFile.ExtractToDirectory(downloadPath, extractedPath);
-            }
-            else if (Path.GetExtension(downloadUrl) == ".gz" || Path.GetExtension(downloadUrl) == ".tar.gz")
-            {
-                if (!Directory.Exists(extractedPath)) Directory.CreateDirectory(extractedPath);
-                string extractOutput = CrossPlatform.RunCommandAndGetOutput($"tar xf {downloadPath} -C {extractedPath} --strip-components 1");
-                Console.WriteLine($"Extract output: {extractOutput}");
-            }
-            
-            File.Delete(downloadPath);
-
-            _settingsService.Launcher.JavaExecutableLocation = Path.Combine(
-                extractedPath,
-                "bin/java"
-            );
-            _settingsService.SaveAll();
-        }
-
         private void OnClientDownloadProgressUpdated(object sender, float e)
         {
             LaunchText = $"Updating... (Downloading client: {e * 100:F2}%)";
+        }
+        private void OnJavaDownloadProgressUpdated(object sender, float e)
+        {
+            LaunchText = $"Updating... (Downloading Java: {e * 100:F2}%)";
         }
     }
 }
