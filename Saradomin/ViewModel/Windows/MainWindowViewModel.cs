@@ -298,16 +298,16 @@ namespace Saradomin.ViewModel.Windows
         
         private void OnClientDownloadProgressUpdated(object sender, float e)
         {
-            LaunchText = $"Updating... (Downloading client: {e * 100:F2}%)";
+            LaunchText = $"Updating... (Downloading client - {e * 100:F2}%)";
         }
         private void OnJavaDownloadProgressUpdated(object sender, float e)
         {
             if (e >= 0.999f)
             {
-                LaunchText = "Updating... (Extracting Java)";
+                LaunchText = "Updating... (Extracting Java 11)";
                 return;
             }
-            LaunchText = $"Updating... (Downloading Java: {e * 100:F2}%)";
+            LaunchText = $"Updating... (Downloading Java 11 - {e * 100:F2}%)";
         }
     }
 }
