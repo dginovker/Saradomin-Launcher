@@ -17,6 +17,20 @@
         <ApplicationIcon>Resources\Icons\saradomin.ico</ApplicationIcon>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <NSubsysTasksPath Condition="'$(NSubsysTasksPath)' == ''">$(NugetPackageRoot)\nsubsys\1.0.0\tool\NSubsys.Tasks.dll</NSubsysTasksPath>
+    </PropertyGroup>
+        
+    <UsingTask TaskName="NSubsys.Tasks.NSubsys" AssemblyFile="$(NSubsysTasksPath)" />
+        
+    <Target Name="CustomAfterBuild" AfterTargets="Build" Condition="$(RuntimeIdentifier.StartsWith('win'))">
+        <NSubsys TargetFile="$(OutputPath)$(AssemblyName)$(_NativeExecutableExtension)" />
+    </Target>
+
+    <Target Name="CustomAfterPublish" AfterTargets="Publish" Condition="$(RuntimeIdentifier.StartsWith('win'))">
+        <NSubsys TargetFile="$(PublishDir)$(AssemblyName)$(_NativeExecutableExtension)" />
+    </Target>
+
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="0.10.18" />
         <PackageReference Include="Avalonia.Desktop" Version="0.10.18" />
@@ -25,6 +39,10 @@
         <PackageReference Include="GitLabApiClient" Version="1.8.0" />
         <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
         <PackageReference Include="Mono.Posix.NETStandard" Version="1.0.0" />
+        <PackageReference Include="NSubsys" Version="1.0.0">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
         <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" PrivateAssets="all" />
     </ItemGroup>
 
