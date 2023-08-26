@@ -329,15 +329,14 @@ namespace Saradomin.ViewModel.Windows
                 string extractOutput = CrossPlatform.RunCommandAndGetOutput($"tar xf {downloadPath} -C {extractedPath} --strip-components 1");
                 Console.WriteLine($"Extract output: {extractOutput}");
             }
+            
+            File.Delete(downloadPath);
 
-            Console.WriteLine($"Old Java executable location: {_settingsService.Launcher.JavaExecutableLocation}.");
             _settingsService.Launcher.JavaExecutableLocation = Path.Combine(
                 extractedPath,
                 "bin/java"
             );
             _settingsService.SaveAll();
-            
-            Console.WriteLine($"New Java executable location: {_settingsService.Launcher.JavaExecutableLocation}.");
         }
 
         private void OnClientDownloadProgressUpdated(object sender, float e)
