@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Saradomin.Utilities;
 
@@ -55,23 +56,45 @@ namespace Saradomin.Infrastructure.Services
             JavaDownloadProgressChanged?.Invoke(this, 1f);
             
             if (Directory.Exists(extractedPath)) Directory.Delete(extractedPath, true);
-            Directory.CreateDirectory(extractedPath);
             
             if (Path.GetExtension(downloadUrl) == ".zip")
             {
-                await Task.Run(() => ZipFile.ExtractToDirectory(downloadPath, extractedPath));
+                string tempDir = Path.Combine(Path.GetTempPath(), "jre11_temp");
+                if (Directory.Exists(tempDir)) Directory.Delete(tempDir, true);
+                await Task.Run(() => ZipFile.ExtractToDirectory(downloadPath, tempDir));
+                Directory.Move(Directory.GetDirectories(tempDir)[0], extractedPath);
+                Directory.Delete(tempDir, true);
             }
             else if (Path.GetExtension(downloadUrl) == ".gz" || Path.GetExtension(downloadUrl) == ".tar.gz")
             {
+                Directory.CreateDirectory(extractedPath);
                 await Task.Run(() => CrossPlatform.RunCommandAndGetOutput($"tar xf {downloadPath} -C {extractedPath} --strip-components 1"));
             }
             
             File.Delete(downloadPath);
 
-            settingsService.Launcher.JavaExecutableLocation = Path.Combine(
-                extractedPath,
-                "bin" + Path.DirectorySeparatorChar + "java"
-            );
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                settingsService.Launcher.JavaExecutableLocation = Path.Combine(
+                    extractedPath,
+                    "Contents",
+                    "Home",
+                    "bin",
+                    "java"
+                );
+            } else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+                settingsService.Launcher.JavaExecutableLocation = Path.Combine(
+                    extractedPath,
+                    "bin",
+                    "java.exe"
+                );
+            } else {
+                settingsService.Launcher.JavaExecutableLocation = Path.Combine(
+                    extractedPath,
+                    "bin",
+                    "java"
+                );
+            }
             settingsService.SaveAll();
         }
     }

@@ -16,13 +16,13 @@ namespace Saradomin.Infrastructure.Services
             PluginRepositoryPath = Path.Combine(settings.Launcher.InstallationDirectory, "plugins");
         }
 
-        public async Task<List<string>> EnumerateInstalledPlugins()
+        public Task<List<string>> EnumerateInstalledPlugins()
         {
             EnsurePluginRepositoryPathSane();
 
-            return Directory
+            return Task.FromResult(Directory
                 .GetDirectories(PluginRepositoryPath, "*", SearchOption.TopDirectoryOnly)
-                .Select(x => Path.GetFileName(x)).ToList();
+                .Select(x => Path.GetFileName(x)).ToList());
         }
 
         public async Task<bool> IsPluginInstalled(string pluginName)
@@ -33,7 +33,7 @@ namespace Saradomin.Infrastructure.Services
                 .Contains(pluginName);
         }
 
-        public async Task UninstallPlugin(string pluginName)
+        public Task UninstallPlugin(string pluginName)
         {
             EnsurePluginRepositoryPathSane();
             var pluginPath = GetPluginDirectoryPath(pluginName);
@@ -42,6 +42,8 @@ namespace Saradomin.Infrastructure.Services
             {
                 Directory.Delete(pluginPath, true);
             }
+
+            return Task.CompletedTask;
         }
 
         public Task InstallPlugin(ZipArchive zipArchive, string pluginName)

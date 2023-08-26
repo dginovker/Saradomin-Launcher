@@ -32,7 +32,9 @@ namespace Saradomin.Utilities
             try
             {
                 if (!File.Exists(location))
+                {
                     return false;
+                }
 
                 using (var fileStream = File.OpenRead(location))
                 {
