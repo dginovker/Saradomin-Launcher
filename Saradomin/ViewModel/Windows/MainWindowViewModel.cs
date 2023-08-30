@@ -4,7 +4,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Media;
 using Avalonia.Metadata;
 using Glitonea.Mvvm;
 using Glitonea.Mvvm.Messaging;
@@ -25,18 +27,23 @@ namespace Saradomin.ViewModel.Windows
         private readonly IRemoteConfigService _remoteConfigService;
         private readonly ISettingsService _settingsService;
 
+        private static readonly FontFamily _monoFontFamily = new("JetBrains Mono, Noto Sans Mono, Consolas, monospace");
+        private static readonly FontFamily _sansFontFamily = new("Segoe UI, Open Sans, Noto Sans, sans-serif");
+
         private bool JavaExecutableValid
             => CrossPlatform.IsJavaExecutableValid(_settingsService.Launcher.JavaExecutableLocation);
 
         private LauncherSettings Launcher { get; }
 
         public string Title { get; set; } = "2009scape launcher";
-        
+
         public bool CanLaunch { get; private set; } = true;
         public string LaunchText { get; private set; } = "Play!";
 
         public bool DimContent { get; private set; }
-        public StackPanel ContentContainer { get; private set; }
+
+        public TextBlock ContentContainer { get; private set; }
+        public bool UseMonospaceFontForNews { get; private set; } = false;
 
         public MainWindowViewModel(IClientLaunchService launchService,
             IClientUpdateService updateService,
@@ -52,13 +59,18 @@ namespace Saradomin.ViewModel.Windows
             _javaUpdateService.JavaDownloadProgressChanged += OnJavaDownloadProgressUpdated;
   
 
-            
+
             _settingsService = settingsService;
             Launcher = _settingsService.Launcher;
 
-            ContentContainer = new StackPanel
+            ContentContainer = new SelectableTextBlock
             {
-                Margin = new(4)
+                Foreground = Brushes.Black,
+                Margin = new Thickness(0, 4, 0, 0),
+                TextWrapping = TextWrapping.Wrap,
+                FontFamily = Launcher.UseMonospacedFontForNews
+                    ? _monoFontFamily
+                    : _sansFontFamily
             };
 
             Message.Subscribe<MainViewLoadedMessage>(this, MainViewLoaded);
@@ -82,17 +94,26 @@ namespace Saradomin.ViewModel.Windows
             {
                 HtmlNode node;
                 var doc = new HtmlDocument();
-                
+
                 try
                 {
-                    var response =
-                        await httpClient.GetAsync("https://2009scape.org/services/m=news/archives/latest.html");
+                    var response = await httpClient.GetAsync(
+                        "https://2009scape.org/services/m=news/archives/latest.html"
+                    );
+
                     doc.Load(await response.Content.ReadAsStreamAsync());
                     node = doc.DocumentNode.SelectSingleNode("//div[@class='msgcontents']");
                 }
                 catch (HttpRequestException)
                 {
-                    doc.LoadHtml("<html><h3>Not Available<h3><br/><body>This content is unavailable, likely due to a lack of an internet connection.</body></html>");
+                    doc.LoadHtml(
+                        "<html>" +
+                        "   <h3>Not Available<h3>" +
+                        "   <br/>" +
+                        "   <body>This content is unavailable, likely due to a lack of an internet connection.</body>" +
+                        "</html>"
+                    );
+
                     node = doc.DocumentNode;
                 }
 
@@ -104,27 +125,39 @@ namespace Saradomin.ViewModel.Windows
 
         public void SettingsModified(SettingsModifiedMessage msg)
         {
-            if (msg.SettingName == nameof(LauncherSettings.JavaExecutableLocation))
+            switch (msg.SettingName)
             {
-                if (!JavaExecutableValid)
-                {
+                case nameof(LauncherSettings.JavaExecutableLocation) when !JavaExecutableValid:
                     CanLaunch = false;
                     LaunchText = "Unable to locate Java. Find Java executable using Settings page.";
-                }
-                else
-                {
+                    break;
+
+                case nameof(LauncherSettings.JavaExecutableLocation):
                     CanLaunch = true;
                     LaunchText = "Play!";
+                    break;
+
+                case nameof(LauncherSettings.UseMonospacedFontForNews):
+                {
+                    if (Launcher.UseMonospacedFontForNews)
+                    {
+                        ContentContainer.FontFamily = _monoFontFamily;
+                    }
+                    else
+                    {
+                        ContentContainer.FontFamily = _sansFontFamily;
+                    }
+                    break;
                 }
             }
         }
-        
+
         public void NotificatationBoxStateChanged(NotificationBoxStateChangedMessage msg)
         {
             DimContent = msg.WasOpened;
         }
 
-        public void LaunchPage(string parameter)
+        public void LaunchPage(object parameter)
         {
             var url = parameter switch
             {
@@ -267,7 +300,6 @@ namespace Saradomin.ViewModel.Windows
             if (string.IsNullOrEmpty(localClientHash)
                 || remoteClientHash.Trim().ToLower() != localClientHash!.Trim().ToLower())
             {
-
                 LaunchText = $"Updating... (Downloading client: 0%)";
                 Directory.CreateDirectory(Launcher.InstallationDirectory);
 

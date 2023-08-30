@@ -10,7 +10,7 @@ using Saradomin.Infrastructure.Messaging;
 namespace Saradomin.View.Windows
 {
     [DoNotNotify]
-    public class MainWindow : Window
+    public partial class MainWindow : Window
     {
         public MainWindow()
         {

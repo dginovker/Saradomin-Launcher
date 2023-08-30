@@ -1,9 +1,9 @@
 variables:
     COMMON_FLAGS: -p:PublishTrimmed=false -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
-    PUBLISH_DIR_WIN64: bin/Release/net6.0/win-x64/publish
-    PUBLISH_DIR_LINUXARM64: bin/Release/net6.0/linux-arm64/publish
-    PUBLISH_DIR_LINUX64: bin/Release/net6.0/linux-x64/publish
-    PUBLISH_DIR_OSX: bin/Release/net6.0/osx-x64/publish
+    PUBLISH_DIR_WIN64: bin/Release/net7.0/win-x64/publish
+    PUBLISH_DIR_LINUXARM64: bin/Release/net7.0/linux-arm64/publish
+    PUBLISH_DIR_LINUX64: bin/Release/net7.0/linux-x64/publish
+    PUBLISH_DIR_OSX: bin/Release/net7.0/osx-x64/publish
     ARTIFACT_DIR: Saradomin
     GIT_SUBMODULE_STRATEGY: recursive
     OUTPUT_FILE_PREFIX: 2009scape-launcher
@@ -19,7 +19,7 @@ stages:
     - pack_macos_sc
 
 build_all:
-    image: mcr.microsoft.com/dotnet/sdk:6.0
+    image: mcr.microsoft.com/dotnet/sdk:7.0
     stage: build_all
     script:
         - dotnet restore

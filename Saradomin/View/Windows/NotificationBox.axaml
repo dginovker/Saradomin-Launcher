@@ -1,16 +1,15 @@
 <glitonea:WindowEx x:Class="Saradomin.View.Windows.NotificationBox"
                    xmlns="https://github.com/avaloniaui"
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                   xmlns:glitonea="clr-namespace:Glitonea;assembly=Glitonea"
+                   xmlns:glitonea="clr-namespace:Glitonea.Controls;assembly=Glitonea"
                    xmlns:mvvm="clr-namespace:Glitonea.Mvvm;assembly=Glitonea"
                    xmlns:windows="clr-namespace:Saradomin.ViewModel.Windows"
-                   Name="NotificationBox"
                    Title="{Binding Title}"
                    Height="120"
                    MaxWidth="400"
                    Background="{StaticResource WindowBackgroundBrush}"
                    CanResize="False"
-                   DataContext="{Binding #NotificationBox}"
+                   DataContext="{Binding}"
                    ShowActivated="True"
                    ShowInTaskbar="False"
                    SizeToContent="WidthAndHeight"
@@ -26,7 +25,7 @@
                            FontSize="14"
                            FontWeight="Light"
                            Foreground="{StaticResource AccentBrush}"
-                           Text="{Binding #NotificationBox.Title}"
+                           Text="{Binding $parent[Window].Title}"
                            TextAlignment="Center">
                 </TextBlock>
             </Grid>

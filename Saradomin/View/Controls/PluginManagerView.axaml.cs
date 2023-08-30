@@ -6,7 +6,7 @@ using PropertyChanged;
 namespace Saradomin.View.Controls
 {
     [DoNotNotify]
-    public class PluginManagerView : UserControl
+    public partial class PluginManagerView : UserControl
     {
         public PluginManagerView()
         {

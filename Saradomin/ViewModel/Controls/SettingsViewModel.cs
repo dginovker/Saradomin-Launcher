@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Platform.Storage;
 using Glitonea.Extensions;
 using Glitonea.Mvvm;
 using Glitonea.Mvvm.Messaging;
@@ -76,61 +78,68 @@ namespace Saradomin.ViewModel.Controls
         {
             _settingsService = settingsService;
 
-           Message.Subscribe<MainViewLoadedMessage>(this, OnMainViewLoaded);
+            Message.Subscribe<MainViewLoadedMessage>(this, OnMainViewLoaded);
         }
 
-        private void LaunchScapeWebsite()
+        public void LaunchScapeWebsite()
         {
             CrossPlatform.LaunchURL("https://2009scape.org");
         }
 
-        private void OpenPluginTutorial()
+        public void OpenPluginTutorial()
         {
             CrossPlatform.LaunchURL("https://gitlab.com/2009scape/tools/client-plugins");
         }
 
-        private void LaunchProjectWebsite()
+        public void LaunchProjectWebsite()
         {
             CrossPlatform.LaunchURL("https://gitlab.com/2009scape/Saradomin-Launcher");
         }
 
-        private void OnMainViewLoaded(MainViewLoadedMessage _)
+        public void OnMainViewLoaded(MainViewLoadedMessage _)
         {
             Message.Subscribe<SettingsModifiedMessage>(this, OnSettingsModified);
         }
 
-        private void OnSettingsModified(SettingsModifiedMessage _)
+        public void OnSettingsModified(SettingsModifiedMessage _)
         {
             _settingsService.SaveAll();
         }
 
-        private async Task BrowseForJavaExecutable()
+        public async Task BrowseForJavaExecutable()
         {
-            var ofd = new OpenFileDialog
+            var storageProvider = Application.Current!.GetMainWindow()!.StorageProvider;
+
+            var storageFile = (await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
             {
                 Title = "Browse for Java...",
                 AllowMultiple = false,
-                Directory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
-            };
+                SuggestedStartLocation = await storageProvider.TryGetFolderFromPathAsync(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles)
+                )
+            })).FirstOrDefault();
 
-            var paths = await ofd.ShowAsync(Application.Current.GetMainWindow());
-
-            if (paths != null && paths.Length > 0)
+            if (storageFile != null)
             {
-                Launcher.JavaExecutableLocation = paths[0];
+                Launcher.JavaExecutableLocation = storageFile.TryGetLocalPath();
             }
         }
-        
-        private async Task BrowseForInstallationDirectory()
+
+        public async Task BrowseForInstallationDirectory()
         {
-            var ofd = new OpenFolderDialog
+            var storageProvider = Application.Current!.GetMainWindow()!.StorageProvider;
+            
+            var storageFolder = (await storageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
             {
                 Title = "Browse for Installation Directory...",
-                Directory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
-            };
+                AllowMultiple = false,
+                SuggestedStartLocation = await storageProvider.TryGetFolderFromPathAsync(
+                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
+                )
+            })).FirstOrDefault();
 
-            var path = await ofd.ShowAsync(Application.Current.GetMainWindow());
-
+            var path = storageFolder?.TryGetLocalPath();
+            
             if (path != null)
             {
                 if (CrossPlatform.IsDirectoryWritable(path))

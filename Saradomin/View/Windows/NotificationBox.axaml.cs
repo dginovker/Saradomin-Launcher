@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Glitonea;
+using Glitonea.Controls;
 using Glitonea.Extensions;
 using PropertyChanged;
 using Saradomin.Infrastructure.Messaging;
@@ -11,19 +12,16 @@ using Saradomin.Infrastructure.Messaging;
 namespace Saradomin.View.Windows
 {
     [DoNotNotify]
-    public class NotificationBox : WindowEx
+    public partial class NotificationBox : WindowEx
     {
         private static Queue<NotificationBox> _notificationQueue = new();
         
         public static NotificationBox Current { get; private set; }
-        
-        public static readonly StyledProperty<string> MessageProperty = new(
-            nameof(Message), 
-            typeof(NotificationBox),
-            new StyledPropertyMetadata<string>(
-                "This is supposed to be a message.\n" +
-                "Someone messed up, though, so have this placeholder instead."
-            )
+
+        public static readonly StyledProperty<string> MessageProperty = AvaloniaProperty.Register<NotificationBox, string>(
+            nameof(Message),
+            "This is supposed to be a message.\n" +
+            "Someone messed up, though, so have this placeholder instead."
         );
 
         public string Message
@@ -48,7 +46,7 @@ namespace Saradomin.View.Windows
             => DisplayNotification("Notification", message);
 
         public static void DisplayNotification(string title, string message)
-            => DisplayNotification(title, message, Application.Current.GetMainWindow());
+            => DisplayNotification(title, message, Application.Current!.GetMainWindow());
 
         public static void DisplayNotification(string title, string message, Window owner)
         {
@@ -82,7 +80,8 @@ namespace Saradomin.View.Windows
             if (_notificationQueue.Any())
             {
                 Current = _notificationQueue.Dequeue();
-                Current.ShowDialog(Current.Owner as Window);
+                Current.ShowDialog((Window)Current.Owner!);
+                
                 new NotificationBoxStateChangedMessage(true)
                     .Broadcast();
             }

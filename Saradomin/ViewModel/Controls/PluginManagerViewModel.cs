@@ -39,8 +39,11 @@ namespace Saradomin.ViewModel.Controls
             PluginList = new ObservableCollection<PluginInfo>(remotePlugins.OrderByDescending(x => x.Installed));
         }
 
-        public async Task InstallRemotePlugin(PluginInfo pluginInfo)
+        public async Task InstallRemotePlugin(object parameter)
         {
+            if (parameter is not PluginInfo pluginInfo)
+                return;
+            
             if (IsTransactionInProgress)
                 return;
 
@@ -68,8 +71,11 @@ namespace Saradomin.ViewModel.Controls
             }
         }
 
-        public async Task UninstallLocalPlugin(PluginInfo pluginInfo)
+        public async Task UninstallLocalPlugin(object parameter)
         {
+            if (parameter is not PluginInfo pluginInfo)
+                return;
+            
             if (IsTransactionInProgress)
                 return;
 

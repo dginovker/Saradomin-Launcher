@@ -5,7 +5,7 @@ using PropertyChanged;
 namespace Saradomin.View.Controls
 {
     [DoNotNotify]
-    public class SettingsView : UserControl
+    public partial class SettingsView : UserControl
     {
         public SettingsView()
         {

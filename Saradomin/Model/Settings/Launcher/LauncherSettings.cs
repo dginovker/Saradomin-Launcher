@@ -9,7 +9,8 @@ namespace Saradomin.Model.Settings.Launcher
         public bool PlaceCloseButtonOnLeft { get; set; } = false;
         public bool ExitAfterLaunchingClient { get; set; } = true;
         public bool AllowMultiboxing { get; set; } = false;
-
+        public bool UseMonospacedFontForNews { get; set; } = true;
+        
         public bool CheckForClientUpdatesOnLaunch { get; set; } = true;
         public bool CheckForServerProfilesOnLaunch { get; set; } = true;
         

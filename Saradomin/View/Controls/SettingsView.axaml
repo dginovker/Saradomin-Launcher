@@ -29,6 +29,9 @@
 
                     <CheckBox Content="Allow multiple client instances to run"
                               IsChecked="{Binding Launcher.AllowMultiboxing, Mode=TwoWay}" />
+                    
+                    <CheckBox Content="Use monospaced font for news view" 
+                              IsChecked="{Binding Launcher.UseMonospacedFontForNews, Mode=TwoWay}"/>
 
                     <Grid Margin="0,2,0,4"
                           ColumnDefinitions="*,Auto"
@@ -95,6 +98,12 @@
 
                     <Grid Margin="0,0,0,4"
                           RowDefinitions="Auto, Auto">
+                        <Grid.Styles>
+                            <Style Selector="ComboBox /template/ Popup#PART_Popup">
+                                <Setter Property="HorizontalOffset" Value="-1" />
+                            </Style>
+                        </Grid.Styles>
+                        
                         <TextBlock Grid.Row="0"
                                    Margin="3,0,0,2"
                                    HorizontalAlignment="Left"
@@ -103,7 +112,7 @@
 
                         <ComboBox Grid.Row="1"
                                   Margin="2,0,0,2"
-                                  Items="{Binding ServerProfiles}"
+                                  ItemsSource="{Binding ServerProfiles}"
                                   SelectedItem="{Binding ServerProfile, Converter={StaticResource EnumDescriptionConverter}, Mode=TwoWay}">
                             <ComboBox.Styles>
                                 <Style Selector="ComboBoxItem">

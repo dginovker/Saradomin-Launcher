@@ -29,7 +29,7 @@
                                    ZIndex="9999"
                                    Width="425" />
                         <ListBox Classes="PluginList"
-                                 Items="{Binding PluginList}"
+                                 ItemsSource="{Binding PluginList}"
                                  SelectionMode="Single"
                                  ClipToBounds="True"
                                  IsVisible="{Binding PluginList.Count}"
@@ -85,7 +85,6 @@
                                                     FontSize="11"
                                                     FontStyle="Oblique"
                                                     Text="{Binding Author}" />
-
                                                 <TextBlock
                                                     Margin="2,5,0,4"
                                                     VerticalAlignment="Bottom"

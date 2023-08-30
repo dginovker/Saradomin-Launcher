@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Layout;
 using Avalonia.Media;
 using HtmlAgilityPack;
@@ -12,53 +13,42 @@ namespace Saradomin.Utilities
     public class HtmlRenderer
     {
         private int _listDescent = 0;
-
-        private Stack<StackPanel> _panels = new();
-        private StackPanel _container;
+        private string _prefix;
+        private InlineCollection _inlines;
+        private TextBlock _textBlock;
         private HtmlNode _rootNode;
 
-        public StackPanel CurrentLine => _panels.Peek();
-
-        public HtmlRenderer(StackPanel container, HtmlNode rootNode)
+        public HtmlRenderer(TextBlock textBlock, HtmlNode rootNode)
         {
-            _container = container;
+            _textBlock = textBlock;
+
+            _textBlock.Inlines = _textBlock.Inlines ?? (_inlines = new());
+            _inlines = _textBlock.Inlines;
+
             _rootNode = rootNode;
         }
 
         public void RenderToContainer()
         {
-            _panels.Push(_container);
             Visit(_rootNode);
-            _panels.Pop();
         }
 
-        private void InNewBlockDo(Action<StackPanel> action)
+        private void InNewBlockDo(Action action)
         {
-            var line = new StackPanel
-            {
-                Orientation = Orientation.Vertical,
-                HorizontalAlignment = HorizontalAlignment.Left
-            };
-            _panels.Push(line);
-            action(line);
-
-            _container.Children.Add(_panels.Pop());
+            action();
+            _inlines.Add(new LineBreak());
         }
 
         private void CreateNewInlineTextElement(
             string text,
             FontWeight weight = FontWeight.Normal,
-            double fontSize = 12,
-            TextWrapping wrapping = TextWrapping.Wrap)
+            double fontSize = 12
+        )
         {
-            CurrentLine.Children.Add(new TextBlock
+            _inlines.Add(new Run(text)
             {
-                Foreground = new SolidColorBrush(Colors.Black),
-                FontSize = fontSize,
                 FontWeight = weight,
-                TextWrapping = wrapping,
-                Text = text,
-                Margin = new Thickness(_listDescent * 8, 0, 0, 0)
+                FontSize = fontSize,
             });
         }
 
@@ -76,7 +66,7 @@ namespace Saradomin.Utilities
         {
             _listDescent++;
             {
-                InNewBlockDo((_) =>
+                InNewBlockDo(() =>
                 {
                     foreach (var child in htmlNode.ChildNodes)
                     {
@@ -89,15 +79,29 @@ namespace Saradomin.Utilities
 
         private void VisitListEntry(HtmlNode htmlNode)
         {
-            foreach (var child in htmlNode.ChildNodes)
+            _inlines.Add(new Run("• "));
+
+            for (var i = 0; i < htmlNode.ChildNodes.Count; i++)
             {
+                var child = htmlNode.ChildNodes[i];
+
+                if (i != 0)
+                {
+                    _prefix = "  ";
+                }
+                
                 Visit(child);
+                
+                _prefix = null;
             }
+
+            _prefix = null;
+            _inlines.Add(new LineBreak());
         }
 
         private void VisitParagraph(HtmlNode htmlNode)
         {
-            InNewBlockDo((_) =>
+            InNewBlockDo(() =>
             {
                 foreach (var child in htmlNode.ChildNodes)
                 {
@@ -114,16 +118,12 @@ namespace Saradomin.Utilities
                     var text = HttpUtility.HtmlDecode(
                         htmlNode.GetDirectInnerText().Trim(' ').Trim('\n')
                     );
-                    
-                    if (htmlNode.ParentNode.Name == "li")
-                    {
-                        if (!string.IsNullOrWhiteSpace(text))
-                        {
-                            text = $"• {text}";
-                        }
-                    }
-                    
-                    CreateNewInlineTextElement(text);
+
+                    CreateNewInlineTextElement($"{_prefix}{text}");
+                    break;
+
+                case "br":
+                    _inlines.Add(new LineBreak());
                     break;
 
                 case "b":
