@@ -291,7 +291,7 @@ namespace Saradomin.ViewModel.Windows
         private bool IsJavaVersion11()
         {
             string javaVersionOutput = CrossPlatform.RunCommandAndGetOutput(
-                $"{_settingsService.Launcher.JavaExecutableLocation} -version"
+                $"\"{_settingsService.Launcher.JavaExecutableLocation}\" -version"
             );
             return javaVersionOutput.Contains("11");
         }
