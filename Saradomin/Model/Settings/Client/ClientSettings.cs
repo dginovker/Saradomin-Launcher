@@ -47,5 +47,8 @@ namespace Saradomin.Model.Settings.Client
 
         [JsonPropertyName("ui_scale")]
         public int UiScale { get; set; } = 1;
+
+        [JsonPropertyName("fps")]
+        public int Fps { get; set; } = 0;
     }
 }

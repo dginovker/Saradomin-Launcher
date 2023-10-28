@@ -157,28 +157,58 @@
                                     DockPanel.Dock="Top"
                                     Header="client settings">
                 <Grid RowDefinitions="Auto,*">
-                    <Grid Grid.Row="0"
-                          RowDefinitions="Auto, Auto">
-                        <TextBlock Grid.Row="0"
-                                   Margin="0,0,4,0"
-                                   Foreground="{StaticResource DarkForegroundBrush}"
-                                   Text="UI scale" />
+                    <Grid Grid.Row="0" ColumnDefinitions="Auto, *">
+                        <Grid Grid.Column="0"
+                              RowDefinitions="Auto, Auto">
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="0"
+                                       Margin="0,0,4,0"
+                                       Foreground="{StaticResource DarkForegroundBrush}"
+                                       Text="UI scale" />
 
-                        <NumericUpDown Grid.Row="1"
-                                       Width="55"
-                                       Height="28"
-                                       Margin="0,2,0,0"
-                                       HorizontalAlignment="Left"
-                                       HorizontalContentAlignment="Right"
-                                       AllowSpin="True"
-                                       Classes="NormalNumericUpDown"
-                                       ClipValueToMinMax="True"
-                                       FormatString="0.00"
-                                       Maximum="4"
-                                       Minimum="1"
-                                       ParsingNumberStyle="Integer"
-                                       ShowButtonSpinner="True"
-                                       Value="{Binding Client.UiScale, Mode=TwoWay}" />
+                            <NumericUpDown Grid.Row="1"
+                                           Grid.Column="0"
+                                           Width="55"
+                                           Height="28"
+                                           Margin="0,2,0,0"
+                                           HorizontalAlignment="Left"
+                                           HorizontalContentAlignment="Right"
+                                           AllowSpin="True"
+                                           Classes="NormalNumericUpDown"
+                                           ClipValueToMinMax="True"
+                                           FormatString="0.00"
+                                           Maximum="4"
+                                           Minimum="1"
+                                           ParsingNumberStyle="Integer"
+                                           ShowButtonSpinner="True"
+                                           Value="{Binding Client.UiScale, Mode=TwoWay}" />
+                        </Grid>
+
+                        <Grid Grid.Column="1"
+                              RowDefinitions="Auto, Auto">
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="0"
+                                       Margin="0,0,4,0"
+                                       Foreground="{StaticResource DarkForegroundBrush}"
+                                       Text="Target FPS (0=auto)" />
+
+                            <NumericUpDown Grid.Row="1"
+                                           Grid.Column="0"
+                                           Width="55"
+                                           Height="28"
+                                           Margin="0,2,0,0"
+                                           HorizontalAlignment="Left"
+                                           HorizontalContentAlignment="Right"
+                                           AllowSpin="True"
+                                           Classes="NormalNumericUpDown"
+                                           ClipValueToMinMax="True"
+                                           FormatString="0"
+                                           Maximum="1000"
+                                           Minimum="0"
+                                           ParsingNumberStyle="Integer"
+                                           ShowButtonSpinner="True"
+                                           Value="{Binding Client.Fps, Mode=TwoWay}" />
+                        </Grid>
                     </Grid>
 
                     <HeaderedContentControl Grid.Row="1"
