@@ -36,6 +36,7 @@ namespace Saradomin.Infrastructure.Services
                 {
                     Arguments =
                         $"-Dsun.java2d.uiScale={_settingsService.Client.UiScale} "
+                        + $"-DclientFps={_settingsService.Client.Fps} "
                         + $"-DclientHomeOverride=\"{_settingsService.Launcher.InstallationDirectory}/\" "
                         + $"-jar \"{_clientUpdateService.PreferredTargetFilePath}\"",
                     WorkingDirectory = $"{_settingsService.Launcher.InstallationDirectory}",
