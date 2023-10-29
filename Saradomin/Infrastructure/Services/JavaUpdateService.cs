@@ -4,6 +4,7 @@ using System.IO.Compression;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Saradomin.Model.Settings.Launcher;
 using Saradomin.Utilities;
 
 namespace Saradomin.Infrastructure.Services
@@ -59,7 +60,8 @@ namespace Saradomin.Infrastructure.Services
             
             if (Path.GetExtension(downloadUrl) == ".zip")
             {
-                string tempDir = Path.Combine(Path.GetTempPath(), "jre11_temp");
+                // Don't use /tmp because Directory.Move doesn't work cross-partition
+                string tempDir = Path.Combine(CrossPlatform.LocateDefault2009scapeHome(), "jre11_temp");
                 if (Directory.Exists(tempDir)) Directory.Delete(tempDir, true);
                 await Task.Run(() => ZipFile.ExtractToDirectory(downloadPath, tempDir));
                 Directory.Move(Directory.GetDirectories(tempDir)[0], extractedPath);

@@ -66,6 +66,10 @@
             <DependentUpon>NotificationBox.axaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Compile Update="Views\Controls\SingleplayerView.axaml.cs">
+            <DependentUpon>MainWindow.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
         <Compile Update="Views\Controls\SettingsView.axaml.cs">
             <DependentUpon>MainWindow.axaml</DependentUpon>
             <SubType>Code</SubType>
@@ -76,6 +80,10 @@
         </Compile>
         <Compile Update="View\Controls\PluginManagerView.axaml.cs">
           <DependentUpon>PluginManagerView.axaml</DependentUpon>
+        </Compile>
+        <Compile Update="View\Controls\SingleplayerView.axaml.cs">
+          <DependentUpon>SingleplayerView.axaml</DependentUpon>
+          <SubType>Code</SubType>
         </Compile>
     </ItemGroup>
 

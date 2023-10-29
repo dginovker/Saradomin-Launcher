@@ -1,0 +1,236 @@
+<UserControl x:Class="Saradomin.View.Controls.SingleplayerView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Saradomin.View.Controls"
+             xmlns:converters="clr-namespace:Glitonea.Mvvm.Converters;assembly=Glitonea"
+             xmlns:glitonea="clr-namespace:Glitonea;assembly=Glitonea"
+             xmlns:mvvm="clr-namespace:Glitonea.Mvvm;assembly=Glitonea"
+             xmlns:vm="clr-namespace:Saradomin.ViewModel.Controls"
+             DataContext="{mvvm:DataContextSource vm:SingleplayerViewModel}">
+    <Grid Margin="0,0,2,2"
+          ColumnDefinitions="400,*">
+        <DockPanel Grid.Column="0">
+           <HeaderedContentControl Classes="GroupBox"
+                                   DockPanel.Dock="Top"
+                                   Header="singleplayer logs"
+                                   IsVisible="{Binding IsRunning}"
+                                   >
+           <ScrollViewer HorizontalAlignment="Left"
+              ClipToBounds="True"
+              Height="300"
+              Width="390"
+              Content="{Binding SingleplayerLogsTextBox}"
+              HorizontalScrollBarVisibility="Auto"
+              VerticalScrollBarVisibility="Visible" />
+          </HeaderedContentControl>
+          
+           <HeaderedContentControl Classes="GroupBox"
+                                   DockPanel.Dock="Top"
+                                   Header="singleplayer info"
+                                   IsVisible="{Binding !IsRunning}"
+                                   >
+                <StackPanel Orientation="Vertical">
+                  <TextBlock 
+                     Margin="0,0,4,0"
+                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Text="Singleplayer is provided by the 2009scape team" />
+                  <TextBlock 
+                     Margin="0,0,4,8"
+                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Text="for advanced users only." />
+
+                  <TextBlock 
+                     Margin="0,0,4,0"
+                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Text="2009scape official servers have free membership," />
+                  <TextBlock 
+                     Margin="0,0,4,0"
+                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Text="multiple exp rates, and are hosted 24/7." />
+                  <TextBlock 
+                     Margin="0,0,4,0"
+                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Text="In addition, your player save file" />
+                  <TextBlock 
+                     Margin="0,0,4,0"
+                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Text="is always exportable from the multiplayer server" />
+                  <TextBlock 
+                     Margin="0,0,4,0"
+                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Text="if you ever choose" />
+                  <TextBlock 
+                     Margin="0,0,4,0"
+                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Text="to switch to singleplayer - However," />
+                  <TextBlock 
+                     Margin="0,0,4,0"
+                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Text="we will not import your singleplayer save" />
+                  <TextBlock 
+                     Margin="0,0,4,8"
+                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Text="file into the multiplayer world." />
+                  
+                  <TextBlock 
+                     Margin="0,0,4,0"
+                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Text="It is our strong recommendation" />
+                  <TextBlock 
+                     Margin="0,0,4,0"
+                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Text="to play the multiplayer server instead." />
+                  <TextBlock 
+                     Margin="0,0,4,0"
+                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Text="If you have any questions," />
+                  <TextBlock 
+                     Margin="0,0,4,8"
+                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Text="feel free to ask on our Discord or Forums." />
+                  
+                </StackPanel>
+            </HeaderedContentControl>
+               
+            <HeaderedContentControl Classes="GroupBox"
+                                    DockPanel.Dock="Top"
+                                    Header="singleplayer links">
+                <StackPanel Orientation="Vertical">
+                 <Button
+                         Margin="0,0,0,0"
+                         Width="140"
+                         Height="25"
+                         BorderBrush="{StaticResource DarkBorderBrush}"
+                         BorderThickness="1"
+                         Classes="OutsideNavigator"
+                         Command="{Binding LaunchFaq}"
+                         Opacity="1"
+                         FontSize="11"
+                         Content="singleplayer faq"
+                         ZIndex="9999" />
+                 
+                 <Button
+                         Margin="0,0,0,0"
+                         Width="140"
+                         Height="25"
+                         BorderBrush="{StaticResource DarkBorderBrush}"
+                         BorderThickness="1"
+                         Classes="OutsideNavigator"
+                         Command="{Binding LaunchForums}"
+                         Opacity="1"
+                         FontSize="11"
+                         Content="support forums"
+                         ZIndex="9999" />
+                </StackPanel>
+            </HeaderedContentControl>
+        </DockPanel>
+        <DockPanel Grid.Column="1">
+            <HeaderedContentControl Classes="GroupBox"
+                                    DockPanel.Dock="Top"
+                                    Header="singleplayer launch">
+                <StackPanel Orientation="Vertical">
+                    <Button
+                            Margin="0,0,0,0"
+                            Width="140"
+                            Height="25"
+                            BorderBrush="{StaticResource DarkBorderBrush}"
+                            BorderThickness="1"
+                            Classes="OutsideNavigator"
+                            Command="{Binding DownloadSingleplayer}"
+                            Opacity="1"
+                            FontSize="11"
+                            Content="{Binding SingleplayerDownloadText}"
+                            ZIndex="9999"
+                            IsEnabled="{Binding CanDownload}" />
+
+                    <Button
+                            Margin="0,0,0,0"
+                            Width="140"
+                            Height="25"
+                            BorderBrush="{StaticResource DarkBorderBrush}"
+                            BorderThickness="1"
+                            Classes="OutsideNavigator"
+                            Command="{Binding LaunchSingleplayer}"
+                            Opacity="1"
+                            FontSize="11"
+                            Content="Start Singleplayer"
+                            ZIndex="9999"
+                            IsEnabled="{Binding CanLaunch}" />
+
+                    <Grid Margin="0,2,0,4"
+                          ColumnDefinitions="*,Auto"
+                          RowDefinitions="Auto,Auto">
+                        <TextBlock Grid.Row="0"
+                                   Grid.ColumnSpan="2"
+                                   Margin="3,0,0,2"
+                                   Foreground="{StaticResource DarkForegroundBrush}"
+                                   Text="2009scape installation directory" />
+
+                        <!--
+                            Don't let the user edit it directly to avoid creating a ton of directories,
+                            since we get a notification every time the textbox is updated.
+                        -->
+                        <TextBox Grid.Row="1"
+                                 Grid.Column="0"
+                                 Width="300"
+                                 Margin="2,0,0,0"
+                                 HorizontalAlignment="Left"
+                                 Classes="NormalTextBox"
+                                 IsReadOnly="True"
+                                 Text="{Binding Launcher.InstallationDirectory, Mode=TwoWay}"
+                                 Watermark="Enter a path to your preferred installation directory..." />
+
+                        <Button Grid.Row="1"
+                                Grid.Column="1"
+                                Width="22"
+                                Height="24"
+                                Margin="2,0,0,0"
+                                Classes="OutsideNavigator"
+                                Command="{Binding BrowseForInstallationDirectory}"
+                                Content="..."
+                                ToolTip.Tip="Browse..." />
+                    </Grid>
+
+                </StackPanel>
+            </HeaderedContentControl>
+
+            <HeaderedContentControl Margin="2,2,0,0"
+                                    Classes="GroupBox"
+                                    DockPanel.Dock="Top"
+                                    Header="singleplayer config">
+                <HeaderedContentControl.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock HorizontalAlignment="Center"
+                                   Text="{Binding Header}" />
+                    </DataTemplate>
+                </HeaderedContentControl.HeaderTemplate>
+
+                <StackPanel>
+                    <TextBlock HorizontalAlignment="Center"
+                               Foreground="{StaticResource DarkForegroundBrush}"
+                               Text="Not configurable via launcher for now. Edit config file manually." />
+                    
+                    <CheckBox Content="Place 'X' button on the left"
+                              IsEnabled="False"
+                              IsChecked="{Binding Launcher.PlaceCloseButtonOnLeft, Mode=TwoWay}" />
+
+                    <CheckBox Content="Close the launcher after executing the client"
+                              IsEnabled="False"
+                              IsChecked="{Binding Launcher.ExitAfterLaunchingClient, Mode=TwoWay}" />
+
+                    <CheckBox Content="Check for client updates on launch"
+                              IsEnabled="False"
+                              IsChecked="{Binding Launcher.CheckForClientUpdatesOnLaunch, Mode=TwoWay}" />
+
+                    <CheckBox Content="Check for updated server profiles on launch"
+                              IsEnabled="False"
+                              IsChecked="{Binding Launcher.CheckForServerProfilesOnLaunch, Mode=TwoWay}" />
+
+                    <CheckBox Content="Allow multiple client instances to run"
+                              IsEnabled="False"
+                              IsChecked="{Binding Launcher.AllowMultiboxing, Mode=TwoWay}" />
+                </StackPanel>
+            </HeaderedContentControl>
+        </DockPanel>
+    </Grid>
+</UserControl>

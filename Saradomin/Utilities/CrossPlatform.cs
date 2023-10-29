@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using Microsoft.CodeAnalysis.Text;
 using Microsoft.Win32;
 using Mono.Unix;
 
@@ -206,11 +207,31 @@ namespace Saradomin.Utilities
                 );
             }
         }
-        
-        public static string Locate2009scapeExecutable(string baseDirectory)
+
+        public static string LocateSingleplayerHome()
         {
-            baseDirectory ??= LocateDefault2009scapeHome();
-            return Path.Combine(baseDirectory, "2009scape.jar");
+            return Path.Combine(LocateDefault2009scapeHome(), "singleplayer");
+        }
+
+        public static string LocateSingleplayerExecutable()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return Path.Combine(LocateSingleplayerHome(), "launch.bat");
+            }
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                return Path.Combine(LocateSingleplayerHome(), "launch.sh");
+            }
+
+            throw new InvalidOperationException("Unsupported OS for singleplayer: " +
+                                                RuntimeInformation.OSArchitecture);
+        }
+        
+        public static string Locate2009scapeExecutable()
+        {
+            return Path.Combine(LocateDefault2009scapeHome(), "2009scape.jar");
         }
 
         public static string LocateServerProfilesPath(string baseDirectory)
@@ -219,11 +240,10 @@ namespace Saradomin.Utilities
             return Path.Combine(baseDirectory, "server_profiles.json");
         }
 
-        public static string RunCommandAndGetOutput(string command)
+        public static string RunCommandAndGetOutput(string command, Action<string> onOutputReceived = null, Action<string> onErrorReceived = null)
         {
             Process process = new Process();
             StringBuilder output = new StringBuilder();
-
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 process.StartInfo = new ProcessStartInfo("cmd.exe", "/c " + command)
@@ -250,12 +270,16 @@ namespace Saradomin.Utilities
 
             process.OutputDataReceived += (_, e) =>
             {
-                if (e.Data != null) output.AppendLine(e.Data);
+                if (e.Data == null) return;
+                output.AppendLine(e.Data);
+                onOutputReceived?.Invoke(e.Data);
             };
 
             process.ErrorDataReceived += (_, e) =>
             {
-                if (e.Data != null) output.AppendLine(e.Data);
+                if (e.Data == null) return; 
+                output.AppendLine(e.Data);
+                onErrorReceived?.Invoke(e.Data);
             };
 
             process.Start();
