@@ -132,7 +132,7 @@ public static class SingleplayerManagement
     }
 
     private static Dictionary<string, string> _confCache;
-    private static string ConfPath => Path.Combine(CrossPlatform.GetSaradominHome(), "game", "worldprops", "default.conf");
+    private static string ConfPath => Path.Combine(CrossPlatform.GetSingleplayerHome(), "game", "worldprops", "default.conf");
     public static Dictionary<string, string> GrabConfCache()
     {
         return File.ReadLines(ConfPath)
