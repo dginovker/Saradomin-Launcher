@@ -10,7 +10,8 @@ public static class SingleplayerManagement
     private static readonly string[] DirsToBackup =
     {
         "game/data/players",
-        "game/data/serverstore"
+        "game/data/serverstore",
+        "game/worldprops"
     };
     private static readonly string[] FilesToBackup =
     {
@@ -18,7 +19,7 @@ public static class SingleplayerManagement
         "game/data/eco/grandexchange.db"
     };
 
-    public static void MakeBackup()
+    public static void MakeBackup(Action<string> log)
     {
         if (!Directory.Exists(CrossPlatform.LocateSingleplayerBackupsHome()))
             Directory.CreateDirectory(CrossPlatform.LocateSingleplayerBackupsHome());
@@ -33,6 +34,11 @@ public static class SingleplayerManagement
         foreach (string dir in DirsToBackup)
         {
             string sourcePath = Path.Combine(CrossPlatform.LocateSingleplayerHome(), dir);
+            if (!Directory.Exists(sourcePath))
+            {
+                log($"  Skipping backup of {dir} because it doesn't exist (Full path attempted: {sourcePath}");
+                continue;
+            }
             string destPath = Path.Combine(newBackupDir, dir);
             CopyDirectory(sourcePath, destPath);
         }
@@ -40,6 +46,11 @@ public static class SingleplayerManagement
         foreach (string file in FilesToBackup)
         {
             string sourceFilePath = Path.Combine(CrossPlatform.LocateSingleplayerHome(), file);
+            if (!File.Exists(sourceFilePath))
+            {
+                log($"  Skipping backup of {file} because it doesn't exist (Full path attempted: {sourceFilePath}");
+                continue;
+            }
             string destFilePath = Path.Combine(newBackupDir, file);
             string directoryForFile = Path.GetDirectoryName(destFilePath);
             if (!Directory.Exists(directoryForFile))
@@ -74,7 +85,7 @@ public static class SingleplayerManagement
         return directories.Select(Path.GetFileName).MaxBy(name => name);
     }
 
-    public static void ApplyLatestBackup()
+    public static void ApplyLatestBackup(Action<string> log)
     {
         var backupHome = CrossPlatform.LocateSingleplayerBackupsHome();
         var singleplayerHome = CrossPlatform.LocateSingleplayerHome();
@@ -82,17 +93,15 @@ public static class SingleplayerManagement
         // Get all backup directories
         var backupDirectories = Directory.GetDirectories(backupHome);
 
-        // Find the most recent backup directory by parsing the directory names as dates
         string mostRecentBackupDirName = FindMostRecentBackupDirectory(backupDirectories);
 
         if (mostRecentBackupDirName == null)
         {
-            Console.WriteLine("No backups found.");
+            log("  No backups found.");
             return;
         }
 
         string mostRecentBackupFullPath = Path.Combine(backupHome, mostRecentBackupDirName);
-        Console.WriteLine($"Most recent backup found: {mostRecentBackupFullPath}");
 
         // Get the list of files in the most recent backup
         var filesInBackup = Directory.GetFiles(
@@ -119,6 +128,6 @@ public static class SingleplayerManagement
             File.Copy(file, destFilePath, true);
         }
 
-        Console.WriteLine("Backup has been successfully applied.");
+        log($"  Backup from {mostRecentBackupDirName} has been successfully applied.");
     }
 }

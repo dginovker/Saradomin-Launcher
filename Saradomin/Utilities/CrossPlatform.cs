@@ -247,6 +247,7 @@ namespace Saradomin.Utilities
                 return Path.Combine(LocateSingleplayerHome(), "launch.sh");
             }
 
+            // TODO - MacOS
             throw new InvalidOperationException("Unsupported OS for singleplayer: " +
                                                 RuntimeInformation.OSArchitecture);
         }

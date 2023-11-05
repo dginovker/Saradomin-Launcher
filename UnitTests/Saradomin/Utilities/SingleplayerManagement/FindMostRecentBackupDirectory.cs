@@ -280,6 +280,7 @@ public class BackupManagerTests
     public void WithNoDirectories_ReturnsNull()
     {
         // Arrange
+        // ReSharper disable once CollectionNeverUpdated.Local
         var directories = new List<string>();
 
         // Act

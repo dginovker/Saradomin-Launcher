@@ -32,61 +32,61 @@
                 <StackPanel Orientation="Vertical">
                   <TextBlock 
                      Margin="0,0,4,0"
-                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Foreground="Black"
                      Text="Singleplayer is provided by the 2009scape team" />
                   <TextBlock 
                      Margin="0,0,4,8"
-                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Foreground="Black"
                      Text="for advanced users only." />
 
                   <TextBlock 
                      Margin="0,0,4,0"
-                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Foreground="Black"
                      Text="2009scape official servers have free membership," />
                   <TextBlock 
                      Margin="0,0,4,0"
-                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Foreground="Black"
                      Text="multiple exp rates, and are hosted 24/7." />
                   <TextBlock 
                      Margin="0,0,4,0"
-                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Foreground="Black"
                      Text="In addition, your player save file" />
                   <TextBlock 
                      Margin="0,0,4,0"
-                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Foreground="Black"
                      Text="is always exportable from the multiplayer server" />
                   <TextBlock 
                      Margin="0,0,4,0"
-                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Foreground="Black"
                      Text="if you ever choose" />
                   <TextBlock 
                      Margin="0,0,4,0"
-                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Foreground="Black"
                      Text="to switch to singleplayer - However," />
                   <TextBlock 
                      Margin="0,0,4,0"
-                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Foreground="Black"
                      Text="we will not import your singleplayer save" />
                   <TextBlock 
                      Margin="0,0,4,8"
-                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Foreground="Black"
                      Text="file into the multiplayer world." />
                   
                   <TextBlock 
                      Margin="0,0,4,0"
-                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Foreground="Black"
                      Text="It is our strong recommendation" />
                   <TextBlock 
                      Margin="0,0,4,0"
-                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Foreground="Black"
                      Text="to play the multiplayer server instead." />
                   <TextBlock 
                      Margin="0,0,4,0"
-                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Foreground="Black"
                      Text="If you have any questions," />
                   <TextBlock 
                      Margin="0,0,4,8"
-                     Foreground="{StaticResource DarkForegroundBrush}"
+                     Foreground="Black"
                      Text="feel free to ask on our Discord or Forums." />
                   
                 </StackPanel>
@@ -214,7 +214,7 @@
             <HeaderedContentControl Margin="2,2,0,0"
                                     Classes="GroupBox"
                                     DockPanel.Dock="Top"
-                                    Header="singleplayer config">
+                                    Header="singleplayer config (edit config manually for now)">
                 <HeaderedContentControl.HeaderTemplate>
                     <DataTemplate>
                         <TextBlock HorizontalAlignment="Center"
@@ -225,27 +225,37 @@
                 <StackPanel>
                     <TextBlock HorizontalAlignment="Center"
                                Foreground="{StaticResource DarkForegroundBrush}"
-                               Text="Not configurable via launcher for now. Edit config file manually." />
+                               />
                     
-                    <CheckBox Content="Place 'X' button on the left"
+                    <CheckBox Content="Cheats"
                               IsEnabled="False"
-                              IsChecked="{Binding Launcher.PlaceCloseButtonOnLeft, Mode=TwoWay}" />
+                              />
 
-                    <CheckBox Content="Close the launcher after executing the client"
+                    <CheckBox Content="Fake Players"
+                              IsChecked="True"
                               IsEnabled="False"
-                              IsChecked="{Binding Launcher.ExitAfterLaunchingClient, Mode=TwoWay}" />
+                              />
 
-                    <CheckBox Content="Check for client updates on launch"
+                    <CheckBox Content="GE Autostock"
                               IsEnabled="False"
-                              IsChecked="{Binding Launcher.CheckForClientUpdatesOnLaunch, Mode=TwoWay}" />
+                              />
 
-                    <CheckBox Content="Check for updated server profiles on launch"
+                    <CheckBox Content="Debug"
                               IsEnabled="False"
-                              IsChecked="{Binding Launcher.CheckForServerProfilesOnLaunch, Mode=TwoWay}" />
+                              />
 
-                    <CheckBox Content="Allow multiple client instances to run"
-                              IsEnabled="False"
-                              IsChecked="{Binding Launcher.AllowMultiboxing, Mode=TwoWay}" />
+                    <Button
+                            Margin="0,0,0,0"
+                            Width="140"
+                            Height="25"
+                            BorderBrush="{StaticResource DarkBorderBrush}"
+                            BorderThickness="1"
+                            Classes="OutsideNavigator"
+                            Opacity="1"
+                            FontSize="11"
+                            Content="Reset Config"
+                            IsEnabled="False"
+                            ZIndex="9999"/>
                 </StackPanel>
             </HeaderedContentControl>
         </DockPanel>

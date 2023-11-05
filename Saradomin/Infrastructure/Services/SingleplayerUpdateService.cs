@@ -60,10 +60,6 @@ namespace Saradomin.Infrastructure.Services
             string tempDir = Path.Combine(CrossPlatform.LocateDefault2009scapeHome(), "singleplayer_temp"); 
             if (Directory.Exists(tempDir)) Directory.Delete(tempDir, true);
             await Task.Run(() => ZipFile.ExtractToDirectory(downloadPath, tempDir));
-            foreach (string directory in Directory.GetDirectories(tempDir))
-            {
-                Console.WriteLine("Found directory " + directory + " in " + tempDir);
-            }
             Directory.Move(Directory.GetDirectories(tempDir)[0], CrossPlatform.LocateSingleplayerHome());
             Directory.Delete(tempDir, true);
 

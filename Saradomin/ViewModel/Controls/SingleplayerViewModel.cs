@@ -12,121 +12,123 @@ using Saradomin.Infrastructure.Services;
 using Saradomin.Model.Settings.Launcher;
 using Saradomin.Utilities;
 
-namespace Saradomin.ViewModel.Controls
+namespace Saradomin.ViewModel.Controls;
+
+public class SingleplayerViewModel : ViewModelBase
 {
-    public class SingleplayerViewModel : ViewModelBase
+    private readonly ISingleplayerUpdateService _singleplayerUpdateService;
+    private readonly ISettingsService _settingsService;
+
+    public string SingleplayerDownloadText { get; private set; } =
+        Directory.Exists(CrossPlatform.LocateSingleplayerHome()) ? "Update Singleplayer" : "Download Singleplayer";
+
+    public bool CanDownload { get; private set; } = true;
+    public bool CanLaunch { get; private set; } = File.Exists(CrossPlatform.LocateSingleplayerExecutable());
+    public TextBox SingleplayerLogsTextBox { get; }
+    public bool ShowLogPanel { get; private set; }
+    public LauncherSettings Launcher => _settingsService.Launcher;
+
+    public SingleplayerViewModel(ISettingsService settingsService,
+        ISingleplayerUpdateService iSingleplayerUpdateService)
     {
-        private readonly ISingleplayerUpdateService _singleplayerUpdateService;
-        private readonly ISettingsService _settingsService;
+        _settingsService = settingsService;
+        Message.Subscribe<MainViewLoadedMessage>(this, OnMainViewLoaded); // todo test delete
+        _singleplayerUpdateService = iSingleplayerUpdateService;
+        _singleplayerUpdateService.SingleplayerDownloadProgressChanged += OnSingleplayerDownloadProgressChanged;
 
-        public string SingleplayerDownloadText { get; private set; } = "Download Singleplayer";
-        public bool CanDownload { get; private set; } = true;
-        public bool CanLaunch => File.Exists(CrossPlatform.LocateSingleplayerExecutable()) && !_isRunning;
-        public TextBox SingleplayerLogsTextBox { get; private set; }
-        public bool ShowLogPanel {get; private set; }
-        public LauncherSettings Launcher => _settingsService.Launcher;
-
-        private bool _isRunning;
-        public SingleplayerViewModel(ISettingsService settingsService, ISingleplayerUpdateService iSingleplayerUpdateService)
-        { 
-            _settingsService = settingsService; 
-            Message.Subscribe<MainViewLoadedMessage>(this, OnMainViewLoaded); // todo test delete
-            _singleplayerUpdateService = iSingleplayerUpdateService;
-            _singleplayerUpdateService.SingleplayerDownloadProgressChanged += OnSingleplayerDownloadProgressChanged;
-            
-            SingleplayerLogsTextBox = new TextBox
-            {
-                Foreground = new SolidColorBrush(Colors.Black),
-                FontSize = 12,
-                Margin = new Thickness(8, 0, 0, 0),
-                IsReadOnly = true,
-                BorderThickness = new Thickness(0),
-                Background = Brushes.Transparent,
-                AcceptsReturn = true,
-                TextWrapping = TextWrapping.Wrap,
-            };
-        }
-
-        private void OnSingleplayerDownloadProgressChanged(object sender, Tuple<float, bool> e)
+        SingleplayerLogsTextBox = new TextBox
         {
-            float progress = e.Item1;
-            bool finished = e.Item2;
-            CanDownload = finished;
-            if (finished)
-            {
-                SingleplayerDownloadText = "Download Singleplayer";
-                PrintLog($"Singleplayer Download/Update complete");
-                SingleplayerManagement.ApplyLatestBackup();
-                PrintLog($"Restored progress from last made backup");
-                return;
-            }
-            
-            if (progress >= 1f)
-            {
-                SingleplayerDownloadText = "Extracting...";
-                return;
-            }
-            SingleplayerDownloadText = $"Downloading... {progress * 100:F2}%";
+            Foreground = new SolidColorBrush(Colors.Black),
+            FontSize = 12,
+            Margin = new Thickness(8, 0, 0, 0),
+            IsReadOnly = true,
+            BorderThickness = new Thickness(0),
+            Background = Brushes.Transparent,
+            AcceptsReturn = true,
+            TextWrapping = TextWrapping.Wrap,
+        };
+    }
+
+    private void OnSingleplayerDownloadProgressChanged(object sender, Tuple<float, bool> e)
+    {
+        float progress = e.Item1;
+        bool finished = e.Item2;
+        if (finished)
+        {
+            SingleplayerDownloadText = "Update Singleplayer";
+            PrintLog($"Singleplayer Download complete");
+            SingleplayerManagement.ApplyLatestBackup(PrintLog);
+            PrintLog($"");
+            return;
         }
 
-        private void OnMainViewLoaded(MainViewLoadedMessage _)
+        if (progress >= 1f)
         {
-            Message.Subscribe<SettingsModifiedMessage>(this, OnSettingsModified);
+            SingleplayerDownloadText = "Extracting...";
+            return;
         }
 
-        private void OnSettingsModified(SettingsModifiedMessage _)
-        {
-            Console.WriteLine("Saving settings");
-            _settingsService.SaveAll();
-        }
-        
-        public void DownloadSingleplayer()
-        {
-            MakeBackup();
-            PrintLog($"Starting singleplayer download/update...");
-            _singleplayerUpdateService.DownloadSingleplayer();
-        }
+        SingleplayerDownloadText = $"Downloading... {progress * 100:F2}%";
+    }
 
-        public void MakeBackup()
-        {
-            PrintLog("Starting backup of player saves and economy files..");
-            SingleplayerManagement.MakeBackup();
-        }
+    private void OnMainViewLoaded(MainViewLoadedMessage _)
+    {
+        Message.Subscribe<SettingsModifiedMessage>(this, OnSettingsModified);
+    }
 
-        public void OpenBackupFolder()
-        {
-            if (!Directory.Exists(CrossPlatform.LocateSingleplayerBackupsHome()))
-                Directory.CreateDirectory(CrossPlatform.LocateSingleplayerBackupsHome());
-            CrossPlatform.OpenFolder(CrossPlatform.LocateSingleplayerBackupsHome());
-        }
+    private void OnSettingsModified(SettingsModifiedMessage _)
+    {
+        Console.WriteLine("Saving settings");
+        _settingsService.SaveAll();
+    }
 
-        private void PrintLog(string message)
-        {
-            ShowLogPanel = true;
-            Dispatcher.UIThread.Post(() =>
-            {
-                SingleplayerLogsTextBox.Text += message + Environment.NewLine;
-            }, DispatcherPriority.Background);
-        }
-        
-        public void LaunchSingleplayer()
-        {
-            _isRunning = true;
-            new Task(() => 
-                    CrossPlatform.RunCommandAndGetOutput($"{CrossPlatform.LocateSingleplayerExecutable()} {Launcher.JavaExecutableLocation}",
-                    PrintLog, 
-                    PrintLog)
-                ).Start();
-        }
+    public void DownloadSingleplayer()
+    {
+        MakeBackup();
+        PrintLog($"Starting singleplayer download...");
+        _singleplayerUpdateService.DownloadSingleplayer();
+    }
 
-        private void LaunchFaq()
-        {
-            CrossPlatform.LaunchURL("https://2009scape.org/site/game_guide/singleplayer.html");
-        }
+    private void MakeBackup()
+    {
+        PrintLog("Starting backup of player saves and economy files..");
+        SingleplayerManagement.MakeBackup(PrintLog);
+        PrintLog($"Done backing up player saves and economy files");
+        PrintLog($"");
+    }
 
-        private void LaunchForums()
-        {
-            CrossPlatform.LaunchURL("https://forum.2009scape.org/viewforum.php?f=8-support");
-        }
+    public void OpenBackupFolder()
+    {
+        if (!Directory.Exists(CrossPlatform.LocateSingleplayerBackupsHome()))
+            Directory.CreateDirectory(CrossPlatform.LocateSingleplayerBackupsHome());
+        CrossPlatform.OpenFolder(CrossPlatform.LocateSingleplayerBackupsHome());
+    }
+
+    private void PrintLog(string message)
+    {
+        ShowLogPanel = true;
+        Dispatcher.UIThread.Post(() => { SingleplayerLogsTextBox.Text += message + Environment.NewLine; },
+            DispatcherPriority.Background);
+    }
+
+    public void LaunchSingleplayer()
+    {
+        CanLaunch = false;
+        new Task(() =>
+            CrossPlatform.RunCommandAndGetOutput(
+                $"{CrossPlatform.LocateSingleplayerExecutable()} {Launcher.JavaExecutableLocation}",
+                PrintLog,
+                PrintLog)
+        ).Start();
+    }
+
+    private void LaunchFaq()
+    {
+        CrossPlatform.LaunchURL("https://2009scape.org/site/game_guide/singleplayer.html");
+    }
+
+    private void LaunchForums()
+    {
+        CrossPlatform.LaunchURL("https://forum.2009scape.org/viewforum.php?f=8-support");
     }
 }
