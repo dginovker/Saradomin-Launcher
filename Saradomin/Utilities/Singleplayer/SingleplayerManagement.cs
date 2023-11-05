@@ -152,11 +152,10 @@ public static class SingleplayerManagement
     public static void WriteConf(string key, object value)
     {
         _confCache[key] = value.ToString().ToLowerInvariant(); // Update cache
-        var filePath = CrossPlatform.GetSingleplayerHome() + "/game/worldprops/default.conf";
-        var lines = File.ReadAllLines(filePath).Select(l =>
+        var lines = File.ReadAllLines(ConfPath).Select(l =>
             l.StartsWith(key + " =")
                 ? $"{key} = {_confCache[key]}" + (l.Contains("#") ? " " + l.Substring(l.IndexOf('#')) : "")
                 : l);
-        File.WriteAllLines(filePath, lines);
+        File.WriteAllLines(ConfPath, lines);
     }
 }
