@@ -278,7 +278,7 @@ namespace Saradomin.ViewModel.Windows
         {
             if (e.Item2)
             {
-                LaunchText = "Play!";
+                LaunchText = "Play! (Multiplayer)";
                 return;
             }
             if (e.Item1 >= 0.999f)

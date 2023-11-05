@@ -128,12 +128,13 @@ public class SingleplayerViewModel : ViewModelBase
         );
         if (!javaVersionOutput.Contains("11"))
         {
+            PrintLog("You don't have Java 11 set! Saradomin will grab it's own copy..");
             await _javaUpdateService.DownloadAndSetJava11(_settingsService);
         }
         CanLaunch = false;
+        PrintLog("Starting Singleplayer.. The Singleplayer client will launch when 2009scape is ready. Sit tight!");
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            PrintLog("Starting windowsssssss");
             new Task(() => Utilities.Singleplayer.Windows.WindowsLaunchServerAndClient(Launcher.JavaExecutableLocation, PrintLog)).Start();
         }
         else

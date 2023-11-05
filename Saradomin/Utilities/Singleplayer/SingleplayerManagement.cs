@@ -143,21 +143,14 @@ public static class SingleplayerManagement
     
     public static T ParseConf<T>(string key, T defaultValue = default)
     {
-        Console.WriteLine($"Getting key {key}..");
         if (!File.Exists(ConfPath)) return defaultValue;
         _confCache ??= GrabConfCache();
-        if (!_confCache.TryGetValue(key, out var value))
-        {
-            Console.WriteLine($"Cache not hit - returning default {value}");
-            return defaultValue;
-        }
-        Console.WriteLine($"Cache hit - returning {value}");
+        if (!_confCache.TryGetValue(key, out var value)) return defaultValue;
         return (T)Convert.ChangeType(value, typeof(T));
     }
 
     public static void WriteConf(string key, object value)
     {
-        Console.WriteLine($"Writing {key}");
         _confCache[key] = value.ToString().ToLowerInvariant(); // Update cache
         var filePath = CrossPlatform.GetSingleplayerHome() + "/game/worldprops/default.conf";
         var lines = File.ReadAllLines(filePath).Select(l =>
