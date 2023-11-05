@@ -120,32 +120,5 @@ namespace Saradomin.ViewModel.Controls
                 Launcher.JavaExecutableLocation = paths[0];
             }
         }
-        
-        private async Task BrowseForInstallationDirectory()
-        {
-            var ofd = new OpenFolderDialog
-            {
-                Title = "Browse for Installation Directory...",
-                Directory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
-            };
-
-            var path = await ofd.ShowAsync(Application.Current.GetMainWindow());
-
-            if (path != null)
-            {
-                if (CrossPlatform.IsDirectoryWritable(path))
-                {
-                    Launcher.InstallationDirectory = path;
-                }
-                else
-                {
-                    NotificationBox.DisplayNotification(
-                        "Access denied",
-                        "The location you have selected is not writable. Select the one you have permissions for.",
-                        Application.Current.GetMainWindow()
-                    );
-                }
-            }
-        }
     }
 }

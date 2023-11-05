@@ -44,6 +44,7 @@
                                  Width="300"
                                  Margin="2,0,0,0"
                                  HorizontalAlignment="Left"
+                                 IsReadOnly="True"
                                  Classes="NormalTextBox"
                                  Text="{Binding Launcher.JavaExecutableLocation, Mode=TwoWay}"
                                  Watermark="Enter a path to java or java.exe..." />
@@ -55,40 +56,6 @@
                                 Margin="2,0,0,0"
                                 Classes="OutsideNavigator"
                                 Command="{Binding BrowseForJavaExecutable}"
-                                Content="..."
-                                ToolTip.Tip="Browse..." />
-                    </Grid>
-
-                    <Grid Margin="0,2,0,4"
-                          ColumnDefinitions="*,Auto"
-                          RowDefinitions="Auto,Auto">
-                        <TextBlock Grid.Row="0"
-                                   Grid.ColumnSpan="2"
-                                   Margin="3,0,0,2"
-                                   Foreground="{StaticResource DarkForegroundBrush}"
-                                   Text="2009scape installation directory" />
-
-                        <!--
-                            Don't let the user edit it directly to avoid creating a ton of directories,
-                            since we get a notification every time the textbox is updated.
-                        -->
-                        <TextBox Grid.Row="1"
-                                 Grid.Column="0"
-                                 Width="300"
-                                 Margin="2,0,0,0"
-                                 HorizontalAlignment="Left"
-                                 Classes="NormalTextBox"
-                                 IsReadOnly="True"
-                                 Text="{Binding Launcher.InstallationDirectory, Mode=TwoWay}"
-                                 Watermark="Enter a path to your preferred installation directory..." />
-
-                        <Button Grid.Row="1"
-                                Grid.Column="1"
-                                Width="22"
-                                Height="24"
-                                Margin="2,0,0,0"
-                                Classes="OutsideNavigator"
-                                Command="{Binding BrowseForInstallationDirectory}"
                                 Content="..."
                                 ToolTip.Tip="Browse..." />
                     </Grid>

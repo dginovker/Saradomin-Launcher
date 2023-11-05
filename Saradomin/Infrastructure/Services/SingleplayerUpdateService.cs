@@ -18,7 +18,7 @@ namespace Saradomin.Infrastructure.Services
                 "https://gitlab.com/2009scape/singleplayer/windows/-/archive/master/windows-master.zip";
 
             string downloadPath = Path.Combine(
-                CrossPlatform.LocateDefault2009scapeHome(),
+                CrossPlatform.Get2009scapeHome(),
                 "singleplayer" + Path.GetExtension(downloadUrl)
             );
 
@@ -54,13 +54,13 @@ namespace Saradomin.Infrastructure.Services
 
             SingleplayerDownloadProgressChanged?.Invoke(this, new Tuple<float, bool>(1f, false));
 
-            if (Directory.Exists(CrossPlatform.LocateSingleplayerHome())) Directory.Delete(CrossPlatform.LocateSingleplayerHome(), true);
+            if (Directory.Exists(CrossPlatform.GetSingleplayerHome())) Directory.Delete(CrossPlatform.GetSingleplayerHome(), true);
 
             // Don't use /tmp because Directory.Move doesn't work cross-partition
-            string tempDir = Path.Combine(CrossPlatform.LocateDefault2009scapeHome(), "singleplayer_temp"); 
+            string tempDir = Path.Combine(CrossPlatform.Get2009scapeHome(), "singleplayer_temp"); 
             if (Directory.Exists(tempDir)) Directory.Delete(tempDir, true);
             await Task.Run(() => ZipFile.ExtractToDirectory(downloadPath, tempDir));
-            Directory.Move(Directory.GetDirectories(tempDir)[0], CrossPlatform.LocateSingleplayerHome());
+            Directory.Move(Directory.GetDirectories(tempDir)[0], CrossPlatform.GetSingleplayerHome());
             Directory.Delete(tempDir, true);
 
             File.Delete(downloadPath);

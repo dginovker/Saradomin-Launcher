@@ -36,7 +36,6 @@ namespace Saradomin.Utilities
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                Console.WriteLine("Opening " + path + "...");
                 Process.Start("xdg-open", path);
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
@@ -183,7 +182,7 @@ namespace Saradomin.Utilities
                 );
         }
 
-        public static string LocateDefault2009scapeHome()
+        public static string Get2009scapeHome()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
                 || RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
@@ -203,7 +202,7 @@ namespace Saradomin.Utilities
             }
         }
 
-        public static string LocateSaradominHome()
+        public static string GetSaradominHome()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
                 || RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
@@ -215,51 +214,37 @@ namespace Saradomin.Utilities
                     "saradomin"
                 );
             }
-            else
-            {
-                return Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                    "2009scape",
-                    "saradomin"
-                );
-            }
+
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                "2009scape",
+                "saradomin"
+            );
         }
 
-        public static string LocateSingleplayerBackupsHome()
+        public static string GetSingleplayerBackupsHome()
         {
-            return Path.Combine(LocateDefault2009scapeHome(), "singleplayer_backups");
+            return Path.Combine(Get2009scapeHome(), "singleplayer_backups");
         }
 
-        public static string LocateSingleplayerHome()
+        public static string GetSingleplayerHome()
         {
-            return Path.Combine(LocateDefault2009scapeHome(), "singleplayer");
+            return Path.Combine(Get2009scapeHome(), "singleplayer");
         }
 
         public static string LocateSingleplayerExecutable()
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                return Path.Combine(LocateSingleplayerHome(), "launch.bat");
-            }
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                return Path.Combine(LocateSingleplayerHome(), "launch.sh");
-            }
-
-            // TODO - MacOS
-            throw new InvalidOperationException("Unsupported OS for singleplayer: " +
-                                                RuntimeInformation.OSArchitecture);
+            return Path.Combine(GetSingleplayerHome(), RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "launch.bat" : "launch.sh");
         }
         
-        public static string Locate2009scapeExecutable()
+        public static string Get2009scapeExecutable()
         {
-            return Path.Combine(LocateDefault2009scapeHome(), "2009scape.jar");
+            return Path.Combine(Get2009scapeHome(), "2009scape.jar");
         }
 
-        public static string LocateServerProfilesPath(string baseDirectory)
+        public static string GetServerProfilePath(string baseDirectory)
         {
-            baseDirectory ??= LocateDefault2009scapeHome();
+            baseDirectory ??= Get2009scapeHome();
             return Path.Combine(baseDirectory, "server_profiles.json");
         }
 

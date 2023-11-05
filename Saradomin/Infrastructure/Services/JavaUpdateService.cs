@@ -18,11 +18,11 @@ namespace Saradomin.Infrastructure.Services
             string downloadUrl = CrossPlatform.GetJava11DownloadUrl();
             
             string downloadPath = Path.Combine(
-                CrossPlatform.LocateDefault2009scapeHome(),
+                CrossPlatform.Get2009scapeHome(),
                 "jre11" + Path.GetExtension(downloadUrl)
             );
             string extractedPath = Path.Combine(
-                CrossPlatform.LocateDefault2009scapeHome(),
+                CrossPlatform.Get2009scapeHome(),
                 "jre11"
             );
 
@@ -61,7 +61,7 @@ namespace Saradomin.Infrastructure.Services
             if (Path.GetExtension(downloadUrl) == ".zip")
             {
                 // Don't use /tmp because Directory.Move doesn't work cross-partition
-                string tempDir = Path.Combine(CrossPlatform.LocateDefault2009scapeHome(), "jre11_temp");
+                string tempDir = Path.Combine(CrossPlatform.Get2009scapeHome(), "jre11_temp");
                 if (Directory.Exists(tempDir)) Directory.Delete(tempDir, true);
                 await Task.Run(() => ZipFile.ExtractToDirectory(downloadPath, tempDir));
                 Directory.Move(Directory.GetDirectories(tempDir)[0], extractedPath);

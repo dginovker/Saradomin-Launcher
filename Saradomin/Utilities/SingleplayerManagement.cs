@@ -21,22 +21,22 @@ public static class SingleplayerManagement
 
     public static void MakeBackup(Action<string> log)
     {
-        if (!Directory.Exists(CrossPlatform.LocateSingleplayerBackupsHome()))
-            Directory.CreateDirectory(CrossPlatform.LocateSingleplayerBackupsHome());
+        if (!Directory.Exists(CrossPlatform.GetSingleplayerBackupsHome()))
+            Directory.CreateDirectory(CrossPlatform.GetSingleplayerBackupsHome());
 
         string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
         string newBackupDir = Path.Combine(
-            CrossPlatform.LocateSingleplayerBackupsHome(),
+            CrossPlatform.GetSingleplayerBackupsHome(),
             timestamp
         );
         Directory.CreateDirectory(newBackupDir);
 
         foreach (string dir in DirsToBackup)
         {
-            string sourcePath = Path.Combine(CrossPlatform.LocateSingleplayerHome(), dir);
+            string sourcePath = Path.Combine(CrossPlatform.GetSingleplayerHome(), dir);
             if (!Directory.Exists(sourcePath))
             {
-                log($"  Skipping backup of {dir} because it doesn't exist (Full path attempted: {sourcePath}");
+                log($"  Skipping backup of {dir} because it doesn't exist (Full path attempted: {sourcePath})");
                 continue;
             }
             string destPath = Path.Combine(newBackupDir, dir);
@@ -45,10 +45,10 @@ public static class SingleplayerManagement
 
         foreach (string file in FilesToBackup)
         {
-            string sourceFilePath = Path.Combine(CrossPlatform.LocateSingleplayerHome(), file);
+            string sourceFilePath = Path.Combine(CrossPlatform.GetSingleplayerHome(), file);
             if (!File.Exists(sourceFilePath))
             {
-                log($"  Skipping backup of {file} because it doesn't exist (Full path attempted: {sourceFilePath}");
+                log($"  Skipping backup of {file} because it doesn't exist (Full path attempted: {sourceFilePath})");
                 continue;
             }
             string destFilePath = Path.Combine(newBackupDir, file);
@@ -87,8 +87,8 @@ public static class SingleplayerManagement
 
     public static void ApplyLatestBackup(Action<string> log)
     {
-        var backupHome = CrossPlatform.LocateSingleplayerBackupsHome();
-        var singleplayerHome = CrossPlatform.LocateSingleplayerHome();
+        var backupHome = CrossPlatform.GetSingleplayerBackupsHome();
+        var singleplayerHome = CrossPlatform.GetSingleplayerHome();
 
         // Get all backup directories
         var backupDirectories = Directory.GetDirectories(backupHome);

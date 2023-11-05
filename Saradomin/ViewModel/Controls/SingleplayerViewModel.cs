@@ -20,7 +20,7 @@ public class SingleplayerViewModel : ViewModelBase
     private readonly ISettingsService _settingsService;
 
     public string SingleplayerDownloadText { get; private set; } =
-        Directory.Exists(CrossPlatform.LocateSingleplayerHome()) ? "Update Singleplayer" : "Download Singleplayer";
+        Directory.Exists(CrossPlatform.GetSingleplayerHome()) ? "Update Singleplayer" : "Download Singleplayer";
 
     public bool CanDownload { get; private set; } = true;
     public bool CanLaunch { get; private set; } = File.Exists(CrossPlatform.LocateSingleplayerExecutable());
@@ -56,9 +56,10 @@ public class SingleplayerViewModel : ViewModelBase
         if (finished)
         {
             SingleplayerDownloadText = "Update Singleplayer";
-            PrintLog($"Singleplayer Download complete");
             SingleplayerManagement.ApplyLatestBackup(PrintLog);
             PrintLog($"");
+            PrintLog($"Singleplayer Download complete");
+            CanLaunch = true;
             return;
         }
 
@@ -84,6 +85,7 @@ public class SingleplayerViewModel : ViewModelBase
 
     public void DownloadSingleplayer()
     {
+        CanLaunch = false;
         MakeBackup();
         PrintLog($"Starting singleplayer download...");
         _singleplayerUpdateService.DownloadSingleplayer();
@@ -99,9 +101,9 @@ public class SingleplayerViewModel : ViewModelBase
 
     public void OpenBackupFolder()
     {
-        if (!Directory.Exists(CrossPlatform.LocateSingleplayerBackupsHome()))
-            Directory.CreateDirectory(CrossPlatform.LocateSingleplayerBackupsHome());
-        CrossPlatform.OpenFolder(CrossPlatform.LocateSingleplayerBackupsHome());
+        if (!Directory.Exists(CrossPlatform.GetSingleplayerBackupsHome()))
+            Directory.CreateDirectory(CrossPlatform.GetSingleplayerBackupsHome());
+        CrossPlatform.OpenFolder(CrossPlatform.GetSingleplayerBackupsHome());
     }
 
     private void PrintLog(string message)
