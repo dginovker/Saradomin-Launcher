@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 
 namespace Saradomin.Utilities;
 
@@ -22,15 +23,11 @@ public static class SingleplayerManagement
 
     public static void MakeBackup(Action<string> log)
     {
-        if (!Directory.Exists(CrossPlatform.GetSingleplayerBackupsHome()))
-            Directory.CreateDirectory(CrossPlatform.GetSingleplayerBackupsHome());
-
         string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
         string newBackupDir = Path.Combine(
             CrossPlatform.GetSingleplayerBackupsHome(),
             timestamp
         );
-        Directory.CreateDirectory(newBackupDir);
 
         foreach (string dir in DirsToBackup)
         {

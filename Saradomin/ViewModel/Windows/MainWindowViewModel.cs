@@ -25,9 +25,6 @@ namespace Saradomin.ViewModel.Windows
         private readonly IRemoteConfigService _remoteConfigService;
         private readonly ISettingsService _settingsService;
 
-        private bool JavaExecutableValid
-            => CrossPlatform.IsJavaExecutableValid(_settingsService.Launcher.JavaExecutableLocation);
-
         private LauncherSettings Launcher { get; }
 
         public string Title { get; set; } = "2009scape launcher";
@@ -50,9 +47,7 @@ namespace Saradomin.ViewModel.Windows
             _remoteConfigService = remoteConfigService;
             _javaUpdateService = javaUpdateService;
             _javaUpdateService.JavaDownloadProgressChanged += OnJavaDownloadProgressUpdated;
-  
 
-            
             _settingsService = settingsService;
             Launcher = _settingsService.Launcher;
 
@@ -62,13 +57,9 @@ namespace Saradomin.ViewModel.Windows
             };
 
             Message.Subscribe<MainViewLoadedMessage>(this, MainViewLoaded);
-            Message.Subscribe<SettingsModifiedMessage>(this, SettingsModified);
             Message.Subscribe<NotificationBoxStateChangedMessage>(this, NotificatationBoxStateChanged);
 
-            if (!JavaExecutableValid)
-            {
-                _settingsService.Launcher.JavaExecutableLocation = CrossPlatform.LocateJavaExecutable();
-            }
+            _settingsService.Launcher.JavaExecutableLocation ??= CrossPlatform.LocateJavaExecutable();
         }
 
         public void ExitApplication()
@@ -102,23 +93,6 @@ namespace Saradomin.ViewModel.Windows
             }
         }
 
-        public void SettingsModified(SettingsModifiedMessage msg)
-        {
-            if (msg.SettingName == nameof(LauncherSettings.JavaExecutableLocation))
-            {
-                if (!JavaExecutableValid)
-                {
-                    CanLaunch = false;
-                    LaunchText = "Unable to locate Java. Find Java executable using Settings page.";
-                }
-                else
-                {
-                    CanLaunch = true;
-                    LaunchText = "Play!";
-                }
-            }
-        }
-        
         public void NotificatationBoxStateChanged(NotificationBoxStateChangedMessage msg)
         {
             DimContent = msg.WasOpened;

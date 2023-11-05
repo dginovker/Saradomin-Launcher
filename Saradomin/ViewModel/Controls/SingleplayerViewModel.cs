@@ -1,8 +1,13 @@
 using System;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
+using System.Net.NetworkInformation;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -73,7 +78,7 @@ public class SingleplayerViewModel : ViewModelBase
 
     public void DownloadSingleplayer()
     {
-        if (!CanLaunch) return; // While the button could be disabled, this looks nicer visually (since we update the download progress in the button text)
+        if (File.Exists(CrossPlatform.LocateSingleplayerExecutable()) && !CanLaunch) return; // While the button could be disabled, this looks nicer visually (since we update the download progress in the button text)
         CanLaunch = false;
         MakeBackup();
         PrintLog($"Starting singleplayer download...");
@@ -103,6 +108,8 @@ public class SingleplayerViewModel : ViewModelBase
     
     private void PrintLog(string message)
     {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) message = Regex.Replace(message, @"\e\[[0-9;]*m", string.Empty); 
+        
         ShowLogPanel = true;
         Dispatcher.UIThread.Post(() => { SingleplayerLogsTextBox.Text += message + Environment.NewLine; },
             DispatcherPriority.Background);
@@ -113,12 +120,19 @@ public class SingleplayerViewModel : ViewModelBase
     public void LaunchSingleplayer()
     {
         CanLaunch = false;
-        new Task(() =>
-            CrossPlatform.RunCommandAndGetOutput(
-                $"{CrossPlatform.LocateSingleplayerExecutable()} {Launcher.JavaExecutableLocation}",
-                PrintLog,
-                PrintLog)
-        ).Start();
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            new Task(() => Utilities.Singleplayer.Windows.WindowsLaunchServerAndClient(Launcher.JavaExecutableLocation, PrintLog)).Start();
+        }
+        else
+        {
+            new Task(() =>
+                CrossPlatform.RunCommandAndGetOutput(
+                    $"{CrossPlatform.LocateSingleplayerExecutable()} \"{Launcher.JavaExecutableLocation}\"",
+                    PrintLog,
+                    PrintLog)
+            ).Start();
+        }
     }
 
     private void LaunchFaq()
