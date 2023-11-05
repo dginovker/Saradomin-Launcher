@@ -3,17 +3,14 @@ using System.IO;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Threading;
-using Glitonea.Extensions;
 using Glitonea.Mvvm;
 using Glitonea.Mvvm.Messaging;
 using Saradomin.Infrastructure.Messaging;
 using Saradomin.Infrastructure.Services;
 using Saradomin.Model.Settings.Launcher;
 using Saradomin.Utilities;
-using Saradomin.View.Windows;
 
 namespace Saradomin.ViewModel.Controls
 {
@@ -24,16 +21,16 @@ namespace Saradomin.ViewModel.Controls
 
         public string SingleplayerDownloadText { get; private set; } = "Download Singleplayer";
         public bool CanDownload { get; private set; } = true;
-        public bool CanLaunch => File.Exists(CrossPlatform.LocateSingleplayerExecutable());
-        public bool IsRunning {get ; private set;  }
+        public bool CanLaunch => File.Exists(CrossPlatform.LocateSingleplayerExecutable()) && !_isRunning;
         public TextBox SingleplayerLogsTextBox { get; private set; }
-
+        public bool ShowLogPanel {get; private set; }
         public LauncherSettings Launcher => _settingsService.Launcher;
 
+        private bool _isRunning;
         public SingleplayerViewModel(ISettingsService settingsService, ISingleplayerUpdateService iSingleplayerUpdateService)
         { 
             _settingsService = settingsService; 
-            Message.Subscribe<MainViewLoadedMessage>(this, OnMainViewLoaded);
+            Message.Subscribe<MainViewLoadedMessage>(this, OnMainViewLoaded); // todo test delete
             _singleplayerUpdateService = iSingleplayerUpdateService;
             _singleplayerUpdateService.SingleplayerDownloadProgressChanged += OnSingleplayerDownloadProgressChanged;
             
@@ -58,6 +55,9 @@ namespace Saradomin.ViewModel.Controls
             if (finished)
             {
                 SingleplayerDownloadText = "Download Singleplayer";
+                PrintLog($"Singleplayer Download/Update complete");
+                SingleplayerManagement.ApplyLatestBackup();
+                PrintLog($"Restored progress from last made backup");
                 return;
             }
             
@@ -82,12 +82,27 @@ namespace Saradomin.ViewModel.Controls
         
         public void DownloadSingleplayer()
         {
+            MakeBackup();
+            PrintLog($"Starting singleplayer download/update...");
             _singleplayerUpdateService.DownloadSingleplayer();
-            Console.WriteLine("Download singleplayer button clicked");
         }
 
-        public void PrintLog(string message)
+        public void MakeBackup()
         {
+            PrintLog("Starting backup of player saves and economy files..");
+            SingleplayerManagement.MakeBackup();
+        }
+
+        public void OpenBackupFolder()
+        {
+            if (!Directory.Exists(CrossPlatform.LocateSingleplayerBackupsHome()))
+                Directory.CreateDirectory(CrossPlatform.LocateSingleplayerBackupsHome());
+            CrossPlatform.OpenFolder(CrossPlatform.LocateSingleplayerBackupsHome());
+        }
+
+        private void PrintLog(string message)
+        {
+            ShowLogPanel = true;
             Dispatcher.UIThread.Post(() =>
             {
                 SingleplayerLogsTextBox.Text += message + Environment.NewLine;
@@ -96,8 +111,12 @@ namespace Saradomin.ViewModel.Controls
         
         public void LaunchSingleplayer()
         {
-            IsRunning = true;
-            new Task(() => CrossPlatform.RunCommandAndGetOutput(CrossPlatform.LocateSingleplayerExecutable(), PrintLog, PrintLog)).Start();
+            _isRunning = true;
+            new Task(() => 
+                    CrossPlatform.RunCommandAndGetOutput($"{CrossPlatform.LocateSingleplayerExecutable()} {Launcher.JavaExecutableLocation}",
+                    PrintLog, 
+                    PrintLog)
+                ).Start();
         }
 
         private void LaunchFaq()
@@ -108,33 +127,6 @@ namespace Saradomin.ViewModel.Controls
         private void LaunchForums()
         {
             CrossPlatform.LaunchURL("https://forum.2009scape.org/viewforum.php?f=8-support");
-        }
-
-        private async Task BrowseForInstallationDirectory()
-        {
-            var ofd = new OpenFolderDialog
-            {
-                Title = "Browse for Installation Directory...",
-                Directory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
-            };
-
-            var path = await ofd.ShowAsync(Application.Current.GetMainWindow());
-
-            if (path != null)
-            {
-                if (CrossPlatform.IsDirectoryWritable(path))
-                {
-                    Launcher.InstallationDirectory = path;
-                }
-                else
-                {
-                    NotificationBox.DisplayNotification(
-                        "Access denied",
-                        "The location you have selected is not writable. Select the one you have permissions for.",
-                        Application.Current.GetMainWindow()
-                    );
-                }
-            }
         }
     }
 }

@@ -28,6 +28,23 @@ namespace Saradomin.Utilities
             }
         }
 
+        public static void OpenFolder(string path)
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                Console.WriteLine("Opening " + path + "...");
+                Process.Start("xdg-open", path);
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                Process.Start("open", path);
+            }
+        }
+
         public static bool IsJavaExecutableValid(string location)
         {
             try
@@ -206,6 +223,11 @@ namespace Saradomin.Utilities
                     "saradomin"
                 );
             }
+        }
+
+        public static string LocateSingleplayerBackupsHome()
+        {
+            return Path.Combine(LocateDefault2009scapeHome(), "singleplayer_backups");
         }
 
         public static string LocateSingleplayerHome()

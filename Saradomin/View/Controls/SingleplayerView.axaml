@@ -13,21 +13,21 @@
            <HeaderedContentControl Classes="GroupBox"
                                    DockPanel.Dock="Top"
                                    Header="singleplayer logs"
-                                   IsVisible="{Binding IsRunning}"
+                                   IsVisible="{Binding ShowLogPanel}"
                                    >
-           <ScrollViewer HorizontalAlignment="Left"
-              ClipToBounds="True"
-              Height="300"
-              Width="390"
-              Content="{Binding SingleplayerLogsTextBox}"
-              HorizontalScrollBarVisibility="Auto"
-              VerticalScrollBarVisibility="Visible" />
+               <ScrollViewer HorizontalAlignment="Left"
+                  ClipToBounds="True"
+                  Height="300"
+                  Width="390"
+                  Content="{Binding SingleplayerLogsTextBox}"
+                  HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Visible" />
           </HeaderedContentControl>
           
            <HeaderedContentControl Classes="GroupBox"
                                    DockPanel.Dock="Top"
                                    Header="singleplayer info"
-                                   IsVisible="{Binding !IsRunning}"
+                                   IsVisible="{Binding !ShowLogPanel}"
                                    >
                 <StackPanel Orientation="Vertical">
                   <TextBlock 
@@ -157,6 +157,32 @@
                             ZIndex="9999"
                             IsEnabled="{Binding CanLaunch}" />
 
+                    <Button
+                            Margin="0,0,0,0"
+                            Width="140"
+                            Height="25"
+                            BorderBrush="{StaticResource DarkBorderBrush}"
+                            BorderThickness="1"
+                            Classes="OutsideNavigator"
+                            Command="{Binding MakeBackup}"
+                            Opacity="1"
+                            FontSize="11"
+                            Content="Make Backup"
+                            ZIndex="9999"/>
+
+                    <Button
+                            Margin="0,0,0,0"
+                            Width="140"
+                            Height="25"
+                            BorderBrush="{StaticResource DarkBorderBrush}"
+                            BorderThickness="1"
+                            Classes="OutsideNavigator"
+                            Command="{Binding OpenBackupFolder}"
+                            Opacity="1"
+                            FontSize="11"
+                            Content="Open Backups"
+                            ZIndex="9999" />
+
                     <Grid Margin="0,2,0,4"
                           ColumnDefinitions="*,Auto"
                           RowDefinitions="Auto,Auto">
@@ -180,15 +206,6 @@
                                  Text="{Binding Launcher.InstallationDirectory, Mode=TwoWay}"
                                  Watermark="Enter a path to your preferred installation directory..." />
 
-                        <Button Grid.Row="1"
-                                Grid.Column="1"
-                                Width="22"
-                                Height="24"
-                                Margin="2,0,0,0"
-                                Classes="OutsideNavigator"
-                                Command="{Binding BrowseForInstallationDirectory}"
-                                Content="..."
-                                ToolTip.Tip="Browse..." />
                     </Grid>
 
                 </StackPanel>
