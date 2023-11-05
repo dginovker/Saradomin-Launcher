@@ -135,22 +135,32 @@ public static class SingleplayerManagement
     }
 
     private static Dictionary<string, string> _confCache;
+    public static Dictionary<string, string> GrabConfCache()
+    {
+        var configPath = CrossPlatform.GetSingleplayerHome() + "/game/worldprops/default.conf";
+        return File.ReadLines(configPath)
+            .Where(line => line.Contains('=') && !line.TrimStart().StartsWith("#"))
+            .Select(l => l.Split(new[] { '#', '=' }, 3))
+            .ToDictionary(parts => parts[0].Trim(), parts => parts[1].Trim());
+    }
+    
     public static T ParseConf<T>(string key, T defaultValue = default)
     {
-        if (!File.Exists(CrossPlatform.GetSingleplayerHome() + "/game/worldprops/default.conf")) return defaultValue;
-        _confCache ??= File.ReadLines(CrossPlatform.GetSingleplayerHome() + "/game/worldprops/default.conf")
-            .Where(line => line.Contains('='))
-            .Select(line => line.Split('='))
-            .ToDictionary(parts => parts[0].Trim(), parts => parts[1].Trim());
-
-        return (T)Convert.ChangeType(_confCache[key], typeof(T));
+        _confCache ??= GrabConfCache();
+        if (!_confCache.TryGetValue(key, out var value)) return defaultValue;
+        return (T)Convert.ChangeType(value, typeof(T));
     }
+
 
     public static void WriteConf(string key, object value)
     {
+        Console.WriteLine($"Writing {key}");
+        _confCache[key] = value.ToString().ToLowerInvariant(); // Update cache
         var filePath = CrossPlatform.GetSingleplayerHome() + "/game/worldprops/default.conf";
-        var lines = File.ReadAllLines(filePath);
-        File.WriteAllLines(filePath, lines.Select(l => l.StartsWith(key + " =") ? $"{key} = {value}" : l));
-        _confCache[key] = value.ToString();
+        var lines = File.ReadAllLines(filePath).Select(l =>
+            l.StartsWith(key + " =")
+                ? $"{key} = {_confCache[key]}" + (l.Contains("#") ? " " + l.Substring(l.IndexOf('#')) : "")
+                : l);
+        File.WriteAllLines(filePath, lines);
     }
 }

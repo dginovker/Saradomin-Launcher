@@ -188,7 +188,7 @@
             <HeaderedContentControl Margin="2,2,0,0"
                                     Classes="GroupBox"
                                     DockPanel.Dock="Top"
-                                    Header="singleplayer config (edit config manually for now)">
+                                    Header="singleplayer config">
                 <HeaderedContentControl.HeaderTemplate>
                     <DataTemplate>
                         <TextBlock HorizontalAlignment="Center"

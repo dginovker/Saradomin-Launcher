@@ -1,5 +1,8 @@
 using System;
+using System.Diagnostics.Contracts;
 using System.IO;
+using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -20,8 +23,6 @@ public class SingleplayerViewModel : ViewModelBase
 
     public string SingleplayerDownloadText { get; private set; } =
         Directory.Exists(CrossPlatform.GetSingleplayerHome()) ? "Update Singleplayer" : "Download Singleplayer";
-
-    public bool CanDownload { get; private set; } = true;
     public bool CanLaunch { get; private set; } = File.Exists(CrossPlatform.LocateSingleplayerExecutable());
     public TextBox SingleplayerLogsTextBox { get; }
     public bool ShowLogPanel { get; private set; }
@@ -55,8 +56,8 @@ public class SingleplayerViewModel : ViewModelBase
         {
             SingleplayerDownloadText = "Update Singleplayer";
             ApplyLatestBackup(PrintLog);
-            PrintLog($"");
             PrintLog($"Singleplayer Download complete");
+            PrintLog($"");
             CanLaunch = true;
             return;
         }
@@ -72,6 +73,7 @@ public class SingleplayerViewModel : ViewModelBase
 
     public void DownloadSingleplayer()
     {
+        if (!CanLaunch) return; // While the button could be disabled, this looks nicer visually (since we update the download progress in the button text)
         CanLaunch = false;
         MakeBackup();
         PrintLog($"Starting singleplayer download...");
@@ -93,11 +95,19 @@ public class SingleplayerViewModel : ViewModelBase
         CrossPlatform.OpenFolder(CrossPlatform.GetSingleplayerBackupsHome());
     }
 
+    [Pure]
+    public static bool IsServerTerminationLog(string log)
+    {
+        return Regex.IsMatch(log, @"^\[\d{2}:\d{2}:\d{2}\]: \[SystemTermination\] Server successfully terminated!\s*$"); 
+    }
+    
     private void PrintLog(string message)
     {
         ShowLogPanel = true;
         Dispatcher.UIThread.Post(() => { SingleplayerLogsTextBox.Text += message + Environment.NewLine; },
             DispatcherPriority.Background);
+
+        if (IsServerTerminationLog(message)) CanLaunch = true;
     }
 
     public void LaunchSingleplayer()
@@ -121,8 +131,8 @@ public class SingleplayerViewModel : ViewModelBase
         CrossPlatform.LaunchURL("https://forum.2009scape.org/viewforum.php?f=8-support");
     }
 
-    public bool Cheats 
-    { 
+    public bool Cheats
+    {
         get => ParseConf<bool>("noauth_default_admin");
         set => WriteConf("noauth_default_admin", value);
     }
@@ -145,8 +155,27 @@ public class SingleplayerViewModel : ViewModelBase
         set => WriteConf("debug", value);
     }
 
-    public void ResetToDefaults()
+    public async void ResetToDefaults()
     {
-        
+        using var httpClient = new HttpClient();
+        httpClient.Timeout = TimeSpan.FromSeconds(5);
+        MakeBackup();
+        PrintLog("Grabbing the default config from the latest singleplayer codebase..");
+        try
+        {
+            string defaultConf = await httpClient.GetStringAsync("https://gitlab.com/2009scape/singleplayer/windows/-/raw/master/game/worldprops/default.conf");
+            await File.WriteAllTextAsync(CrossPlatform.GetSingleplayerHome() + "/game/worldprops/default.conf",
+                defaultConf);
+        }
+        catch (Exception ex)
+        {
+            PrintLog($"Couldn't reset game properties");
+            PrintLog(ex.Message);
+            return;
+        }
+        Cheats = GEAutoBuySell = Debug = false; // Force update UI
+        FakePlayers = true;
+        PrintLog("Saved new config.");
+        PrintLog("");
     }
 }
