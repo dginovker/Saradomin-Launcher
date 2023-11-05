@@ -4,7 +4,6 @@ using System.IO.Compression;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using Saradomin.Model.Settings.Launcher;
 using Saradomin.Utilities;
 
 namespace Saradomin.Infrastructure.Services

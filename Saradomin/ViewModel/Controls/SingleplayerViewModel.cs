@@ -6,11 +6,10 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Threading;
 using Glitonea.Mvvm;
-using Glitonea.Mvvm.Messaging;
-using Saradomin.Infrastructure.Messaging;
 using Saradomin.Infrastructure.Services;
 using Saradomin.Model.Settings.Launcher;
 using Saradomin.Utilities;
+using static Saradomin.Utilities.SingleplayerManagement;
 
 namespace Saradomin.ViewModel.Controls;
 
@@ -32,7 +31,6 @@ public class SingleplayerViewModel : ViewModelBase
         ISingleplayerUpdateService iSingleplayerUpdateService)
     {
         _settingsService = settingsService;
-        Message.Subscribe<MainViewLoadedMessage>(this, OnMainViewLoaded); // todo test delete
         _singleplayerUpdateService = iSingleplayerUpdateService;
         _singleplayerUpdateService.SingleplayerDownloadProgressChanged += OnSingleplayerDownloadProgressChanged;
 
@@ -56,7 +54,7 @@ public class SingleplayerViewModel : ViewModelBase
         if (finished)
         {
             SingleplayerDownloadText = "Update Singleplayer";
-            SingleplayerManagement.ApplyLatestBackup(PrintLog);
+            ApplyLatestBackup(PrintLog);
             PrintLog($"");
             PrintLog($"Singleplayer Download complete");
             CanLaunch = true;
@@ -70,17 +68,6 @@ public class SingleplayerViewModel : ViewModelBase
         }
 
         SingleplayerDownloadText = $"Downloading... {progress * 100:F2}%";
-    }
-
-    private void OnMainViewLoaded(MainViewLoadedMessage _)
-    {
-        Message.Subscribe<SettingsModifiedMessage>(this, OnSettingsModified);
-    }
-
-    private void OnSettingsModified(SettingsModifiedMessage _)
-    {
-        Console.WriteLine("Saving settings");
-        _settingsService.SaveAll();
     }
 
     public void DownloadSingleplayer()
@@ -132,5 +119,34 @@ public class SingleplayerViewModel : ViewModelBase
     private void LaunchForums()
     {
         CrossPlatform.LaunchURL("https://forum.2009scape.org/viewforum.php?f=8-support");
+    }
+
+    public bool Cheats 
+    { 
+        get => ParseConf<bool>("noauth_default_admin");
+        set => WriteConf("noauth_default_admin", value);
+    }
+
+    public bool FakePlayers
+    {
+        get => ParseConf<bool>("enable_bots", true);
+        set => WriteConf("enable_bots", value);
+    }
+
+    public bool GEAutoBuySell 
+    { 
+        get => ParseConf<bool>("i_want_to_cheat");
+        set => WriteConf("i_want_to_cheat", value);
+    }
+
+    public bool Debug 
+    { 
+        get => ParseConf<bool>("debug");
+        set => WriteConf("debug", value);
+    }
+
+    public void ResetToDefaults()
+    {
+        
     }
 }

@@ -188,7 +188,6 @@ namespace Saradomin.Utilities
                 || RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
             {
                 return Path.Combine(
-                    // Get the XDG_DATA_HOME environment variable, or if it doesn't exist, use the default ~/.local/share
                     LocateUnixUserHome(),
                     "2009scape"
                 );

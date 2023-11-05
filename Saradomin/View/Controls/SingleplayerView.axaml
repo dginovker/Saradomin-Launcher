@@ -97,7 +97,7 @@
                                     Header="singleplayer links">
                 <StackPanel Orientation="Vertical">
                  <Button
-                         Margin="0,0,0,0"
+                         Margin="0,0,0,4"
                          Width="140"
                          Height="25"
                          BorderBrush="{StaticResource DarkBorderBrush}"
@@ -110,7 +110,7 @@
                          ZIndex="9999" />
                  
                  <Button
-                         Margin="0,0,0,0"
+                         Margin="0,0,0,4"
                          Width="140"
                          Height="25"
                          BorderBrush="{StaticResource DarkBorderBrush}"
@@ -130,7 +130,7 @@
                                     Header="singleplayer launch">
                 <StackPanel Orientation="Vertical">
                     <Button
-                            Margin="0,0,0,0"
+                            Margin="0,0,0,4"
                             Width="140"
                             Height="25"
                             BorderBrush="{StaticResource DarkBorderBrush}"
@@ -144,7 +144,7 @@
                             IsEnabled="{Binding CanDownload}" />
 
                     <Button
-                            Margin="0,0,0,0"
+                            Margin="0,0,0,4"
                             Width="140"
                             Height="25"
                             BorderBrush="{StaticResource DarkBorderBrush}"
@@ -158,7 +158,7 @@
                             IsEnabled="{Binding CanLaunch}" />
 
                     <Button
-                            Margin="0,0,0,0"
+                            Margin="0,0,0,4"
                             Width="140"
                             Height="25"
                             BorderBrush="{StaticResource DarkBorderBrush}"
@@ -171,7 +171,7 @@
                             ZIndex="9999"/>
 
                     <Button
-                            Margin="0,0,0,0"
+                            Margin="0,0,0,4"
                             Width="140"
                             Height="25"
                             BorderBrush="{StaticResource DarkBorderBrush}"
@@ -202,20 +202,23 @@
                                />
                     
                     <CheckBox Content="Cheats"
-                              IsEnabled="False"
+                              IsChecked="{Binding Cheats, Mode=TwoWay}"
+                              IsEnabled="{Binding CanLaunch}"
                               />
 
                     <CheckBox Content="Fake Players"
-                              IsChecked="True"
-                              IsEnabled="False"
+                              IsChecked="{Binding FakePlayers, Mode=TwoWay}"
+                              IsEnabled="{Binding CanLaunch}"
                               />
 
-                    <CheckBox Content="GE Autostock"
-                              IsEnabled="False"
+                    <CheckBox Content="GE Auto Buy and Sell"
+                              IsChecked="{Binding GEAutoBuySell, Mode=TwoWay}"
+                              IsEnabled="{Binding CanLaunch}"
                               />
 
                     <CheckBox Content="Debug"
-                              IsEnabled="False"
+                              IsChecked="{Binding Debug, Mode=TwoWay}"
+                              IsEnabled="{Binding CanLaunch}"
                               />
 
                     <Button
@@ -228,7 +231,8 @@
                             Opacity="1"
                             FontSize="11"
                             Content="Reset Config"
-                            IsEnabled="False"
+                            Command="{Binding ResetToDefaults}"
+                            IsEnabled="{Binding CanLaunch}"
                             ZIndex="9999"/>
                 </StackPanel>
             </HeaderedContentControl>

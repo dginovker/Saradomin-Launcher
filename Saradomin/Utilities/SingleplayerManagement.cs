@@ -13,6 +13,7 @@ public static class SingleplayerManagement
         "game/data/serverstore",
         "game/worldprops"
     };
+
     private static readonly string[] FilesToBackup =
     {
         "game/data/eco/ge_resource.emp",
@@ -39,6 +40,7 @@ public static class SingleplayerManagement
                 log($"  Skipping backup of {dir} because it doesn't exist (Full path attempted: {sourcePath})");
                 continue;
             }
+
             string destPath = Path.Combine(newBackupDir, dir);
             CopyDirectory(sourcePath, destPath);
         }
@@ -51,6 +53,7 @@ public static class SingleplayerManagement
                 log($"  Skipping backup of {file} because it doesn't exist (Full path attempted: {sourceFilePath})");
                 continue;
             }
+
             string destFilePath = Path.Combine(newBackupDir, file);
             string directoryForFile = Path.GetDirectoryName(destFilePath);
             if (!Directory.Exists(directoryForFile))
@@ -129,5 +132,25 @@ public static class SingleplayerManagement
         }
 
         log($"  Backup from {mostRecentBackupDirName} has been successfully applied.");
+    }
+
+    private static Dictionary<string, string> _confCache;
+    public static T ParseConf<T>(string key, T defaultValue = default)
+    {
+        if (!File.Exists(CrossPlatform.GetSingleplayerHome() + "/game/worldprops/default.conf")) return defaultValue;
+        _confCache ??= File.ReadLines(CrossPlatform.GetSingleplayerHome() + "/game/worldprops/default.conf")
+            .Where(line => line.Contains('='))
+            .Select(line => line.Split('='))
+            .ToDictionary(parts => parts[0].Trim(), parts => parts[1].Trim());
+
+        return (T)Convert.ChangeType(_confCache[key], typeof(T));
+    }
+
+    public static void WriteConf(string key, object value)
+    {
+        var filePath = CrossPlatform.GetSingleplayerHome() + "/game/worldprops/default.conf";
+        var lines = File.ReadAllLines(filePath);
+        File.WriteAllLines(filePath, lines.Select(l => l.StartsWith(key + " =") ? $"{key} = {value}" : l));
+        _confCache[key] = value.ToString();
     }
 }
