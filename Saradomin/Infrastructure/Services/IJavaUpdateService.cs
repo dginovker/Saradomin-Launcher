@@ -6,7 +6,7 @@ namespace Saradomin.Infrastructure.Services
 {
     public interface IJavaUpdateService : IService
     {
-        event EventHandler<float> JavaDownloadProgressChanged;
+        event EventHandler<Tuple<float, bool>> JavaDownloadProgressChanged;
         Task DownloadAndSetJava11(ISettingsService settingsService);
     }
 }

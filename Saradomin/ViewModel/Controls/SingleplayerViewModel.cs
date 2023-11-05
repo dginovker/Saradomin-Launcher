@@ -17,6 +17,7 @@ using Glitonea.Mvvm;
 using Saradomin.Infrastructure.Services;
 using Saradomin.Model.Settings.Launcher;
 using Saradomin.Utilities;
+using Saradomin.View.Windows;
 using static Saradomin.Utilities.SingleplayerManagement;
 
 namespace Saradomin.ViewModel.Controls;
@@ -25,6 +26,7 @@ public class SingleplayerViewModel : ViewModelBase
 {
     private readonly ISingleplayerUpdateService _singleplayerUpdateService;
     private readonly ISettingsService _settingsService;
+    private readonly IJavaUpdateService _javaUpdateService;
 
     public string SingleplayerDownloadText { get; private set; } =
         Directory.Exists(CrossPlatform.GetSingleplayerHome()) ? "Update Singleplayer" : "Download Singleplayer";
@@ -34,9 +36,11 @@ public class SingleplayerViewModel : ViewModelBase
     public LauncherSettings Launcher => _settingsService.Launcher;
 
     public SingleplayerViewModel(ISettingsService settingsService,
+        IJavaUpdateService javaUpdateService,
         ISingleplayerUpdateService iSingleplayerUpdateService)
     {
         _settingsService = settingsService;
+        _javaUpdateService = javaUpdateService;
         _singleplayerUpdateService = iSingleplayerUpdateService;
         _singleplayerUpdateService.SingleplayerDownloadProgressChanged += OnSingleplayerDownloadProgressChanged;
 
@@ -117,11 +121,19 @@ public class SingleplayerViewModel : ViewModelBase
         if (IsServerTerminationLog(message)) CanLaunch = true;
     }
 
-    public void LaunchSingleplayer()
+    public async void LaunchSingleplayer()
     {
+        string javaVersionOutput = CrossPlatform.RunCommandAndGetOutput(
+            $"\"{Launcher.JavaExecutableLocation}\" -version"
+        );
+        if (!javaVersionOutput.Contains("11"))
+        {
+            await _javaUpdateService.DownloadAndSetJava11(_settingsService);
+        }
         CanLaunch = false;
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
+            PrintLog("Starting windowsssssss");
             new Task(() => Utilities.Singleplayer.Windows.WindowsLaunchServerAndClient(Launcher.JavaExecutableLocation, PrintLog)).Start();
         }
         else

@@ -10,7 +10,7 @@ namespace Saradomin.Infrastructure.Services
 {
     public class JavaUpdateService : IJavaUpdateService
     {
-        public event EventHandler<float> JavaDownloadProgressChanged;
+        public event EventHandler<Tuple<float, bool>> JavaDownloadProgressChanged;
 
         public async Task DownloadAndSetJava11(ISettingsService settingsService)
         {
@@ -47,13 +47,13 @@ namespace Saradomin.Infrastructure.Services
                             await fileStream.WriteAsync(buffer, 0, bytesRead);
 
                             var progress = (float)totalRead / contentLength;
-                            JavaDownloadProgressChanged?.Invoke(this, progress);
+                            JavaDownloadProgressChanged?.Invoke(this, new Tuple<float, bool>(progress, false));
                         } while (bytesRead > 0);
                     }
                 }
             }
             
-            JavaDownloadProgressChanged?.Invoke(this, 1f);
+            JavaDownloadProgressChanged?.Invoke(this, new Tuple<float, bool>(1f, false));
             
             if (Directory.Exists(extractedPath)) Directory.Delete(extractedPath, true);
             
@@ -97,6 +97,7 @@ namespace Saradomin.Infrastructure.Services
                 );
             }
             settingsService.SaveAll();
+            JavaDownloadProgressChanged?.Invoke(this, new Tuple<float, bool>(1f, true));
         }
     }
 }

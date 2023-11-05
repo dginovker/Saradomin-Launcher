@@ -64,8 +64,10 @@ public static class Windows
             return;
         }
 
+        log("Starting process");
         Process serverProcess = StartJavaProcess(javaExecutableLocation, serverJar, "2G", log, null);
         
+        log("waiting process");
         while (!IsPortInUse(43595)) Thread.Sleep(1000);
 
         StartJavaProcess(javaExecutableLocation, clientJar, "1G", null, () =>

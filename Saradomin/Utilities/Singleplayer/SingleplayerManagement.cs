@@ -91,7 +91,7 @@ public static class SingleplayerManagement
         var singleplayerHome = CrossPlatform.GetSingleplayerHome();
 
         // Get all backup directories
-        var backupDirectories = Directory.GetDirectories(backupHome);
+        string[] backupDirectories = Directory.Exists(backupHome) ? Directory.GetDirectories(backupHome) : Array.Empty<string>();
 
         string mostRecentBackupDirName = FindMostRecentBackupDirectory(backupDirectories);
 
@@ -132,10 +132,10 @@ public static class SingleplayerManagement
     }
 
     private static Dictionary<string, string> _confCache;
+    private static string ConfPath => Path.Combine(CrossPlatform.GetSaradominHome(), "game", "worldprops", "default.conf");
     public static Dictionary<string, string> GrabConfCache()
     {
-        var configPath = CrossPlatform.GetSingleplayerHome() + "/game/worldprops/default.conf";
-        return File.ReadLines(configPath)
+        return File.ReadLines(ConfPath)
             .Where(line => line.Contains('=') && !line.TrimStart().StartsWith("#"))
             .Select(l => l.Split(new[] { '#', '=' }, 3))
             .ToDictionary(parts => parts[0].Trim(), parts => parts[1].Trim());
@@ -143,11 +143,17 @@ public static class SingleplayerManagement
     
     public static T ParseConf<T>(string key, T defaultValue = default)
     {
+        Console.WriteLine($"Getting key {key}..");
+        if (!File.Exists(ConfPath)) return defaultValue;
         _confCache ??= GrabConfCache();
-        if (!_confCache.TryGetValue(key, out var value)) return defaultValue;
+        if (!_confCache.TryGetValue(key, out var value))
+        {
+            Console.WriteLine($"Cache not hit - returning default {value}");
+            return defaultValue;
+        }
+        Console.WriteLine($"Cache hit - returning {value}");
         return (T)Convert.ChangeType(value, typeof(T));
     }
-
 
     public static void WriteConf(string key, object value)
     {

@@ -265,7 +265,7 @@ namespace Saradomin.ViewModel.Windows
         private bool IsJavaVersion11()
         {
             string javaVersionOutput = CrossPlatform.RunCommandAndGetOutput(
-                $"\"{_settingsService.Launcher.JavaExecutableLocation}\" -version"
+                $"\"{Launcher.JavaExecutableLocation}\" -version"
             );
             return javaVersionOutput.Contains("11");
         }
@@ -274,14 +274,19 @@ namespace Saradomin.ViewModel.Windows
         {
             LaunchText = $"Updating... (Downloading client - {e * 100:F2}%)";
         }
-        private void OnJavaDownloadProgressUpdated(object sender, float e)
+        private void OnJavaDownloadProgressUpdated(object sender, Tuple<float, bool> e)
         {
-            if (e >= 0.999f)
+            if (e.Item2)
+            {
+                LaunchText = "Play!";
+                return;
+            }
+            if (e.Item1 >= 0.999f)
             {
                 LaunchText = "Updating... (Extracting Java 11)";
                 return;
             }
-            LaunchText = $"Updating... (Downloading Java 11 - {e * 100:F2}%)";
+            LaunchText = $"Updating... (Downloading Java 11 - {e.Item1 * 100:F2}%)";
         }
     }
 }
