@@ -17,7 +17,6 @@ public static class SingleplayerManagement
 
     private static readonly string[] FilesToBackup =
     {
-        "game/data/eco/ge_resource.emp",
         "game/data/eco/grandexchange.db"
     };
 
