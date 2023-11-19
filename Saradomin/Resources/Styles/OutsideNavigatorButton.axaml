@@ -23,4 +23,9 @@
         <Setter Property="Background" Value="{StaticResource AccentBrush}" />
         <Setter Property="TextBlock.Foreground" Value="{StaticResource DarkForegroundBrush}" />
     </Style>
+    
+    <Style Selector="Button.OutsideNavigator:disabled">
+        <Setter Property="Background" Value="{StaticResource DarkMediumBackgroundBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource SemiDarkForegroundBrush}" />
+    </Style>
 </Styles>

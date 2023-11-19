@@ -1,0 +1,197 @@
+<UserControl x:Class="Saradomin.View.Controls.SingleplayerView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Saradomin.View.Controls"
+             xmlns:converters="clr-namespace:Glitonea.Mvvm.Converters;assembly=Glitonea"
+             xmlns:glitonea="clr-namespace:Glitonea;assembly=Glitonea"
+             xmlns:mvvm="clr-namespace:Glitonea.Mvvm;assembly=Glitonea"
+             xmlns:vm="clr-namespace:Saradomin.ViewModel.Controls"
+             DataContext="{mvvm:DataContextSource vm:SingleplayerViewModel}">
+    <Grid Margin="0,0,2,2"
+          ColumnDefinitions="400,*">
+        <DockPanel Grid.Column="0">
+           <HeaderedContentControl Classes="GroupBox"
+                                   DockPanel.Dock="Top"
+                                   Header="singleplayer logs"
+                                   IsVisible="{Binding ShowLogPanel}"
+                                   >
+               <ScrollViewer HorizontalAlignment="Left"
+                  ClipToBounds="True"
+                  Height="300"
+                  Width="390"
+                  Content="{Binding SingleplayerLogsTextBox}"
+                  HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Visible" />
+          </HeaderedContentControl>
+          
+           <HeaderedContentControl Classes="GroupBox"
+                                   DockPanel.Dock="Top"
+                                   Header="singleplayer info"
+                                   IsVisible="{Binding !ShowLogPanel}"
+                                   >
+              <StackPanel Orientation="Vertical" Margin="10">
+                <TextBlock Width="380" TextWrapping="Wrap" Foreground="Black">
+                    Singleplayer is provided by the 2009scape team for advanced users only.
+                </TextBlock>
+
+                <TextBlock Width="380" TextWrapping="Wrap" Margin="0,10,0,0" Foreground="Black">
+                    2009scape official servers offer free membership, multiple XP rates, and are hosted 24/7. Your player save file can be exported from the multiplayer server if you wish to switch to singleplayer.
+                </TextBlock>
+
+                <TextBlock Width="380" TextWrapping="Wrap" Foreground="Black">
+                    However, we will not import your singleplayer save file into the multiplayer world. If you ever want to play with others, we recommend the multiplayer server.
+                </TextBlock>
+
+                <TextBlock Width="380" TextWrapping="Wrap" Margin="0,10,0,0" Foreground="Black">
+                    If you have any questions, feel free to ask on our Discord or Forums.
+                </TextBlock>
+            </StackPanel> 
+           </HeaderedContentControl>
+               
+            <HeaderedContentControl Classes="GroupBox"
+                                    DockPanel.Dock="Top"
+                                    Header="singleplayer links">
+                <StackPanel Orientation="Vertical">
+                 <Button
+                         Margin="0,0,0,4"
+                         Width="140"
+                         Height="25"
+                         BorderBrush="{StaticResource DarkBorderBrush}"
+                         BorderThickness="1"
+                         Classes="OutsideNavigator"
+                         Command="{Binding LaunchFaq}"
+                         Opacity="1"
+                         FontSize="11"
+                         Content="singleplayer faq"
+                         ZIndex="9999" />
+                 
+                 <Button
+                         Margin="0,0,0,4"
+                         Width="140"
+                         Height="25"
+                         BorderBrush="{StaticResource DarkBorderBrush}"
+                         BorderThickness="1"
+                         Classes="OutsideNavigator"
+                         Command="{Binding LaunchForums}"
+                         Opacity="1"
+                         FontSize="11"
+                         Content="support forums"
+                         ZIndex="9999" />
+                </StackPanel>
+            </HeaderedContentControl>
+        </DockPanel>
+        <DockPanel Grid.Column="1">
+            <HeaderedContentControl Classes="GroupBox"
+                                    DockPanel.Dock="Top"
+                                    Header="singleplayer launch">
+                <StackPanel Orientation="Vertical">
+                    <Button
+                            Margin="0,0,0,4"
+                            Width="140"
+                            Height="25"
+                            BorderBrush="{StaticResource DarkBorderBrush}"
+                            BorderThickness="1"
+                            Classes="OutsideNavigator"
+                            Command="{Binding DownloadSingleplayer}"
+                            Opacity="1"
+                            FontSize="11"
+                            Content="{Binding SingleplayerDownloadText}"
+                            ZIndex="9999"
+                            IsEnabled="{Binding CanDownload}" />
+
+                    <Button
+                            Margin="0,0,0,4"
+                            Width="140"
+                            Height="25"
+                            BorderBrush="{StaticResource DarkBorderBrush}"
+                            BorderThickness="1"
+                            Classes="OutsideNavigator"
+                            Command="{Binding LaunchSingleplayer}"
+                            Opacity="1"
+                            FontSize="11"
+                            Content="Start Singleplayer"
+                            ZIndex="9999"
+                            IsEnabled="{Binding CanLaunch}" />
+
+                    <Button
+                            Margin="0,0,0,4"
+                            Width="140"
+                            Height="25"
+                            BorderBrush="{StaticResource DarkBorderBrush}"
+                            BorderThickness="1"
+                            Classes="OutsideNavigator"
+                            Command="{Binding MakeBackup}"
+                            Opacity="1"
+                            FontSize="11"
+                            Content="Make Backup"
+                            ZIndex="9999"/>
+
+                    <Button
+                            Margin="0,0,0,4"
+                            Width="140"
+                            Height="25"
+                            BorderBrush="{StaticResource DarkBorderBrush}"
+                            BorderThickness="1"
+                            Classes="OutsideNavigator"
+                            Command="{Binding OpenBackupFolder}"
+                            Opacity="1"
+                            FontSize="11"
+                            Content="Open Backups"
+                            ZIndex="9999" />
+                </StackPanel>
+            </HeaderedContentControl>
+
+            <HeaderedContentControl Margin="2,2,0,0"
+                                    Classes="GroupBox"
+                                    DockPanel.Dock="Top"
+                                    Header="singleplayer config">
+                <HeaderedContentControl.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock HorizontalAlignment="Center"
+                                   Text="{Binding Header}" />
+                    </DataTemplate>
+                </HeaderedContentControl.HeaderTemplate>
+
+                <StackPanel>
+                    <TextBlock HorizontalAlignment="Center"
+                               Foreground="{StaticResource DarkForegroundBrush}"
+                               />
+                    
+                    <CheckBox Content="Cheats"
+                              IsChecked="{Binding Cheats, Mode=TwoWay}"
+                              IsEnabled="{Binding CanLaunch}"
+                              />
+
+                    <CheckBox Content="Fake Players"
+                              IsChecked="{Binding FakePlayers, Mode=TwoWay}"
+                              IsEnabled="{Binding CanLaunch}"
+                              />
+
+                    <CheckBox Content="GE Auto Buy and Sell"
+                              IsChecked="{Binding GEAutoBuySell, Mode=TwoWay}"
+                              IsEnabled="{Binding CanLaunch}"
+                              />
+
+                    <CheckBox Content="Debug"
+                              IsChecked="{Binding Debug, Mode=TwoWay}"
+                              IsEnabled="{Binding CanLaunch}"
+                              />
+
+                    <Button
+                            Margin="0,0,0,0"
+                            Width="140"
+                            Height="25"
+                            BorderBrush="{StaticResource DarkBorderBrush}"
+                            BorderThickness="1"
+                            Classes="OutsideNavigator"
+                            Opacity="1"
+                            FontSize="11"
+                            Content="Reset Config"
+                            Command="{Binding ResetToDefaults}"
+                            IsEnabled="{Binding CanLaunch}"
+                            ZIndex="9999"/>
+                </StackPanel>
+            </HeaderedContentControl>
+        </DockPanel>
+    </Grid>
+</UserControl>

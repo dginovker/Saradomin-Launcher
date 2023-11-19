@@ -10,18 +10,18 @@ namespace Saradomin.Infrastructure.Services
 {
     public class JavaUpdateService : IJavaUpdateService
     {
-        public event EventHandler<float> JavaDownloadProgressChanged;
+        public event EventHandler<Tuple<float, bool>> JavaDownloadProgressChanged;
 
         public async Task DownloadAndSetJava11(ISettingsService settingsService)
         {
             string downloadUrl = CrossPlatform.GetJava11DownloadUrl();
             
             string downloadPath = Path.Combine(
-                CrossPlatform.LocateDefault2009scapeHome(),
+                CrossPlatform.Get2009scapeHome(),
                 "jre11" + Path.GetExtension(downloadUrl)
             );
             string extractedPath = Path.Combine(
-                CrossPlatform.LocateDefault2009scapeHome(),
+                CrossPlatform.Get2009scapeHome(),
                 "jre11"
             );
 
@@ -47,19 +47,20 @@ namespace Saradomin.Infrastructure.Services
                             await fileStream.WriteAsync(buffer, 0, bytesRead);
 
                             var progress = (float)totalRead / contentLength;
-                            JavaDownloadProgressChanged?.Invoke(this, progress);
+                            JavaDownloadProgressChanged?.Invoke(this, new Tuple<float, bool>(progress, false));
                         } while (bytesRead > 0);
                     }
                 }
             }
             
-            JavaDownloadProgressChanged?.Invoke(this, 1f);
+            JavaDownloadProgressChanged?.Invoke(this, new Tuple<float, bool>(1f, false));
             
             if (Directory.Exists(extractedPath)) Directory.Delete(extractedPath, true);
             
             if (Path.GetExtension(downloadUrl) == ".zip")
             {
-                string tempDir = Path.Combine(Path.GetTempPath(), "jre11_temp");
+                // Don't use /tmp because Directory.Move doesn't work cross-partition
+                string tempDir = Path.Combine(CrossPlatform.Get2009scapeHome(), "jre11_temp");
                 if (Directory.Exists(tempDir)) Directory.Delete(tempDir, true);
                 await Task.Run(() => ZipFile.ExtractToDirectory(downloadPath, tempDir));
                 Directory.Move(Directory.GetDirectories(tempDir)[0], extractedPath);
@@ -96,6 +97,7 @@ namespace Saradomin.Infrastructure.Services
                 );
             }
             settingsService.SaveAll();
+            JavaDownloadProgressChanged?.Invoke(this, new Tuple<float, bool>(1f, true));
         }
     }
 }

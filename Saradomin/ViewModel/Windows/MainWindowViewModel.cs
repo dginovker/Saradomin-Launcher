@@ -25,9 +25,6 @@ namespace Saradomin.ViewModel.Windows
         private readonly IRemoteConfigService _remoteConfigService;
         private readonly ISettingsService _settingsService;
 
-        private bool JavaExecutableValid
-            => CrossPlatform.IsJavaExecutableValid(_settingsService.Launcher.JavaExecutableLocation);
-
         private LauncherSettings Launcher { get; }
 
         public string Title { get; set; } = "2009scape launcher";
@@ -50,9 +47,7 @@ namespace Saradomin.ViewModel.Windows
             _remoteConfigService = remoteConfigService;
             _javaUpdateService = javaUpdateService;
             _javaUpdateService.JavaDownloadProgressChanged += OnJavaDownloadProgressUpdated;
-  
 
-            
             _settingsService = settingsService;
             Launcher = _settingsService.Launcher;
 
@@ -62,13 +57,9 @@ namespace Saradomin.ViewModel.Windows
             };
 
             Message.Subscribe<MainViewLoadedMessage>(this, MainViewLoaded);
-            Message.Subscribe<SettingsModifiedMessage>(this, SettingsModified);
             Message.Subscribe<NotificationBoxStateChangedMessage>(this, NotificatationBoxStateChanged);
 
-            if (!JavaExecutableValid)
-            {
-                _settingsService.Launcher.JavaExecutableLocation = CrossPlatform.LocateJavaExecutable();
-            }
+            _settingsService.Launcher.JavaExecutableLocation ??= CrossPlatform.LocateJavaExecutable();
         }
 
         public void ExitApplication()
@@ -102,23 +93,6 @@ namespace Saradomin.ViewModel.Windows
             }
         }
 
-        public void SettingsModified(SettingsModifiedMessage msg)
-        {
-            if (msg.SettingName == nameof(LauncherSettings.JavaExecutableLocation))
-            {
-                if (!JavaExecutableValid)
-                {
-                    CanLaunch = false;
-                    LaunchText = "Unable to locate Java. Find Java executable using Settings page.";
-                }
-                else
-                {
-                    CanLaunch = true;
-                    LaunchText = "Play!";
-                }
-            }
-        }
-        
         public void NotificatationBoxStateChanged(NotificationBoxStateChangedMessage msg)
         {
             DimContent = msg.WasOpened;
@@ -174,7 +148,7 @@ namespace Saradomin.ViewModel.Windows
             }
             
 
-            if (!File.Exists(CrossPlatform.LocateServerProfilesPath(Launcher.InstallationDirectory)) ||
+            if (!File.Exists(CrossPlatform.GetServerProfilePath(CrossPlatform.Get2009scapeHome())) ||
                 _settingsService.Launcher.CheckForServerProfilesOnLaunch)
                 await AttemptServerProfileUpdate();
 
@@ -205,7 +179,7 @@ namespace Saradomin.ViewModel.Windows
 
         private async Task AttemptServerProfileUpdate()
         {
-            var serverProfilePath = CrossPlatform.LocateServerProfilesPath(Launcher.InstallationDirectory);
+            var serverProfilePath = CrossPlatform.GetServerProfilePath(CrossPlatform.Get2009scapeHome());
 
             try
             {
@@ -269,7 +243,7 @@ namespace Saradomin.ViewModel.Windows
             {
 
                 LaunchText = $"Updating... (Downloading client: 0%)";
-                Directory.CreateDirectory(Launcher.InstallationDirectory);
+                Directory.CreateDirectory(CrossPlatform.Get2009scapeHome());
 
                 try
                 {
@@ -291,7 +265,7 @@ namespace Saradomin.ViewModel.Windows
         private bool IsJavaVersion11()
         {
             string javaVersionOutput = CrossPlatform.RunCommandAndGetOutput(
-                $"\"{_settingsService.Launcher.JavaExecutableLocation}\" -version"
+                $"\"{Launcher.JavaExecutableLocation}\" -version"
             );
             return javaVersionOutput.Contains("11");
         }
@@ -300,14 +274,19 @@ namespace Saradomin.ViewModel.Windows
         {
             LaunchText = $"Updating... (Downloading client - {e * 100:F2}%)";
         }
-        private void OnJavaDownloadProgressUpdated(object sender, float e)
+        private void OnJavaDownloadProgressUpdated(object sender, Tuple<float, bool> e)
         {
-            if (e >= 0.999f)
+            if (e.Item2)
+            {
+                LaunchText = "Play! (Multiplayer)";
+                return;
+            }
+            if (e.Item1 >= 0.999f)
             {
                 LaunchText = "Updating... (Extracting Java 11)";
                 return;
             }
-            LaunchText = $"Updating... (Downloading Java 11 - {e * 100:F2}%)";
+            LaunchText = $"Updating... (Downloading Java 11 - {e.Item1 * 100:F2}%)";
         }
     }
 }

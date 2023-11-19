@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Text.Json;
 using Saradomin.Model.Settings.Client;
@@ -12,10 +13,10 @@ namespace Saradomin.Infrastructure.Services
         public ClientSettings Client { get; private set; } = new();
 
         private string ClientSettingsPath
-            => Path.Combine(Launcher.InstallationDirectory, ClientSettings.FileName);
+            => Path.Combine(CrossPlatform.Get2009scapeHome(), ClientSettings.FileName);
         
         private string LauncherSettingsPath
-            => Path.Combine(CrossPlatform.LocateSaradominHome(), LauncherSettings.FileName);
+            => Path.Combine(CrossPlatform.GetSaradominHome(), LauncherSettings.FileName);
 
         public SettingsService()
         {
@@ -30,7 +31,7 @@ namespace Saradomin.Infrastructure.Services
 
         private void TryReadConfigurationData()
         {
-            Directory.CreateDirectory(CrossPlatform.LocateSaradominHome());
+            Directory.CreateDirectory(CrossPlatform.GetSaradominHome());
             
             if (File.Exists(LauncherSettingsPath))
             {
@@ -44,7 +45,7 @@ namespace Saradomin.Infrastructure.Services
                 SaveLauncherSettings();
             }
 
-            Directory.CreateDirectory(Launcher!.InstallationDirectory);
+            Directory.CreateDirectory(CrossPlatform.Get2009scapeHome());
             if (File.Exists(ClientSettingsPath))
             {
                 using (var stream = File.OpenRead(ClientSettingsPath))

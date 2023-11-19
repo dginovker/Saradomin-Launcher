@@ -111,7 +111,7 @@
 
                     <TabItem Width="95"
                              HorizontalContentAlignment="Center"
-                             CornerRadius="0,0,8,0"
+                             CornerRadius="0,0,0,0"
                              Header="settings">
                         <Border Margin="4,0,4,0"
                                 Background="{StaticResource MediumBackgroundBrush}"
@@ -122,6 +122,23 @@
                                           HorizontalScrollBarVisibility="Hidden"
                                           VerticalScrollBarVisibility="Visible">
                                 <controls:SettingsView VerticalAlignment="Stretch" />
+                            </ScrollViewer>
+                        </Border>
+                    </TabItem>
+                    
+                    <TabItem Width="95"
+                             HorizontalContentAlignment="Center"
+                             CornerRadius="0,0,8,0"
+                             Header="singleplayer">
+                        <Border Margin="4,0,4,0"
+                                Background="{StaticResource MediumBackgroundBrush}"
+                                BorderBrush="{StaticResource SemiLightMediumBorderBrush}"
+                                BorderThickness="1,1,1,0"
+                                CornerRadius="6,6,0,0">
+                            <ScrollViewer Classes="MainViewScrollViewer"
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Visible">
+                                <controls:SingleplayerView VerticalAlignment="Stretch" />
                             </ScrollViewer>
                         </Border>
                     </TabItem>

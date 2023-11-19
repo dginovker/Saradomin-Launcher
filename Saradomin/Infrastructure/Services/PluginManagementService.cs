@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
+using Saradomin.Utilities;
 
 namespace Saradomin.Infrastructure.Services
 {
@@ -13,7 +14,7 @@ namespace Saradomin.Infrastructure.Services
 
         public PluginManagementService(ISettingsService settings)
         {
-            PluginRepositoryPath = Path.Combine(settings.Launcher.InstallationDirectory, "plugins");
+            PluginRepositoryPath = Path.Combine(CrossPlatform.Get2009scapeHome(), "plugins");
         }
 
         public Task<List<string>> EnumerateInstalledPlugins()

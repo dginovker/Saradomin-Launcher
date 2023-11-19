@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using Microsoft.CodeAnalysis.Text;
 using Microsoft.Win32;
 using Mono.Unix;
 
@@ -24,6 +25,22 @@ namespace Saradomin.Utilities
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 Process.Start("open", url);
+            }
+        }
+
+        public static void OpenFolder(string path)
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                Process.Start("xdg-open", path);
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                Process.Start("open", path);
             }
         }
 
@@ -165,13 +182,12 @@ namespace Saradomin.Utilities
                 );
         }
 
-        public static string LocateDefault2009scapeHome()
+        public static string Get2009scapeHome()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
                 || RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
             {
                 return Path.Combine(
-                    // Get the XDG_DATA_HOME environment variable, or if it doesn't exist, use the default ~/.local/share
                     LocateUnixUserHome(),
                     "2009scape"
                 );
@@ -185,7 +201,7 @@ namespace Saradomin.Utilities
             }
         }
 
-        public static string LocateSaradominHome()
+        public static string GetSaradominHome()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
                 || RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
@@ -197,33 +213,44 @@ namespace Saradomin.Utilities
                     "saradomin"
                 );
             }
-            else
-            {
-                return Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                    "2009scape",
-                    "saradomin"
-                );
-            }
+
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                "2009scape",
+                "saradomin"
+            );
+        }
+
+        public static string GetSingleplayerBackupsHome()
+        {
+            return Path.Combine(Get2009scapeHome(), "singleplayer_backups");
+        }
+
+        public static string GetSingleplayerHome()
+        {
+            return Path.Combine(Get2009scapeHome(), "singleplayer");
+        }
+
+        public static string LocateSingleplayerExecutable()
+        {
+            return Path.Combine(GetSingleplayerHome(), RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "launch.bat" : "launch.sh");
         }
         
-        public static string Locate2009scapeExecutable(string baseDirectory)
+        public static string Get2009scapeExecutable()
         {
-            baseDirectory ??= LocateDefault2009scapeHome();
-            return Path.Combine(baseDirectory, "2009scape.jar");
+            return Path.Combine(Get2009scapeHome(), "2009scape.jar");
         }
 
-        public static string LocateServerProfilesPath(string baseDirectory)
+        public static string GetServerProfilePath(string baseDirectory)
         {
-            baseDirectory ??= LocateDefault2009scapeHome();
+            baseDirectory ??= Get2009scapeHome();
             return Path.Combine(baseDirectory, "server_profiles.json");
         }
 
-        public static string RunCommandAndGetOutput(string command)
+        public static string RunCommandAndGetOutput(string command, Action<string> onOutputReceived = null, Action<string> onErrorReceived = null)
         {
             Process process = new Process();
             StringBuilder output = new StringBuilder();
-
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 process.StartInfo = new ProcessStartInfo("cmd.exe", "/c " + command)
@@ -250,12 +277,16 @@ namespace Saradomin.Utilities
 
             process.OutputDataReceived += (_, e) =>
             {
-                if (e.Data != null) output.AppendLine(e.Data);
+                if (e.Data == null) return;
+                output.AppendLine(e.Data);
+                onOutputReceived?.Invoke(e.Data);
             };
 
             process.ErrorDataReceived += (_, e) =>
             {
-                if (e.Data != null) output.AppendLine(e.Data);
+                if (e.Data == null) return; 
+                output.AppendLine(e.Data);
+                onErrorReceived?.Invoke(e.Data);
             };
 
             process.Start();
