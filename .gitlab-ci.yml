@@ -19,7 +19,7 @@ stages:
     - pack_macos_sc
 
 build_all:
-    image: mcr.microsoft.com/dotnet/sdk:6.0
+    image: mcr.microsoft.com/dotnet/sdk:8.0
     stage: build_all
     script:
         - dotnet restore
