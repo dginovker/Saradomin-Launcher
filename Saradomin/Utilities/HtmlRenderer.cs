@@ -12,6 +12,7 @@ namespace Saradomin.Utilities
     public class HtmlRenderer
     {
         private int _listDescent = 0;
+        private bool seenNonWhiteSpace = false;
 
         private Stack<StackPanel> _panels = new();
         private StackPanel _container;
@@ -114,6 +115,8 @@ namespace Saradomin.Utilities
                     var text = HttpUtility.HtmlDecode(
                         htmlNode.GetDirectInnerText().Trim(' ').Trim('\n')
                     );
+                    if (!seenNonWhiteSpace && string.IsNullOrWhiteSpace(htmlNode.InnerText)) break;
+                    seenNonWhiteSpace = true;
                     
                     if (htmlNode.ParentNode.Name == "li")
                     {
@@ -126,6 +129,7 @@ namespace Saradomin.Utilities
                     CreateNewInlineTextElement(text);
                     break;
 
+                case "strong":
                 case "b":
                     VisitBold(htmlNode);
                     break;
