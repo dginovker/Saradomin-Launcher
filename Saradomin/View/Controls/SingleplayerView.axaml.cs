@@ -5,16 +5,11 @@ using PropertyChanged;
 namespace Saradomin.View.Controls
 {
     [DoNotNotify]
-    public class SingleplayerView : UserControl
+    public partial class SingleplayerView : UserControl
     {
         public SingleplayerView()
         {
             InitializeComponent();
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
         }
     }
 }

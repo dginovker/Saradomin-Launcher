@@ -5,13 +5,12 @@
                    xmlns:glitonea="clr-namespace:Glitonea;assembly=Glitonea"
                    xmlns:mvvm="clr-namespace:Glitonea.Mvvm;assembly=Glitonea"
                    xmlns:vm="clr-namespace:Saradomin.ViewModel.Windows"
-                   Name="MainWindow"
-                   Title="{Binding Title}"
+                   DataContext="{mvvm:DataContextSource vm:MainWindowViewModel}"
+                   Title="{Binding Title, Mode=TwoWay}"
                    Width="800"
                    Height="550"
                    Background="{StaticResource WindowBackgroundBrush}"
                    CanResize="False"
-                   DataContext="{mvvm:DataContextSource vm:MainWindowViewModel}"
                    Icon="avares://Saradomin/Resources/Icons/saradomin.ico"
                    SystemDecorations="None"
                    WindowStartupLocation="CenterScreen">
@@ -43,7 +42,7 @@
                                FontSize="14"
                                FontWeight="Light"
                                Foreground="{StaticResource AccentBrush}"
-                               Text="{Binding #MainWindow.Title}"
+                               Text="{Binding Title, Mode=TwoWay}"
                                TextAlignment="Center" />
 
                     <Button Grid.Column="2"
@@ -86,15 +85,15 @@
                 </Grid>
 
                 <TabControl Grid.Row="1"
-                            Grid.RowSpan="1"
                             Background="Transparent"
                             BorderBrush="{StaticResource DarkBorderBrush}"
+                            Padding="0"
                             Classes="PageSelector">
                     <TabItem Width="95"
                              HorizontalContentAlignment="Center"
                              CornerRadius="0,0,0,8"
                              Header="what's new">
-                        <Border Margin="4,0,4,0"
+                        <Border Margin="4,4,4,0"
                                 Background="{StaticResource MediumBackgroundBrush}"
                                 BorderBrush="{StaticResource SemiLightMediumBorderBrush}"
                                 BorderThickness="1,1,1,0"

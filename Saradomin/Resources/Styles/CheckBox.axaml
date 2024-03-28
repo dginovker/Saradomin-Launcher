@@ -16,8 +16,8 @@
                     </Canvas>
                     
                     <ContentPresenter Grid.Column="1" 
-                                      TextBlock.Foreground="{TemplateBinding Foreground}"
-                                      TextBlock.FontSize="13"
+                                      TextElement.Foreground="{TemplateBinding Foreground}"
+                                      TextElement.FontSize="13"
                                       Margin="2,0,0,0"
                                       ContentTemplate="{TemplateBinding ContentTemplate}"
                                       Content="{TemplateBinding Content}"
@@ -45,8 +45,8 @@
                     </Canvas>
                     
                     <ContentPresenter Grid.Column="1" 
-                                      TextBlock.Foreground="{TemplateBinding Foreground}"
-                                      TextBlock.FontSize="13"
+                                      TextElement.Foreground="{TemplateBinding Foreground}"
+                                      TextElement.FontSize="13"
                                       Margin="2,0,0,0"
                                       ContentTemplate="{TemplateBinding ContentTemplate}"
                                       Content="{TemplateBinding Content}"

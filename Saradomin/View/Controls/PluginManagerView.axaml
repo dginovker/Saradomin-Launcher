@@ -29,11 +29,10 @@
                                    ZIndex="9999"
                                    Width="425" />
                         <ListBox Classes="PluginList"
-                                 Items="{Binding PluginList}"
+                                 ItemsSource="{Binding PluginList}"
                                  SelectionMode="Single"
                                  ClipToBounds="True"
-                                 IsVisible="{Binding PluginList.Count}"
-                                 VirtualizationMode="Simple">
+                                 IsVisible="{Binding PluginList.Count}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate DataType="{x:Type model:PluginInfo}">
                                     <Grid ColumnDefinitions="250,50,100" RowDefinitions="*" >

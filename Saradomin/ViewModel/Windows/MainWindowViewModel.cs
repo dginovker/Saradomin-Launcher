@@ -105,7 +105,7 @@ namespace Saradomin.ViewModel.Windows
             DimContent = msg.WasOpened;
         }
 
-        public void LaunchPage(string parameter)
+        public void LaunchPage(object parameter)
         {
             var url = parameter switch
             {
@@ -121,7 +121,7 @@ namespace Saradomin.ViewModel.Windows
         }
 
         [DependsOn(nameof(CanLaunch))]
-        public bool CanExecuteLaunchSequence(object param)
+        public bool CanExecuteLaunchSequence(object parameter)
             => CanLaunch;
 
         //Stub to maintain compatibility with AXAML

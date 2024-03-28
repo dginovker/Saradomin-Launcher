@@ -4,7 +4,6 @@
                    xmlns:glitonea="clr-namespace:Glitonea;assembly=Glitonea"
                    xmlns:mvvm="clr-namespace:Glitonea.Mvvm;assembly=Glitonea"
                    xmlns:windows="clr-namespace:Saradomin.ViewModel.Windows"
-                   Name="NotificationBox"
                    Title="{Binding Title}"
                    Height="120"
                    MaxWidth="400"

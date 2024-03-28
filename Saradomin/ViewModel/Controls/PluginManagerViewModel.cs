@@ -39,8 +39,11 @@ namespace Saradomin.ViewModel.Controls
             PluginList = new ObservableCollection<PluginInfo>(remotePlugins.OrderByDescending(x => x.Installed));
         }
 
-        public async Task InstallRemotePlugin(PluginInfo pluginInfo)
+        public async Task InstallRemotePlugin(object parameter)
         {
+            if (parameter is not PluginInfo pluginInfo)
+                return;
+            
             if (IsTransactionInProgress)
                 return;
 
@@ -68,8 +71,11 @@ namespace Saradomin.ViewModel.Controls
             }
         }
 
-        public async Task UninstallLocalPlugin(PluginInfo pluginInfo)
+        public async Task UninstallLocalPlugin(object parameter)
         {
+            if (parameter is not PluginInfo pluginInfo)
+                return;
+            
             if (IsTransactionInProgress)
                 return;
 
@@ -125,8 +131,11 @@ namespace Saradomin.ViewModel.Controls
             }
         }
 
-        public async Task UpdateLocalPlugin (PluginInfo info)
+        public async Task UpdateLocalPlugin(object parameter)
         {
+            if (parameter is not PluginInfo pluginInfo)
+                return;
+            
             if (IsTransactionInProgress)
                 return;
 
@@ -134,15 +143,15 @@ namespace Saradomin.ViewModel.Controls
             {
                 IsTransactionInProgress = true;
                 
-                await _pluginDownloadService.DownloadPluginFiles(info.Name, _pluginManagementService.PluginRepositoryPath);
+                await _pluginDownloadService.DownloadPluginFiles(pluginInfo.Name, _pluginManagementService.PluginRepositoryPath);
                 await RefreshPluginCollections();
 
-                var newInfo = PluginList.First(x => x.Name == info.Name);
-                if (newInfo.Version != info.Version)
+                var newInfo = PluginList.First(x => x.Name == pluginInfo.Name);
+                if (newInfo.Version != pluginInfo.Version)
                 {
                     NotificationBox.DisplayNotification(
                         "Success!",
-                        $"Successfully updated {info.Name} to version {newInfo.Version}!"
+                        $"Successfully updated {pluginInfo.Name} to version {newInfo.Version}!"
                     );
                 }
             }

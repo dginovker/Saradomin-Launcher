@@ -10,25 +10,17 @@ using Saradomin.Infrastructure.Messaging;
 namespace Saradomin.View.Windows
 {
     [DoNotNotify]
-    public class MainWindow : Window
+    public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
         }
 
         protected override void OnOpened(EventArgs e)
         {
             new MainViewLoadedMessage()
                 .Broadcast();
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
         }
 
         private void TitleBar_MouseDown(object _, PointerPressedEventArgs e)

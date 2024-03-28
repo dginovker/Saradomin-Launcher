@@ -21,8 +21,8 @@
                                       Content="{TemplateBinding Content}"
                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                      TextBlock.FontSize="13"
-                                      TextBlock.Foreground="{TemplateBinding Foreground}" />
+                                      TextElement.FontSize="13"
+                                      TextElement.Foreground="{TemplateBinding Foreground}" />
                 </Grid>
             </ControlTemplate>
         </Setter>
@@ -49,8 +49,8 @@
                                       Content="{TemplateBinding Content}"
                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                      TextBlock.FontSize="13"
-                                      TextBlock.Foreground="{TemplateBinding Foreground}" />
+                                      TextElement.FontSize="13"
+                                      TextElement.Foreground="{TemplateBinding Foreground}" />
                 </Grid>
             </ControlTemplate>
         </Setter>

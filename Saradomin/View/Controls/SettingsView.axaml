@@ -70,7 +70,7 @@
 
                         <ComboBox Grid.Row="1"
                                   Margin="2,0,0,2"
-                                  Items="{Binding ServerProfiles}"
+                                  ItemsSource="{Binding ServerProfiles}"
                                   SelectedItem="{Binding ServerProfile, Converter={StaticResource EnumDescriptionConverter}, Mode=TwoWay}">
                             <ComboBox.Styles>
                                 <Style Selector="ComboBoxItem">
