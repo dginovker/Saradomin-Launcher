@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using Microsoft.CodeAnalysis.Text;
 using Microsoft.Win32;
 using Mono.Unix;
 
