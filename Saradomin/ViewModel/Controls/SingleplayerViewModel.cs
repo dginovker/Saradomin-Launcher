@@ -14,6 +14,8 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Threading;
 using Glitonea.Mvvm;
+using Glitonea.Mvvm.Messaging;
+using Saradomin.Infrastructure.Messaging;
 using Saradomin.Infrastructure.Services;
 using Saradomin.Model.Settings.Launcher;
 using Saradomin.Utilities;
@@ -35,6 +37,9 @@ public class SingleplayerViewModel : ViewModelBase
     public bool ShowLogPanel { get; private set; }
     public LauncherSettings Launcher => _settingsService.Launcher;
 
+    private string _oldServerAddress, _oldManagementAddress;
+    private Process _serverProcess;
+
     public SingleplayerViewModel(ISettingsService settingsService,
         IJavaUpdateService javaUpdateService,
         ISingleplayerUpdateService iSingleplayerUpdateService)
@@ -55,6 +60,18 @@ public class SingleplayerViewModel : ViewModelBase
             AcceptsReturn = true,
             TextWrapping = TextWrapping.Wrap,
         };
+        
+        Message.Subscribe<ClientClosedMessage>(this, OnClientClosed);
+    }
+
+    private void OnClientClosed(ClientClosedMessage _)
+    {
+        if (_serverProcess == null) return;
+        _serverProcess.Kill();
+        _serverProcess = null;
+        CanLaunch = true;
+        _settingsService.Client.GameServerAddress = _oldServerAddress;
+        _settingsService.Client.ManagementServerAddress = _oldManagementAddress;
     }
 
     private void OnSingleplayerDownloadProgressChanged(object sender, Tuple<float, bool> e)
@@ -133,20 +150,35 @@ public class SingleplayerViewModel : ViewModelBase
         }
         CanLaunch = false;
         PrintLog("Starting Singleplayer.. The Singleplayer client will launch when 2009scape is ready. Sit tight!");
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            new Task(() => Utilities.Singleplayer.Windows.WindowsLaunchServerAndClient(Launcher.JavaExecutableLocation, PrintLog)).Start();
-        }
-        else
-        {
-            new Task(() =>
-                CrossPlatform.RunCommandAndGetOutput(
-                    $"{CrossPlatform.LocateSingleplayerExecutable()} \"{Launcher.JavaExecutableLocation}\"",
-                    PrintLog,
-                    PrintLog)
-            ).Start();
-        }
+
+        _oldServerAddress = _settingsService.Client.GameServerAddress;
+        _oldManagementAddress = _settingsService.Client.ManagementServerAddress;
+        _settingsService.Client.GameServerAddress = _settingsService.Client.ManagementServerAddress = "localhost";
+        new Task(() => LaunchServerAndClient(Launcher.JavaExecutableLocation, PrintLog)).Start();
     }
+
+    private void LaunchServerAndClient (string javaExecutableLocation, Action<string> log)
+    {
+        var serverJar = CrossPlatform.GetSingleplayerHome() + @"/game/server.jar";
+
+        if (IsPortInUse(43595))
+        {
+            log("Port 43595 is in use. Cannot start the server again.");
+            return;
+        }
+
+        _serverProcess = CrossPlatform.StartJavaProcess(javaExecutableLocation, serverJar, "2G", log, null);
+        while (!IsPortInUse(43595)) Thread.Sleep(1000);
+        Message.Broadcast<ClientLaunchRequestedMessage>();
+    }   
+    
+    private static bool IsPortInUse(int port)
+    {
+         var ipGlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
+         var tcpConnInfoArray = ipGlobalProperties.GetActiveTcpListeners();
+
+         return tcpConnInfoArray.Any(endpoint => endpoint.Port == port);
+    } 
 
     private void LaunchFaq()
     {

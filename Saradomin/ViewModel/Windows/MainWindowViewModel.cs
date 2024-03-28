@@ -58,6 +58,7 @@ namespace Saradomin.ViewModel.Windows
 
             Message.Subscribe<MainViewLoadedMessage>(this, MainViewLoaded);
             Message.Subscribe<NotificationBoxStateChangedMessage>(this, NotificatationBoxStateChanged);
+            Message.Subscribe<ClientLaunchRequestedMessage>(this, ClientLaunchRequested);
 
             _settingsService.Launcher.JavaExecutableLocation ??= CrossPlatform.LocateJavaExecutable();
         }
@@ -65,6 +66,12 @@ namespace Saradomin.ViewModel.Windows
         public void ExitApplication()
         {
             Environment.Exit(0);
+        }
+
+        public async void ClientLaunchRequested(ClientLaunchRequestedMessage _)
+        {
+            if (CanLaunch)
+                await ExecuteLaunchSequence();
         }
 
         public async void MainViewLoaded(MainViewLoadedMessage _)
@@ -117,7 +124,13 @@ namespace Saradomin.ViewModel.Windows
         public bool CanExecuteLaunchSequence(object param)
             => CanLaunch;
 
+        //Stub to maintain compatibility with AXAML
         public async Task ExecuteLaunchSequence()
+        {
+            await ExecuteLaunchSequence(false);
+        }
+
+        private async Task ExecuteLaunchSequence(bool forceWait)
         {
             CanLaunch = false;
 
@@ -159,7 +172,7 @@ namespace Saradomin.ViewModel.Windows
                     // Will block this task until client process exits.
                     var t = _launchService.LaunchClient();
 
-                    if (!_settingsService.Launcher.AllowMultiboxing)
+                    if (!_settingsService.Launcher.AllowMultiboxing || forceWait)
                         await t;
                 }
             }
@@ -174,6 +187,7 @@ namespace Saradomin.ViewModel.Windows
             {
                 CanLaunch = true;
                 LaunchText = "Play!";
+                Message.Broadcast<ClientClosedMessage>();
             }
         }
 
