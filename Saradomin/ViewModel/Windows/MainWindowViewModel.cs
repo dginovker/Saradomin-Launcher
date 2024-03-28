@@ -9,7 +9,7 @@ using Avalonia.Metadata;
 using Glitonea.Mvvm;
 using Glitonea.Mvvm.Messaging;
 using HtmlAgilityPack;
-using Saradomin.Infrastructure.Messaging;
+using Saradomin.Infrastructure;
 using Saradomin.Infrastructure.Services;
 using Saradomin.Model.Settings.Launcher;
 using Saradomin.Utilities;

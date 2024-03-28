@@ -1,11 +1,8 @@
 using System;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Markup.Xaml;
-using Glitonea.Mvvm.Messaging;
 using PropertyChanged;
-using Saradomin.Infrastructure.Messaging;
+using Saradomin.Infrastructure;
 
 namespace Saradomin.View.Windows
 {

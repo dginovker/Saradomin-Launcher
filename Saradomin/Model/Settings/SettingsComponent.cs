@@ -1,5 +1,5 @@
 using System.ComponentModel;
-using Saradomin.Infrastructure.Messaging;
+using Saradomin.Infrastructure;
 
 namespace Saradomin.Model.Settings
 {

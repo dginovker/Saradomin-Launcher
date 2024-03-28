@@ -3,18 +3,16 @@ using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Threading.Tasks;
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Glitonea.Extensions;
 using Glitonea.Mvvm;
 using Glitonea.Mvvm.Messaging;
 using Glitonea.Utilities;
-using Saradomin.Infrastructure.Messaging;
+using Saradomin.Infrastructure;
 using Saradomin.Infrastructure.Services;
 using Saradomin.Model.Settings.Client;
 using Saradomin.Model.Settings.Launcher;
 using Saradomin.Utilities;
-using Saradomin.View.Windows;
 
 namespace Saradomin.ViewModel.Controls
 {
@@ -79,12 +77,12 @@ namespace Saradomin.ViewModel.Controls
         
         public async Task BrowseForJavaExecutable()
         {
-            var window = Application.Current.GetMainWindow();
+            var window = Application.Current!.GetMainWindow();
             var pickerOptions = new FilePickerOpenOptions
             {
                 Title = "Browse for Java...",
                 AllowMultiple = false,
-                SuggestedStartLocation =await window.StorageProvider.TryGetFolderFromPathAsync(
+                SuggestedStartLocation =await window!.StorageProvider.TryGetFolderFromPathAsync(
                     Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
                 )
             };

@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
-using Glitonea;
+using Glitonea.Controls;
 using Glitonea.Extensions;
 using PropertyChanged;
-using Saradomin.Infrastructure.Messaging;
+using Saradomin.Infrastructure;
 
 namespace Saradomin.View.Windows
 {
