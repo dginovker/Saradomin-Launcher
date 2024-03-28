@@ -75,6 +75,15 @@ namespace Saradomin.ViewModel.Controls
            Message.Subscribe<MainViewLoadedMessage>(this, OnMainViewLoaded);
         }
         
+        public void LaunchScapeWebsite()
+            => CrossPlatform.LaunchURL("https://2009scape.org");
+
+        public void OpenPluginTutorial()
+            => CrossPlatform.LaunchURL("https://gitlab.com/2009scape/tools/client-plugins");
+
+        public void LaunchProjectWebsite()
+            => CrossPlatform.LaunchURL("https://gitlab.com/2009scape/Saradomin-Launcher");
+
         public async Task BrowseForJavaExecutable()
         {
             var window = Application.Current!.GetMainWindow();
@@ -93,21 +102,6 @@ namespace Saradomin.ViewModel.Controls
             {
                 Launcher.JavaExecutableLocation = storageFiles[0].Path.AbsolutePath;
             }
-        }
-
-        private void LaunchScapeWebsite()
-        {
-            CrossPlatform.LaunchURL("https://2009scape.org");
-        }
-
-        private void OpenPluginTutorial()
-        {
-            CrossPlatform.LaunchURL("https://gitlab.com/2009scape/tools/client-plugins");
-        }
-
-        private void LaunchProjectWebsite()
-        {
-            CrossPlatform.LaunchURL("https://gitlab.com/2009scape/Saradomin-Launcher");
         }
 
         private void OnMainViewLoaded(MainViewLoadedMessage _)

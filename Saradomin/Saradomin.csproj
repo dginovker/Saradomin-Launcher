@@ -44,13 +44,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <AvaloniaResource Include="Resources\Fonts\runescape_uf.ttf" />
-        <AvaloniaResource Include="Resources\Images\previewbg.png" />
-        <AvaloniaResource Include="Resources\Images\club.png" />
-        <AvaloniaResource Include="Resources\Fonts\runescape_plain.ttf" />
-    </ItemGroup>
-
-    <ItemGroup>
         <Compile Update="Views\Windows\MainWindow.axaml.cs">
             <DependentUpon>MainWindow.axaml</DependentUpon>
             <SubType>Code</SubType>
