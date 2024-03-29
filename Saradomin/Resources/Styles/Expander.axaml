@@ -21,7 +21,7 @@
     </Style>
     
     <Style Selector="ListBox.PluginList Expander:pointerover /template/ ToggleButton#PART_toggle /template/ Path">
-        <Setter Property="Fill" Value="{StaticResource MouseOverBrush}" />
+        <Setter Property="Fill" Value="{StaticResource AccentBrush}" />
     </Style>
     
     <Style Selector="ListBox.PluginList Expander:expanded /template/ ToggleButton#PART_toggle /template/ Path">

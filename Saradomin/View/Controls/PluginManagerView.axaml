@@ -16,13 +16,13 @@
                 <Run Text="Status:" />
                 <Run Text="{Binding CurrentStatusMessage}" />
             </TextBlock>
-            
+
             <Button Classes="Hyperlink"
                     Content="check for updates"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
                     Command="{Binding CheckForUpdates}"
-                    IsEnabled="{Binding !IsTransactionInProgress}"/>
+                    IsEnabled="{Binding !IsTransactionInProgress}" />
         </Grid>
 
         <TextBlock Grid.Row="1"
@@ -31,7 +31,7 @@
                    Foreground="{StaticResource DarkForegroundBrush}"
                    IsVisible="{Binding !!!PluginList.Count}"
                    Text="Reloading plugin registry..." />
-        
+
         <ListBox Grid.Row="1"
                  Classes="PluginList"
                  ItemsSource="{Binding PluginList}"
@@ -40,68 +40,90 @@
                  BorderThickness="1"
                  BorderBrush="{StaticResource DarkBorderBrush}"
                  IsVisible="{Binding PluginList.Count}">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <!-- There won't be too many plugins and virtualization hides any
+                         expanded items, so by using this instead of VirtualizingStackPanel
+                         helps avoid UI inconsistency. -->
+                    <StackPanel />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type model:PluginInfo}">
-                    <Grid ColumnDefinitions="250,50,100">
-                        <Expander Grid.Column="0" 
-                                  Header="{Binding Name}">
+                    <Grid ColumnDefinitions="*,Auto,Auto">
+                        <Expander Grid.Column="0"
+                                  HorizontalAlignment="Stretch"
+                                  HorizontalContentAlignment="Stretch"
+                                  Header="{Binding}">
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Grid Grid.Column="0"
+                                              HorizontalAlignment="Stretch"
+                                              ColumnDefinitions="Auto, Auto">
+                                            <TextBlock Grid.Column="0"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Left"
+                                                       Text="{Binding Name}" />
+                                        
+                                            <TextBlock Grid.Column="1"
+                                                       HorizontalAlignment="Left"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="#BBFFFFFF"
+                                                       FontSize="11"
+                                                       Text="{Binding Version, StringFormat='{} [v{0}]'}" />
+                                        </Grid>
+
+                                        <Grid Grid.Column="1"
+                                              IsEnabled="{Binding !$parent[local:PluginManagerView].DataContext.IsTransactionInProgress}"
+                                              VerticalAlignment="Center"
+                                              Margin="0,2,4,2">
+                                            <Button BorderBrush="{StaticResource DarkBorderBrush}"
+                                                    BorderThickness="1"
+                                                    Classes="OutsideNavigator"
+                                                    Command="{Binding $parent[local:PluginManagerView].DataContext.UpdateLocalPlugin}"
+                                                    VerticalAlignment="Top"
+                                                    Content="Update"
+                                                    IsVisible="{Binding CanUpdate}" />
+                                            <Button BorderBrush="{StaticResource DarkBorderBrush}"
+                                                    BorderThickness="1"
+                                                    Classes="OutsideNavigator"
+                                                    Command="{Binding $parent[local:PluginManagerView].DataContext.InstallRemotePlugin}"
+                                                    CommandParameter="{Binding}"
+                                                    VerticalAlignment="Top"
+                                                    Content="Install"
+                                                    IsVisible="{Binding !Installed}" />
+                                            <Button BorderBrush="{StaticResource DarkBorderBrush}"
+                                                    BorderThickness="1"
+                                                    Classes="OutsideNavigator"
+                                                    Command="{Binding $parent[local:PluginManagerView].DataContext.UninstallLocalPlugin}"
+                                                    CommandParameter="{Binding}"
+                                                    VerticalAlignment="Top"
+                                                    Content="Uninstall"
+                                                    IsVisible="{Binding Installed}" />
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+
                             <StackPanel>
                                 <TextBlock Margin="4,0,0,0"
-                                           VerticalAlignment="Center"
                                            Foreground="#BBFFFFFF"
                                            FontSize="11"
                                            FontStyle="Oblique"
                                            Text="{Binding Author}" />
 
-                                <TextBlock Margin="4,5,0,4"
-                                           VerticalAlignment="Bottom"
+                                <TextBlock Margin="4,0,0,4"
+                                           MaxWidth="400"
+                                           FontSize="11"
+                                           HorizontalAlignment="Left"
                                            Foreground="#BBFFFFFF"
                                            TextWrapping="Wrap"
-                                           FontSize="11"
+                                           TextAlignment="DetectFromContent"
                                            Text="{Binding Description}" />
                             </StackPanel>
                         </Expander>
-                        
-                        <TextBlock Grid.Column="1"
-                                   Margin="2,5,2,0"
-                                   VerticalAlignment="Top"
-                                   HorizontalAlignment="Right"
-                                   Foreground="#BBFFFFFF"
-                                   FontSize="11"
-                                   Text="{Binding Version}" />
-                        <Button Grid.Column="2"
-                                Margin="-125,0,2,2"
-                                BorderBrush="{StaticResource DarkBorderBrush}"
-                                BorderThickness="1"
-                                Classes="OutsideNavigator"
-                                Command="{Binding $parent[local:PluginManagerView].DataContext.UpdateLocalPlugin}"
-                                VerticalAlignment="Top"
-                                Content="Update"
-                                IsVisible="{Binding CanUpdate}"
-                                IsEnabled="{Binding !$parent[local:PluginManagerView].DataContext.IsTransactionInProgress}" />
-                        <Button Grid.Column="2"
-                                Margin="0,0,2,2"
-                                BorderBrush="{StaticResource DarkBorderBrush}"
-                                BorderThickness="1"
-                                Classes="OutsideNavigator"
-                                Command="{Binding $parent[local:PluginManagerView].DataContext.InstallRemotePlugin}"
-                                CommandParameter="{Binding}"
-                                VerticalAlignment="Top"
-                                Content="Install"
-                                IsVisible="{Binding !Installed}"
-                                IsEnabled="{Binding !$parent[local:PluginManagerView].DataContext.IsTransactionInProgress}" />
-                        <Button Grid.Column="2"
-                                Margin="0,0,2,2"
-                                BorderBrush="{StaticResource DarkBorderBrush}"
-                                BorderThickness="1"
-                                Classes="OutsideNavigator"
-                                Command="{Binding $parent[local:PluginManagerView].DataContext.UninstallLocalPlugin}"
-                                CommandParameter="{Binding}"
-                                VerticalAlignment="Top"
-                                Content="Uninstall"
-                                IsVisible="{Binding Installed}"
-                                IsEnabled="{Binding !$parent[local:PluginManagerView].DataContext.IsTransactionInProgress}" />
-
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

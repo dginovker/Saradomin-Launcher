@@ -3,6 +3,9 @@
     <Style Selector="ListBox.PluginList > ListBoxItem">
         <Setter Property="Background" Value="{StaticResource DarkMediumBackgroundBrush}" />
         <Setter Property="Foreground" Value="{StaticResource LightForegroundBrush}" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
     </Style>
     
     <Style Selector="ListBox.PluginList > ListBoxItem:selected /template/ ContentPresenter">
