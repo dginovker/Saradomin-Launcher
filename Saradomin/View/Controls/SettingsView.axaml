@@ -2,8 +2,6 @@
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="clr-namespace:Saradomin.View.Controls"
-             xmlns:converters="clr-namespace:Glitonea.Mvvm.Converters;assembly=Glitonea"
-             xmlns:glitonea="clr-namespace:Glitonea;assembly=Glitonea"
              xmlns:mvvm="clr-namespace:Glitonea.Mvvm;assembly=Glitonea"
              xmlns:vm="clr-namespace:Saradomin.ViewModel.Controls"
              DataContext="{mvvm:DataContextSource vm:SettingsViewModel}">
@@ -180,14 +178,14 @@
 
                     <HeaderedContentControl Grid.Row="1"
                                             Margin="0,4,0,4"
-                                            Padding="3,0,7,0"
+                                            Padding="3,0,0,0"
                                             BorderThickness="0"
                                             Classes="GroupBox"
                                             Header="plugin management">
                         <DockPanel>
                             <controls:PluginManagerView Margin="-2,2" Name="PmView"/>
-                            <Button
-                                    Margin="-141,-17,0,2"
+                            
+                            <Button Margin="-141,-17,0,2"
                                     Width="140"
                                     Height="17"
                                     BorderBrush="{StaticResource DarkBorderBrush}"
