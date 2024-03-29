@@ -63,16 +63,16 @@
                                               HorizontalAlignment="Stretch"
                                               ColumnDefinitions="Auto, Auto">
                                             <TextBlock Grid.Column="0"
-                                                       VerticalAlignment="Center"
-                                                       HorizontalAlignment="Left"
-                                                       Text="{Binding Name}" />
-                                        
-                                            <TextBlock Grid.Column="1"
                                                        HorizontalAlignment="Left"
                                                        VerticalAlignment="Center"
                                                        Foreground="#BBFFFFFF"
                                                        FontSize="11"
-                                                       Text="{Binding Version, StringFormat='{} [v{0}]'}" />
+                                                       Text="{Binding Version, StringFormat='{}[v{0}] '}" />
+                                            
+                                            <TextBlock Grid.Column="1"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Left"
+                                                       Text="{Binding Name}" />
                                         </Grid>
 
                                         <Grid Grid.Column="1"
