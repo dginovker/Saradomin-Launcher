@@ -1,8 +1,6 @@
 <Application x:Class="Saradomin.App"
              xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:controls="clr-namespace:Saradomin.View.Controls"
-             xmlns:default="clr-namespace:Avalonia.Themes.Default;assembly=Avalonia.Themes.Default">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.Resources>
         <Color x:Key="DarkBackgroundColor">#3E3529</Color>
         <Color x:Key="DarkTranslucentBackgroundColor">#CC3E3529</Color>
@@ -101,7 +99,9 @@
         <StyleInclude Source="avares://Saradomin/Resources/Styles/GroupBox.axaml" />
         <StyleInclude Source="avares://Saradomin/Resources/Styles/CheckBox.axaml" />
         <StyleInclude Source="avares://Saradomin/Resources/Styles/ComboBox.axaml" />
+        <StyleInclude Source="avares://Saradomin/Resources/Styles/Expander.axaml" />
         <StyleInclude Source="avares://Saradomin/Resources/Styles/TextBox.axaml" />
+        <StyleInclude Source="avares://Saradomin/Resources/Styles/TextBlock.axaml" />
         <StyleInclude Source="avares://Saradomin/Resources/Styles/ScrollBar.axaml" />
         <StyleInclude Source="avares://Saradomin/Resources/Styles/NumericUpDown.axaml" />
         <StyleInclude Source="avares://Saradomin/Resources/Styles/Hyperlink.axaml" />

@@ -102,9 +102,15 @@
                             <ScrollViewer HorizontalAlignment="Stretch"
                                           Classes="MainViewScrollViewer"
                                           ClipToBounds="True"
-                                          Content="{Binding ContentContainer}"
                                           HorizontalScrollBarVisibility="Hidden"
-                                          VerticalScrollBarVisibility="Visible" />
+                                          VerticalScrollBarVisibility="Visible">
+                                <TextBlock Classes="NewsRenderView"
+                                           MaxWidth="768"
+                                           Inlines="{Binding HtmlInlines}"
+                                           HorizontalAlignment="Stretch"
+                                           VerticalAlignment="Stretch" 
+                                           TextWrapping="Wrap"/>
+                            </ScrollViewer>
                         </Border>
                     </TabItem>
 

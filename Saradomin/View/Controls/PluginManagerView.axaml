@@ -6,95 +6,105 @@
              xmlns:mvvm="clr-namespace:Glitonea.Mvvm;assembly=Glitonea"
              xmlns:vm="clr-namespace:Saradomin.ViewModel.Controls"
              DataContext="{mvvm:DataContextSource vm:PluginManagerViewModel}">
-    <Border>
-        <Grid RowDefinitions="Auto,*">
-            <Border Grid.Row="0"
-                    Height="350"
-                    Margin="0,2,0,0"
-                    BorderBrush="{StaticResource DarkBorderBrush}"
-                    BorderThickness="1,1,0,1"
-                    ClipToBounds="True">
-                <Grid>
-                    <TextBlock HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Foreground="#BBFFFFFF"
-                               IsVisible="{Binding !!!PluginList.Count}"
-                               Text="Fetching plugin metadata..."
-                               ZIndex="9999"
-                               Width="425" />
-                    <ListBox Classes="PluginList"
-                             ItemsSource="{Binding PluginList}"
-                             SelectionMode="Single"
-                             ClipToBounds="True"
-                             IsVisible="{Binding PluginList.Count}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate DataType="{x:Type model:PluginInfo}">
-                                <Grid ColumnDefinitions="250,50,100" RowDefinitions="*" >
-                                    <TextBlock Grid.Column="1"
-                                        Margin="2,5,2,0"
-                                        VerticalAlignment="Top"
-                                        HorizontalAlignment="Right"
-                                        Foreground="#BBFFFFFF"
-                                        FontSize="11"
-                                        Text="{Binding Version}" />
-                                    <Button Grid.Row="0" 
-                                            Grid.Column="2"
-                                            Margin="-125,0,2,2"
-                                            BorderBrush="{StaticResource DarkBorderBrush}"
-                                            BorderThickness="1"
-                                            Classes="OutsideNavigator"
-                                            Command="{Binding $parent[local:PluginManagerView].DataContext.UpdateLocalPlugin}"
-                                            VerticalAlignment="Top"
-                                            Content="Update"
-                                            IsVisible="{Binding CanUpdate}"
-                                            IsEnabled="{Binding !$parent[local:PluginManagerView].DataContext.IsTransactionInProgress}" />
-                                    <Button Grid.Row="0" 
-                                            Grid.Column="2"
-                                            Margin="0,0,2,2"
-                                            BorderBrush="{StaticResource DarkBorderBrush}"
-                                            BorderThickness="1"
-                                            Classes="OutsideNavigator"
-                                            Command="{Binding $parent[local:PluginManagerView].DataContext.InstallRemotePlugin}"
-                                            CommandParameter="{Binding}"
-                                            VerticalAlignment="Top"
-                                            Content="Install"
-                                            IsVisible="{Binding !Installed}"
-                                            IsEnabled="{Binding !$parent[local:PluginManagerView].DataContext.IsTransactionInProgress}" />
-                                    <Button Grid.Row="0" 
-                                            Grid.Column="2"
-                                            Margin="0,0,2,2"
-                                            BorderBrush="{StaticResource DarkBorderBrush}"
-                                            BorderThickness="1"
-                                            Classes="OutsideNavigator"
-                                            Command="{Binding $parent[local:PluginManagerView].DataContext.UninstallLocalPlugin}"
-                                            CommandParameter="{Binding}"
-                                            VerticalAlignment="Top"
-                                            Content="Uninstall"
-                                            IsVisible="{Binding Installed}"
-                                            IsEnabled="{Binding !$parent[local:PluginManagerView].DataContext.IsTransactionInProgress}" />
-                                    <Expander Grid.Column="0" Grid.Row="0" Header="{Binding Name}">
-                                        <StackPanel>
-                                            <TextBlock Margin="2,0,0,0"
-                                                       VerticalAlignment="Center"
-                                                       Foreground="#BBFFFFFF"
-                                                       FontSize="11"
-                                                       FontStyle="Oblique"
-                                                       Text="{Binding Author}" />
-
-                                            <TextBlock Margin="2,5,0,4"
-                                                       VerticalAlignment="Bottom"
-                                                       Foreground="#BBFFFFFF"
-                                                       TextWrapping="Wrap"
-                                                       FontSize="11"
-                                                       Text="{Binding Description}" />
-                                        </StackPanel>
-                                    </Expander>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </Grid>
-            </Border>
+    <Grid Margin="0,0,0,4"
+          RowDefinitions="Auto,*">
+        <Grid Grid.Row="0"
+              Margin="0,0,0,4">
+            <TextBlock HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Foreground="{StaticResource DarkBackgroundBrush}">
+                <Run Text="Status:" />
+                <Run Text="{Binding CurrentStatusMessage}" />
+            </TextBlock>
+            
+            <Button Classes="Hyperlink"
+                    Content="check for updates"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Command="{Binding CheckForUpdates}"
+                    IsEnabled="{Binding !IsTransactionInProgress}"/>
         </Grid>
-    </Border>
+
+        <TextBlock Grid.Row="1"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Foreground="{StaticResource DarkForegroundBrush}"
+                   IsVisible="{Binding !!!PluginList.Count}"
+                   Text="Reloading plugin registry..." />
+        
+        <ListBox Grid.Row="1"
+                 Classes="PluginList"
+                 ItemsSource="{Binding PluginList}"
+                 SelectionMode="Single"
+                 ClipToBounds="True"
+                 BorderThickness="1"
+                 BorderBrush="{StaticResource DarkBorderBrush}"
+                 IsVisible="{Binding PluginList.Count}">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type model:PluginInfo}">
+                    <Grid ColumnDefinitions="250,50,100">
+                        <Expander Grid.Column="0" 
+                                  Header="{Binding Name}">
+                            <StackPanel>
+                                <TextBlock Margin="4,0,0,0"
+                                           VerticalAlignment="Center"
+                                           Foreground="#BBFFFFFF"
+                                           FontSize="11"
+                                           FontStyle="Oblique"
+                                           Text="{Binding Author}" />
+
+                                <TextBlock Margin="4,5,0,4"
+                                           VerticalAlignment="Bottom"
+                                           Foreground="#BBFFFFFF"
+                                           TextWrapping="Wrap"
+                                           FontSize="11"
+                                           Text="{Binding Description}" />
+                            </StackPanel>
+                        </Expander>
+                        
+                        <TextBlock Grid.Column="1"
+                                   Margin="2,5,2,0"
+                                   VerticalAlignment="Top"
+                                   HorizontalAlignment="Right"
+                                   Foreground="#BBFFFFFF"
+                                   FontSize="11"
+                                   Text="{Binding Version}" />
+                        <Button Grid.Column="2"
+                                Margin="-125,0,2,2"
+                                BorderBrush="{StaticResource DarkBorderBrush}"
+                                BorderThickness="1"
+                                Classes="OutsideNavigator"
+                                Command="{Binding $parent[local:PluginManagerView].DataContext.UpdateLocalPlugin}"
+                                VerticalAlignment="Top"
+                                Content="Update"
+                                IsVisible="{Binding CanUpdate}"
+                                IsEnabled="{Binding !$parent[local:PluginManagerView].DataContext.IsTransactionInProgress}" />
+                        <Button Grid.Column="2"
+                                Margin="0,0,2,2"
+                                BorderBrush="{StaticResource DarkBorderBrush}"
+                                BorderThickness="1"
+                                Classes="OutsideNavigator"
+                                Command="{Binding $parent[local:PluginManagerView].DataContext.InstallRemotePlugin}"
+                                CommandParameter="{Binding}"
+                                VerticalAlignment="Top"
+                                Content="Install"
+                                IsVisible="{Binding !Installed}"
+                                IsEnabled="{Binding !$parent[local:PluginManagerView].DataContext.IsTransactionInProgress}" />
+                        <Button Grid.Column="2"
+                                Margin="0,0,2,2"
+                                BorderBrush="{StaticResource DarkBorderBrush}"
+                                BorderThickness="1"
+                                Classes="OutsideNavigator"
+                                Command="{Binding $parent[local:PluginManagerView].DataContext.UninstallLocalPlugin}"
+                                CommandParameter="{Binding}"
+                                VerticalAlignment="Top"
+                                Content="Uninstall"
+                                IsVisible="{Binding Installed}"
+                                IsEnabled="{Binding !$parent[local:PluginManagerView].DataContext.IsTransactionInProgress}" />
+
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
 </UserControl>

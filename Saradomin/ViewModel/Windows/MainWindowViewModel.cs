@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Metadata;
 using Glitonea.Mvvm;
 using Glitonea.Mvvm.Messaging;
@@ -33,7 +34,7 @@ namespace Saradomin.ViewModel.Windows
         public string LaunchText { get; private set; } = "Play!";
 
         public bool DimContent { get; private set; }
-        public StackPanel ContentContainer { get; private set; }
+        public InlineCollection HtmlInlines { get; private set; }
 
         public MainWindowViewModel(IClientLaunchService launchService,
             IClientUpdateService updateService,
@@ -50,11 +51,6 @@ namespace Saradomin.ViewModel.Windows
 
             _settingsService = settingsService;
             Launcher = _settingsService.Launcher;
-
-            ContentContainer = new StackPanel
-            {
-                Margin = new(4)
-            };
 
             Message.Subscribe<MainViewLoadedMessage>(this, MainViewLoaded);
             Message.Subscribe<NotificationBoxStateChangedMessage>(this, NotificatationBoxStateChanged);
@@ -94,9 +90,8 @@ namespace Saradomin.ViewModel.Windows
                     node = doc.DocumentNode;
                 }
 
-                ContentContainer.MaxWidth = 760;
-                var renderer = new HtmlRenderer(ContentContainer, node);
-                renderer.RenderToContainer();
+                var renderer = new HtmlRenderer(node);
+                HtmlInlines = renderer.Render();
             }
         }
 

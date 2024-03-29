@@ -1,0 +1,34 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style Selector="ListBox.PluginList Expander">
+        <Setter Property="ContentTransition" Value="{x:Null}" />
+    </Style>
+    
+    <Style Selector="ListBox.PluginList Expander /template/ ToggleButton#PART_toggle /template/ Border">
+        <Setter Property="BorderBrush" Value="Transparent" />
+    </Style>
+    
+    <Style Selector="ListBox.PluginList Expander /template/ ToggleButton#PART_toggle">
+        <Setter Property="Foreground" Value="{StaticResource LightForegroundBrush}" />
+    </Style>
+    
+    <Style Selector="ListBox.PluginList Expander /template/ Path">
+        <Setter Property="Fill" Value="{StaticResource DarkForegroundBrush}" />
+    </Style>
+    
+    <Style Selector="ListBox.PluginList Expander:pointerover /template/ ToggleButton#PART_toggle /template/ Border">
+        <Setter Property="BorderBrush" Value="Transparent" />
+    </Style>
+    
+    <Style Selector="ListBox.PluginList Expander:pointerover /template/ ToggleButton#PART_toggle /template/ Path">
+        <Setter Property="Fill" Value="{StaticResource MouseOverBrush}" />
+    </Style>
+    
+    <Style Selector="ListBox.PluginList Expander:expanded /template/ ToggleButton#PART_toggle /template/ Path">
+        <Setter Property="Fill" Value="{StaticResource AccentBrush}" />
+    </Style>
+    
+    <Style Selector="ListBox.PluginList Expander:expanded /template/ ToggleButton#PART_toggle">
+        <Setter Property="Foreground" Value="{StaticResource AccentBrush}" />
+    </Style>
+</Styles>
