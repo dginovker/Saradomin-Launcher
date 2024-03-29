@@ -1,51 +1,46 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style Selector="ScrollBar:vertical">
-        <Setter Property="Width" Value="10" />
+        <Setter Property="Width" Value="9" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Background="{StaticResource MediumBackgroundBrush}"
-                        ClipToBounds="True">
-                    <Grid RowDefinitions="Auto,*,Auto"
-                          Background="{StaticResource DarkBackgroundBrush}">
-                        <Track Grid.Row="1"
-                               Grid.Column="1"
-                               Minimum="{TemplateBinding Minimum}"
-                               Maximum="{TemplateBinding Maximum}"
-                               Value="{TemplateBinding Value, Mode=TwoWay}"
-                               ViewportSize="{TemplateBinding ViewportSize}"
-                               Orientation="{TemplateBinding Orientation}"
-                               IsDirectionReversed="True">
+                <Border Background="{StaticResource DarkBackgroundBrush}"
+                        Padding="1,0,0,0">
+                    <Track Minimum="{TemplateBinding Minimum}"
+                           Maximum="{TemplateBinding Maximum}"
+                           Value="{TemplateBinding Value, Mode=TwoWay}"
+                           ViewportSize="{TemplateBinding ViewportSize}"
+                           Orientation="{TemplateBinding Orientation}"
+                           DeferThumbDrag="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
+                           IsDirectionReversed="True">
+                        <Track.Thumb>
                             <Thumb Name="thumb"
-                                   Width="4"
-                                   Margin="0,10,0,10" />
-                        </Track>
-                    </Grid>
+                                   HorizontalAlignment="Stretch" />
+                        </Track.Thumb>
+                    </Track>
                 </Border>
             </ControlTemplate>
         </Setter>
     </Style>
-    
+
     <Style Selector="ScrollViewer.MainViewScrollViewer /template/ ScrollBar:vertical">
         <Setter Property="Width" Value="10" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Background="{StaticResource MediumBackgroundBrush}"
-                        ClipToBounds="True"
-                        CornerRadius="0,6,0,0">
-                    <Grid RowDefinitions="Auto,*,Auto"
-                          Background="{StaticResource DarkBackgroundBrush}">
-                        <Track Grid.Row="1"
-                               Grid.Column="1"
-                               Minimum="{TemplateBinding Minimum}"
+                <Border CornerRadius="0,4,0,0"
+                        Background="{StaticResource DarkBackgroundBrush}">
+                    <Grid>
+                        <Track Minimum="{TemplateBinding Minimum}"
                                Maximum="{TemplateBinding Maximum}"
                                Value="{TemplateBinding Value, Mode=TwoWay}"
                                ViewportSize="{TemplateBinding ViewportSize}"
                                Orientation="{TemplateBinding Orientation}"
+                               DeferThumbDrag="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
                                IsDirectionReversed="True">
-                            <Thumb Name="thumb"
-                                   Width="4"
-                                   Margin="0,10,0,10" />
+                            <Track.Thumb>
+                                <Thumb Name="thumb"
+                                       HorizontalAlignment="Stretch" />
+                            </Track.Thumb>
                         </Track>
                     </Grid>
                 </Border>
@@ -56,6 +51,11 @@
     <Style Selector="Thumb#thumb">
         <Setter Property="Background" Value="{StaticResource DarkMediumBackgroundBrush}" />
     </Style>
+
+    <Style Selector="Thumb#thumb /template/ Border">
+        <Setter Property="Margin" Value="0,6" />
+    </Style>
+
 
     <Style Selector="Thumb#thumb:pointerover">
         <Setter Property="Background" Value="{StaticResource MouseOverBrush}" />

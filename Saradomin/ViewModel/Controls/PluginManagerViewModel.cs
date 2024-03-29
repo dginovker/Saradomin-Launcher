@@ -1,10 +1,11 @@
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Glitonea.Mvvm;
 using Glitonea.Mvvm.Messaging;
-using Saradomin.Infrastructure.Messaging;
+using Saradomin.Infrastructure;
 using Saradomin.Infrastructure.Services;
 using Saradomin.Model;
 using Saradomin.View.Windows;
@@ -18,6 +19,7 @@ namespace Saradomin.ViewModel.Controls
 
         public bool IsTransactionInProgress { get; private set; }
         public ObservableCollection<PluginInfo> PluginList { get; private set; } = new();
+        public string CurrentStatusMessage { get; set; } = "Idle...";
 
         public PluginManagerViewModel(
             IPluginManagementService pluginManagementService,
@@ -27,26 +29,36 @@ namespace Saradomin.ViewModel.Controls
             _pluginDownloadService = pluginDownloadService;
             
             Message.Subscribe<MainViewLoadedMessage>(this, MainViewLoaded);
+            
+            PropertyChanged += ViewModelPropertyChanged;
         }
 
         public async Task RefreshPluginCollections()
         {
             PluginList.Clear();
 
-            var remotePlugins =
-                await _pluginDownloadService
-                    .GetAllMetadata(_pluginManagementService.PluginRepositoryPath, false, false);
+            var remotePlugins =await _pluginDownloadService.GetAllMetadata(
+                _pluginManagementService.PluginRepositoryPath,
+                false,
+                false
+            );
+            
             PluginList = new ObservableCollection<PluginInfo>(remotePlugins.OrderByDescending(x => x.Installed));
         }
 
-        public async Task InstallRemotePlugin(PluginInfo pluginInfo)
+        public async Task InstallRemotePlugin(object parameter)
         {
+            if (parameter is not PluginInfo pluginInfo)
+                return;
+            
             if (IsTransactionInProgress)
                 return;
 
             try
             {
                 IsTransactionInProgress = true;
+                
+                UpdateStatusMessage($"Installing {pluginInfo.Name}...");
 
                 await _pluginDownloadService.DownloadPluginFiles(
                     pluginInfo.Name,
@@ -68,8 +80,11 @@ namespace Saradomin.ViewModel.Controls
             }
         }
 
-        public async Task UninstallLocalPlugin(PluginInfo pluginInfo)
+        public async Task UninstallLocalPlugin(object parameter)
         {
+            if (parameter is not PluginInfo pluginInfo)
+                return;
+            
             if (IsTransactionInProgress)
                 return;
 
@@ -77,10 +92,11 @@ namespace Saradomin.ViewModel.Controls
             {
                 IsTransactionInProgress = true;
                 
-                await _pluginManagementService.UninstallPlugin(pluginInfo.Name);
+                UpdateStatusMessage($"Uninstalling {pluginInfo.Name}...");
                 
-                PluginList.Add(pluginInfo);
-
+                await _pluginManagementService.UninstallPlugin(pluginInfo.Name);
+                pluginInfo.Installed = false;
+                
                 PluginList = new(PluginList.OrderByDescending(x => x.Installed));
             }
             catch (Exception e)
@@ -100,16 +116,19 @@ namespace Saradomin.ViewModel.Controls
         {
             if (IsTransactionInProgress)
                 return;
-            IsTransactionInProgress = true;
+            
             
             try
             {
-                var updatablePlugins =
-                    await _pluginDownloadService.GetAllMetadata(
-                        _pluginManagementService.PluginRepositoryPath,
-                        true,
-                        true
-                    );
+                IsTransactionInProgress = true;
+                
+                UpdateStatusMessage($"Checking for updates...");
+
+                var updatablePlugins = await _pluginDownloadService.GetAllMetadata(
+                    _pluginManagementService.PluginRepositoryPath,
+                    true,
+                    true
+                );
 
                 foreach (var plugin in updatablePlugins)
                 {
@@ -125,8 +144,11 @@ namespace Saradomin.ViewModel.Controls
             }
         }
 
-        public async Task UpdateLocalPlugin (PluginInfo info)
+        public async Task UpdateLocalPlugin(object parameter)
         {
+            if (parameter is not PluginInfo pluginInfo)
+                return;
+            
             if (IsTransactionInProgress)
                 return;
 
@@ -134,15 +156,17 @@ namespace Saradomin.ViewModel.Controls
             {
                 IsTransactionInProgress = true;
                 
-                await _pluginDownloadService.DownloadPluginFiles(info.Name, _pluginManagementService.PluginRepositoryPath);
+                UpdateStatusMessage($"Updating {pluginInfo.Name}...");
+                
+                await _pluginDownloadService.DownloadPluginFiles(pluginInfo.Name, _pluginManagementService.PluginRepositoryPath);
                 await RefreshPluginCollections();
 
-                var newInfo = PluginList.First(x => x.Name == info.Name);
-                if (newInfo.Version != info.Version)
+                var newInfo = PluginList.First(x => x.Name == pluginInfo.Name);
+                if (newInfo.Version != pluginInfo.Version)
                 {
                     NotificationBox.DisplayNotification(
                         "Success!",
-                        $"Successfully updated {info.Name} to version {newInfo.Version}!"
+                        $"Successfully updated {pluginInfo.Name} to version {newInfo.Version}!"
                     );
                 }
             }
@@ -159,9 +183,30 @@ namespace Saradomin.ViewModel.Controls
             }
         }
 
+        private void UpdateStatusMessage(string message)
+        {
+            CurrentStatusMessage = message;
+        }
+
         private async void MainViewLoaded(MainViewLoadedMessage _)
         {
             await RefreshPluginCollections();
+        }
+        
+        private void ViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(IsTransactionInProgress):
+                {
+                    if (!IsTransactionInProgress)
+                    {
+                        UpdateStatusMessage("Idle...");
+                    }
+
+                    break;
+                }
+            }
         }
     }
 }

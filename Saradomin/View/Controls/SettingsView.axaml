@@ -2,8 +2,6 @@
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="clr-namespace:Saradomin.View.Controls"
-             xmlns:converters="clr-namespace:Glitonea.Mvvm.Converters;assembly=Glitonea"
-             xmlns:glitonea="clr-namespace:Glitonea;assembly=Glitonea"
              xmlns:mvvm="clr-namespace:Glitonea.Mvvm;assembly=Glitonea"
              xmlns:vm="clr-namespace:Saradomin.ViewModel.Controls"
              DataContext="{mvvm:DataContextSource vm:SettingsViewModel}">
@@ -70,7 +68,7 @@
 
                         <ComboBox Grid.Row="1"
                                   Margin="2,0,0,2"
-                                  Items="{Binding ServerProfiles}"
+                                  ItemsSource="{Binding ServerProfiles}"
                                   SelectedItem="{Binding ServerProfile, Converter={StaticResource EnumDescriptionConverter}, Mode=TwoWay}">
                             <ComboBox.Styles>
                                 <Style Selector="ComboBoxItem">
@@ -119,11 +117,13 @@
             </HeaderedContentControl>
         </DockPanel>
 
-        <DockPanel Grid.Column="1">
+        <DockPanel Grid.Column="1"
+                   DockPanel.Dock="Top">
             <HeaderedContentControl Classes="GroupBox"
                                     DockPanel.Dock="Top"
                                     Header="client settings">
-                <Grid RowDefinitions="Auto,*">
+                <Grid RowDefinitions="Auto,*"
+                      Margin="0,0,0,4">
                     <Grid Grid.Row="0" ColumnDefinitions="Auto, *">
                         <Grid Grid.Column="0"
                               RowDefinitions="Auto, Auto">
@@ -177,33 +177,15 @@
                                            Value="{Binding Client.Fps, Mode=TwoWay}" />
                         </Grid>
                     </Grid>
-
-                    <HeaderedContentControl Grid.Row="1"
-                                            Margin="0,4,0,4"
-                                            Padding="3,0,7,0"
-                                            BorderThickness="0"
-                                            Classes="GroupBox"
-                                            Header="plugin management">
-                        <DockPanel>
-                            <controls:PluginManagerView Margin="-2,2" Name="PmView"/>
-                            <Button
-                                    Margin="-141,-17,0,2"
-                                    Width="140"
-                                    Height="17"
-                                    BorderBrush="{StaticResource DarkBorderBrush}"
-                                    BorderThickness="1"
-                                    Classes="OutsideNavigator"
-                                    Command="{Binding #PmView.DataContext.CheckForUpdates}"
-                                    VerticalAlignment="Top"
-                                    Opacity="1"
-                                    FontSize="11"
-                                    Content="check for updates"
-                                    ZIndex="9999"
-                                    IsEnabled="{Binding !#PmView.DataContext.IsTransactionInProgress}" />
-                        </DockPanel>
-                    </HeaderedContentControl>
                 </Grid>
             </HeaderedContentControl>
+            
+            <HeaderedContentControl Classes="GroupBox"
+                                    Header="plugin management"
+                                    DockPanel.Dock="Top">
+                <controls:PluginManagerView MaxHeight="346"/>
+            </HeaderedContentControl>
         </DockPanel>
+        
     </Grid>
 </UserControl>

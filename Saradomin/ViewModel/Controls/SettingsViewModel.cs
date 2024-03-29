@@ -1,22 +1,18 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia;
-using Avalonia.Controls;
+using Avalonia.Platform.Storage;
 using Glitonea.Extensions;
 using Glitonea.Mvvm;
 using Glitonea.Mvvm.Messaging;
 using Glitonea.Utilities;
-using Saradomin.Infrastructure.Messaging;
+using Saradomin.Infrastructure;
 using Saradomin.Infrastructure.Services;
 using Saradomin.Model.Settings.Client;
 using Saradomin.Model.Settings.Launcher;
 using Saradomin.Utilities;
-using Saradomin.View.Windows;
 
 namespace Saradomin.ViewModel.Controls
 {
@@ -78,20 +74,34 @@ namespace Saradomin.ViewModel.Controls
 
            Message.Subscribe<MainViewLoadedMessage>(this, OnMainViewLoaded);
         }
+        
+        public void LaunchScapeWebsite()
+            => CrossPlatform.LaunchURL("https://2009scape.org");
 
-        private void LaunchScapeWebsite()
-        {
-            CrossPlatform.LaunchURL("https://2009scape.org");
-        }
+        public void OpenPluginTutorial()
+            => CrossPlatform.LaunchURL("https://gitlab.com/2009scape/tools/client-plugins");
 
-        private void OpenPluginTutorial()
-        {
-            CrossPlatform.LaunchURL("https://gitlab.com/2009scape/tools/client-plugins");
-        }
+        public void LaunchProjectWebsite()
+            => CrossPlatform.LaunchURL("https://gitlab.com/2009scape/Saradomin-Launcher");
 
-        private void LaunchProjectWebsite()
+        public async Task BrowseForJavaExecutable()
         {
-            CrossPlatform.LaunchURL("https://gitlab.com/2009scape/Saradomin-Launcher");
+            var window = Application.Current!.GetMainWindow();
+            var pickerOptions = new FilePickerOpenOptions
+            {
+                Title = "Browse for Java...",
+                AllowMultiple = false,
+                SuggestedStartLocation =await window!.StorageProvider.TryGetFolderFromPathAsync(
+                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
+                )
+            };
+
+            var storageFiles = await window.StorageProvider.OpenFilePickerAsync(pickerOptions);
+            
+            if (storageFiles.Count > 0)
+            {
+                Launcher.JavaExecutableLocation = storageFiles[0].Path.AbsolutePath;
+            }
         }
 
         private void OnMainViewLoaded(MainViewLoadedMessage _)
@@ -102,23 +112,6 @@ namespace Saradomin.ViewModel.Controls
         private void OnSettingsModified(SettingsModifiedMessage _)
         {
             _settingsService.SaveAll();
-        }
-
-        private async Task BrowseForJavaExecutable()
-        {
-            var ofd = new OpenFileDialog
-            {
-                Title = "Browse for Java...",
-                AllowMultiple = false,
-                Directory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
-            };
-
-            var paths = await ofd.ShowAsync(Application.Current.GetMainWindow());
-
-            if (paths != null && paths.Length > 0)
-            {
-                Launcher.JavaExecutableLocation = paths[0];
-            }
         }
     }
 }

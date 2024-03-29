@@ -2,28 +2,24 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
-using Glitonea;
+using Glitonea.Controls;
 using Glitonea.Extensions;
 using PropertyChanged;
-using Saradomin.Infrastructure.Messaging;
+using Saradomin.Infrastructure;
 
 namespace Saradomin.View.Windows
 {
     [DoNotNotify]
-    public class NotificationBox : WindowEx
+    public partial class NotificationBox : WindowEx
     {
         private static Queue<NotificationBox> _notificationQueue = new();
         
         public static NotificationBox Current { get; private set; }
         
-        public static readonly StyledProperty<string> MessageProperty = new(
+        public static readonly StyledProperty<string> MessageProperty = AvaloniaProperty.Register<NotificationBox, string>(
             nameof(Message), 
-            typeof(NotificationBox),
-            new StyledPropertyMetadata<string>(
-                "This is supposed to be a message.\n" +
-                "Someone messed up, though, so have this placeholder instead."
-            )
+            "This is supposed to be a message.\n" +
+            "Someone messed up, though, so have this placeholder instead."
         );
 
         public string Message
@@ -86,11 +82,6 @@ namespace Saradomin.View.Windows
                 new NotificationBoxStateChangedMessage(true)
                     .Broadcast();
             }
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
         }
     }
 }

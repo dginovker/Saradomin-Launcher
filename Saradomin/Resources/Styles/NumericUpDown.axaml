@@ -9,6 +9,10 @@
         <Setter Property="Padding" Value="1" />
         <Setter Property="ClipValueToMinMax" Value="True" />
     </Style>
+    
+    <Style Selector="NumericUpDown.NormalNumericUpDown /template/ TextBox#PART_TextBox /template/ ScrollViewer#PART_ScrollViewer /template/ ScrollBar">
+        <Setter Property="Visibility" Value="Hidden" />
+    </Style>
 
     <!-- https://github.com/AvaloniaUI/Avalonia/issues/2098
          https://github.com/AvaloniaUI/Avalonia/issues/1635 -->

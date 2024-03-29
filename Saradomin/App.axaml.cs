@@ -2,7 +2,6 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Glitonea;
-using Glitonea.Mvvm;
 using PropertyChanged;
 using Saradomin.View.Windows;
 

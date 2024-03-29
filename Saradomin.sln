@@ -4,8 +4,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Saradomin", "Saradomin\Sara
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glitonea", "Glitonea\Glitonea.csproj", "{D2884654-2246-4AC0-B53B-5F1DF33DEDD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{6A66E5A7-9297-410F-B061-EB386679E430}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,9 +18,5 @@ Global
 		{D2884654-2246-4AC0-B53B-5F1DF33DEDD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2884654-2246-4AC0-B53B-5F1DF33DEDD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2884654-2246-4AC0-B53B-5F1DF33DEDD7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6A66E5A7-9297-410F-B061-EB386679E430}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6A66E5A7-9297-410F-B061-EB386679E430}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6A66E5A7-9297-410F-B061-EB386679E430}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6A66E5A7-9297-410F-B061-EB386679E430}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

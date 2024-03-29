@@ -1,34 +1,38 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Style Selector="ListBox.PluginList &gt; ListBoxItem">
+    <Style Selector="ListBox.PluginList > ListBoxItem">
+        <Setter Property="Background" Value="{StaticResource DarkMediumBackgroundBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource LightForegroundBrush}" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+    
+    <Style Selector="ListBox.PluginList > ListBoxItem:selected /template/ ContentPresenter">
         <Setter Property="Background" Value="{StaticResource DarkMediumBackgroundBrush}" />
     </Style>
 
-    <Style Selector="ListBox.PluginList &gt; ListBoxItem:selected /template/ ContentPresenter">
+    <Style Selector="ListBox.PluginList > ListBoxItem:pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="{StaticResource DarkMediumBackgroundBrush}" />
     </Style>
 
-    <Style Selector="ListBox.PluginList &gt; ListBoxItem:pointerover /template/ ContentPresenter">
+    <Style Selector="ListBox.PluginList > ListBoxItem:pressed /template/ ContentPresenter">
         <Setter Property="Background" Value="{StaticResource DarkMediumBackgroundBrush}" />
     </Style>
 
-    <Style Selector="ListBox.PluginList &gt; ListBoxItem:pressed /template/ ContentPresenter">
-        <Setter Property="Background" Value="{StaticResource DarkMediumBackgroundBrush}" />
-    </Style>
-
-    <Style Selector="ListBox.PluginList &gt; ListBoxItem:nth-child(2n) /template/ ContentPresenter">
+    <Style Selector="ListBox.PluginList > ListBoxItem:nth-child(2n) /template/ ContentPresenter">
         <Setter Property="Background" Value="{StaticResource SemiLightMediumBackgroundBrush}" />
     </Style>
 
-    <Style Selector="ListBox.PluginList &gt; ListBoxItem:nth-child(2n):selected /template/ ContentPresenter">
+    <Style Selector="ListBox.PluginList > ListBoxItem:nth-child(2n):selected /template/ ContentPresenter">
         <Setter Property="Background" Value="{StaticResource SemiLightMediumBackgroundBrush}" />
     </Style>
 
-    <Style Selector="ListBox.PluginList &gt; ListBoxItem:nth-child(2n):pressed /template/ ContentPresenter">
+    <Style Selector="ListBox.PluginList > ListBoxItem:nth-child(2n):pressed /template/ ContentPresenter">
         <Setter Property="Background" Value="{StaticResource SemiLightMediumBackgroundBrush}" />
     </Style>
 
-    <Style Selector="ListBox.PluginList &gt; ListBoxItem:nth-child(2n):pointerover /template/ ContentPresenter">
+    <Style Selector="ListBox.PluginList > ListBoxItem:nth-child(2n):pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="{StaticResource SemiLightMediumBackgroundBrush}" />
     </Style>
 </Styles>

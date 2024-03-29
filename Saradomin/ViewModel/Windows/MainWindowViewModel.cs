@@ -5,11 +5,12 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Metadata;
 using Glitonea.Mvvm;
 using Glitonea.Mvvm.Messaging;
 using HtmlAgilityPack;
-using Saradomin.Infrastructure.Messaging;
+using Saradomin.Infrastructure;
 using Saradomin.Infrastructure.Services;
 using Saradomin.Model.Settings.Launcher;
 using Saradomin.Utilities;
@@ -33,7 +34,7 @@ namespace Saradomin.ViewModel.Windows
         public string LaunchText { get; private set; } = "Play!";
 
         public bool DimContent { get; private set; }
-        public StackPanel ContentContainer { get; private set; }
+        public InlineCollection HtmlInlines { get; private set; }
 
         public MainWindowViewModel(IClientLaunchService launchService,
             IClientUpdateService updateService,
@@ -50,11 +51,6 @@ namespace Saradomin.ViewModel.Windows
 
             _settingsService = settingsService;
             Launcher = _settingsService.Launcher;
-
-            ContentContainer = new StackPanel
-            {
-                Margin = new(4)
-            };
 
             Message.Subscribe<MainViewLoadedMessage>(this, MainViewLoaded);
             Message.Subscribe<NotificationBoxStateChangedMessage>(this, NotificatationBoxStateChanged);
@@ -94,9 +90,8 @@ namespace Saradomin.ViewModel.Windows
                     node = doc.DocumentNode;
                 }
 
-                ContentContainer.MaxWidth = 760;
-                var renderer = new HtmlRenderer(ContentContainer, node);
-                renderer.RenderToContainer();
+                var renderer = new HtmlRenderer(node);
+                HtmlInlines = renderer.Render();
             }
         }
 
@@ -105,7 +100,7 @@ namespace Saradomin.ViewModel.Windows
             DimContent = msg.WasOpened;
         }
 
-        public void LaunchPage(string parameter)
+        public void LaunchPage(object parameter)
         {
             var url = parameter switch
             {
@@ -121,7 +116,7 @@ namespace Saradomin.ViewModel.Windows
         }
 
         [DependsOn(nameof(CanLaunch))]
-        public bool CanExecuteLaunchSequence(object param)
+        public bool CanExecuteLaunchSequence(object parameter)
             => CanLaunch;
 
         //Stub to maintain compatibility with AXAML

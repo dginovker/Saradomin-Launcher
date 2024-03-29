@@ -2,7 +2,7 @@
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net6.0</TargetFramework>
-        <Version>1.6.0</Version>
+        <Version>1.6.1</Version>
         <NoWarn>IL2026;CS0067</NoWarn>
         <ApplicationIcon>Resources\Icons\saradomin.ico</ApplicationIcon>
         <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
@@ -24,12 +24,13 @@
     </Target>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="0.10.18" />
-        <PackageReference Include="Avalonia.Desktop" Version="0.10.18" />
+        <PackageReference Include="Avalonia" Version="11.0.10" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.0.10" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.18" />
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10" />
+        <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.10" />
         <PackageReference Include="GitLabApiClient" Version="1.8.0" />
-        <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.60" />
         <PackageReference Include="Mono.Posix.NETStandard" Version="1.0.0" />
         <PackageReference Include="NSubsys" Version="1.0.0">
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -40,13 +41,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Glitonea\Glitonea.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <AvaloniaResource Include="Resources\Fonts\runescape_uf.ttf" />
-        <AvaloniaResource Include="Resources\Images\previewbg.png" />
-        <AvaloniaResource Include="Resources\Images\club.png" />
-        <AvaloniaResource Include="Resources\Fonts\runescape_plain.ttf" />
     </ItemGroup>
 
     <ItemGroup>
